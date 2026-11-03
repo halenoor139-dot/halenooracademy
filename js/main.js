@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Halenoor Quran Academy - Main Interactive Script
  * Provides: Currency Converter, WhatsApp Form Generator, Trial Modal, Audio Reciter, FAQ Accordion
  */
@@ -6,8 +6,8 @@
 // Global Configuration
 const ACADEMY_CONFIG = {
   academyName: "Halenoor Quran Academy",
-  whatsappNumber: "923001234567", // Academy WhatsApp (without + or spaces for api.whatsapp.com)
-  displayPhone: "+92 300 1234567",
+  whatsappNumber: "923208040672", // Academy WhatsApp (without + or spaces for api.whatsapp.com)
+  displayPhone: "+92 320 8040672",
   email: "admissions@halenoor.com",
   currencyRates: {
     USD: { symbol: "$", prefix: true, plans: { d2: 32, d3: 45, d5: 65, hifz: 85 } },

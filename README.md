@@ -1,4 +1,4 @@
-# Halenoor Quran Academy (ہالہ نور آن لائن قران اکیڈمی)
+﻿# Halenoor Quran Academy (ہالہ نور آن لائن قران اکیڈمی)
 
 A modern, responsive, high-converting online Quran Academy website designed with an authentic Islamic aesthetic (Emerald Green & Warm Gold palette), full mobile responsiveness, interactive trial registration, direct WhatsApp admissions desk integration, and an Admissions Coordinator Dashboard.
 
@@ -50,8 +50,8 @@ Open `js/main.js` in any text editor and update the top configuration block:
 ```javascript
 const ACADEMY_CONFIG = {
   academyName: "Halenoor Quran Academy",
-  whatsappNumber: "923001234567", // <-- Put your WhatsApp number here (Country code without '+' or spaces)
-  displayPhone: "+92 300 1234567", // <-- Display format
+  whatsappNumber: "923208040672", // <-- Put your WhatsApp number here (Country code without '+' or spaces)
+  displayPhone: "+92 320 8040672", // <-- Display format
   email: "admissions@halenoor.com"
 };
 ```

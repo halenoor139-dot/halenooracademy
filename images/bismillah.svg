@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 90" width="100%" height="100%">
+  <defs>
+    <linearGradient id="goldCalligraphy" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#D97706"/>
+      <stop offset="50%" stop-color="#F59E0B"/>
+      <stop offset="100%" stop-color="#B45309"/>
+    </linearGradient>
+  </defs>
+  <!-- Decorative border elements -->
+  <line x1="20" y1="45" x2="80" y2="45" stroke="url(#goldCalligraphy)" stroke-width="1.5" stroke-linecap="round"/>
+  <circle cx="85" cy="45" r="3" fill="#D97706"/>
+  <polygon points="95,45 92,42 89,45 92,48" fill="#F59E0B"/>
+
+  <!-- Centered Arabic Bismillah Text -->
+  <text x="250" y="58" font-family="'Amiri', 'Scheherazade New', 'Traditional Arabic', serif" font-size="34" font-weight="700" fill="url(#goldCalligraphy)" text-anchor="middle" letter-spacing="1">
+    بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ
+  </text>
+
+  <polygon points="405,45 408,42 411,45 408,48" fill="#F59E0B"/>
+  <circle cx="415" cy="45" r="3" fill="#D97706"/>
+  <line x1="420" y1="45" x2="480" y2="45" stroke="url(#goldCalligraphy)" stroke-width="1.5" stroke-linecap="round"/>
+</svg>

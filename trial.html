@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Book 3-Day Free Trial | Halenoor Quran Academy</title>
+  <meta name="description" content="Register for a 3-day 100% free online Quran trial class with certified male or female teachers. No credit card required at Halenoor Quran Academy.">
+  <link rel="icon" type="image/svg+xml" href="images/logo.svg">
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            emerald: { 850: '#044e39', 900: '#064e3b', 950: '#022c22' },
+            amber: { 450: '#f59e0b', 550: '#d97706' }
+          },
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            arabic: ['"Scheherazade New"', '"Amiri"', 'serif'],
+            urdu: ['"Amiri"', 'serif']
+          }
+        }
+      }
+    }
+  </script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="bg-[#faf8f5] text-slate-800 antialiased selection:bg-amber-400 selection:text-emerald-950">
+
+  <!-- TOP BAR -->
+  <div class="bg-gradient-to-r from-emerald-950 via-emerald-900 to-emerald-950 text-white text-xs py-2 px-4 border-b border-amber-500/30 text-center">
+    <span class="text-amber-200">🎁 Special Invitation: Take 3 Full 1-on-1 Quran Classes Without Paying a Penny!</span>
+  </div>
+
+  <!-- HEADER -->
+  <header class="sticky top-0 z-50 glass-header shadow-sm">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-20">
+        <a href="index.html" class="flex items-center gap-3">
+          <img src="images/logo.svg" alt="Halenoor Quran Academy" class="h-14 w-auto">
+        </a>
+        <nav class="hidden lg:flex items-center space-x-7 font-medium text-sm text-slate-700">
+          <a href="index.html" class="hover:text-emerald-700 transition">Home</a>
+          <a href="about.html" class="hover:text-emerald-700 transition">About Us</a>
+          <a href="courses.html" class="hover:text-emerald-700 transition">Courses</a>
+          <a href="pricing.html" class="hover:text-emerald-700 transition">Fee Structure</a>
+          <a href="contact.html" class="hover:text-emerald-700 transition">Contact</a>
+        </nav>
+        <div class="hidden sm:flex items-center gap-3">
+          <a href="https://api.whatsapp.com/send?phone=923001234567" target="_blank" class="px-5 py-2.5 rounded-full bg-emerald-800 hover:bg-emerald-900 text-white text-xs font-bold transition flex items-center gap-2">
+            <i class="fa-brands fa-whatsapp text-emerald-400 text-sm"></i>
+            <span>WhatsApp Admission</span>
+          </a>
+        </div>
+        <div class="flex items-center lg:hidden">
+          <button id="mobileMenuBtn" class="text-slate-700 p-2"><i class="fa-solid fa-bars text-2xl"></i></button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- MOBILE NAV -->
+  <div id="mobileNavDrawer" class="hidden fixed inset-0 z-50 bg-emerald-950/90 backdrop-blur-lg text-white p-6">
+    <div class="flex items-center justify-between pb-6 border-b border-emerald-800">
+      <img src="images/logo-white.svg" alt="Halenoor Quran Academy" class="h-12 w-auto">
+      <button id="mobileMenuClose" class="text-amber-400 text-2xl"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <nav class="flex flex-col space-y-4 my-8 text-lg font-semibold">
+      <a href="index.html">Home</a>
+      <a href="about.html">About Us</a>
+      <a href="courses.html">All Courses</a>
+      <a href="pricing.html">Fee Structure</a>
+      <a href="contact.html">Contact Us</a>
+      <a href="trial.html" class="text-amber-400">Free Trial</a>
+    </nav>
+  </div>
+
+  <!-- REGISTRATION SECTION -->
+  <section class="py-16 sm:py-20 islamic-pattern">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <!-- Top Text -->
+      <div class="text-center max-w-2xl mx-auto mb-12">
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-100 text-amber-900 text-xs font-bold uppercase tracking-wider mb-3">
+          <i class="fa-solid fa-star text-amber-500"></i> No Obligation Trial
+        </div>
+        <h1 class="text-3xl sm:text-5xl font-black text-slate-900 tracking-tight mb-4">
+          Book Your <span class="text-gold-gradient">3-Day Free Trial</span>
+        </h1>
+        <p class="text-slate-600 text-sm sm:text-base leading-relaxed">
+          Experience our high-definition interactive classes, gentle teaching methodology, and certified tutors before deciding on enrollment.
+        </p>
+      </div>
+
+      <!-- Main Form Card -->
+      <div class="bg-white rounded-3xl p-8 sm:p-12 shadow-2xl border-2 border-amber-300 relative">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+          
+          <!-- Left: The Form -->
+          <div class="lg:col-span-7">
+            <h3 class="text-xl font-black text-slate-900 mb-1">Student & Guardian Details</h3>
+            <p class="text-xs text-slate-500 mb-6">Takes less than 1 minute. We will contact you to confirm class timing.</p>
+
+            <form class="trial-form-submit space-y-4">
+              <div>
+                <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">Student's Full Name *</label>
+                <input type="text" name="studentName" required placeholder="e.g. Ibrahim / Fatima" class="w-full px-4 py-3 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-600">
+              </div>
+
+              <div>
+                <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">Parent / Guardian Name (if student is under 18)</label>
+                <input type="text" name="guardianName" placeholder="e.g. Tariq Mehmood" class="w-full px-4 py-3 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-600">
+              </div>
+
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">WhatsApp Number *</label>
+                  <input type="tel" name="phone" required placeholder="+1 234 567 890" class="w-full px-4 py-3 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-600">
+                </div>
+                <div>
+                  <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">Email Address</label>
+                  <input type="email" name="email" placeholder="name@email.com" class="w-full px-4 py-3 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-600">
+                </div>
+              </div>
+
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">Country & City *</label>
+                  <input type="text" name="country" required placeholder="UK, USA, Pakistan..." class="w-full px-4 py-3 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-600">
+                </div>
+                <div>
+                  <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">Student Age Group</label>
+                  <select name="ageGroup" class="w-full px-4 py-3 rounded-xl border border-slate-200 text-xs focus:outline-none focus:ring-2 focus:ring-emerald-600 bg-white">
+                    <option value="Kids (4 to 9 Years)">Kids (4 to 9 Years)</option>
+                    <option value="Teens (10 to 17 Years)">Teens (10 to 17 Years)</option>
+                    <option value="Adults (18+ Years)">Adults (18+ Years)</option>
+                  </select>
+                </div>
+              </div>
+
+              <div>
+                <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">Desired Course *</label>
+                <select name="course" class="w-full px-4 py-3 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-600 bg-white">
+                  <option value="Noorani Qaida for Beginners">Noorani Qaida for Beginners</option>
+                  <option value="Quran Reading with Tajweed" selected>Quran Reading with Tajweed</option>
+                  <option value="Quran Memorization (Hifz)">Quran Memorization (Hifz-ul-Quran)</option>
+                  <option value="Quran Translation & Tafseer">Quran Translation & Tafseer</option>
+                  <option value="Islamic Studies for Kids">Islamic Studies for Kids (Namaz, Duas)</option>
+                  <option value="Sisters Special Quran Program">Sisters Special Quran Program</option>
+                </select>
+              </div>
+
+              <div class="grid grid-cols-2 gap-4">
+                <div>
+                  <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">Tutor Preference</label>
+                  <select name="tutorType" class="w-full px-3 py-2.5 rounded-xl border border-slate-200 text-xs focus:outline-none focus:ring-2 focus:ring-emerald-600 bg-white">
+                    <option value="Female Quran Tutor">Female Tutor</option>
+                    <option value="Male Quran Tutor">Male Tutor</option>
+                    <option value="Any Qualified Tutor" selected>Any Tutor</option>
+                  </select>
+                </div>
+                <div>
+                  <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">Preferred Time Slot</label>
+                  <select name="timing" class="w-full px-3 py-2.5 rounded-xl border border-slate-200 text-xs focus:outline-none focus:ring-2 focus:ring-emerald-600 bg-white">
+                    <option value="Morning">Morning</option>
+                    <option value="Afternoon">Afternoon</option>
+                    <option value="Evening" selected>Evening</option>
+                    <option value="Weekend Only">Weekend Only</option>
+                  </select>
+                </div>
+              </div>
+
+              <button type="submit" class="btn-shimmer w-full py-4 rounded-xl bg-gradient-to-r from-emerald-800 to-emerald-950 text-white font-black text-sm shadow-xl transition flex items-center justify-center gap-2">
+                <i class="fa-solid fa-graduation-cap text-amber-400 text-lg"></i>
+                <span>Submit & Confirm Free Trial Class</span>
+              </button>
+
+              <div class="text-[11px] text-slate-400 text-center flex items-center justify-center gap-2">
+                <i class="fa-solid fa-lock text-emerald-700"></i>
+                <span>100% Free Trial. Zero Credit Card Required.</span>
+              </div>
+            </form>
+          </div>
+
+          <!-- Right: What Happens Next & Guarantees -->
+          <div class="lg:col-span-5 bg-slate-50 rounded-2xl p-6 sm:p-7 border border-slate-200">
+            <h4 class="font-bold text-slate-900 text-sm uppercase tracking-wider mb-4 flex items-center gap-2">
+              <i class="fa-solid fa-list-check text-emerald-700"></i> What Happens Next?
+            </h4>
+
+            <div class="space-y-4 text-xs text-slate-600 mb-8">
+              <div class="flex items-start gap-3">
+                <div class="w-6 h-6 rounded-full bg-emerald-200 text-emerald-900 font-bold flex items-center justify-center shrink-0">1</div>
+                <div>
+                  <strong class="text-slate-800 block">Class Timing Confirmation:</strong>
+                  Our coordinator connects with you on WhatsApp within 2 hours to confirm your convenient schedule.
+                </div>
+              </div>
+              <div class="flex items-start gap-3">
+                <div class="w-6 h-6 rounded-full bg-emerald-200 text-emerald-900 font-bold flex items-center justify-center shrink-0">2</div>
+                <div>
+                  <strong class="text-slate-800 block">Classroom Link:</strong>
+                  We send a simple 1-click Zoom or Skype meeting link. No complex software installation required.
+                </div>
+              </div>
+              <div class="flex items-start gap-3">
+                <div class="w-6 h-6 rounded-full bg-emerald-200 text-emerald-900 font-bold flex items-center justify-center shrink-0">3</div>
+                <div>
+                  <strong class="text-slate-800 block">Enjoy 3 Days of Classes:</strong>
+                  Take 3 consecutive 1-on-1 sessions. If you love the tutor, continue; if not, there is zero fee!
+                </div>
+              </div>
+            </div>
+
+            <!-- Trust Badge Box -->
+            <div class="p-4 rounded-xl bg-amber-50 border border-amber-200 text-amber-900">
+              <div class="font-bold text-xs mb-1 flex items-center gap-1.5">
+                <i class="fa-solid fa-shield-halved text-amber-600"></i> 100% Parent Satisfaction Guarantee
+              </div>
+              <p class="text-[11px] text-amber-800 leading-relaxed">
+                If at any point during regular classes you wish to change your tutor or timing, we facilitate changes with zero hassle.
+              </p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="bg-emerald-950 text-slate-400 py-8 border-t border-emerald-900 text-center text-xs">
+    <p>&copy; 2026 Halenoor Quran Academy. All Rights Reserved. | <a href="index.html" class="text-amber-400">Back to Home</a></p>
+  </footer>
+
+  <!-- FLOATING WHATSAPP -->
+  <a href="https://api.whatsapp.com/send?phone=923001234567" target="_blank" class="whatsapp-floating">
+    <div class="whatsapp-pulse"></div>
+    <i class="fa-brands fa-whatsapp text-3xl"></i>
+  </a>
+
+  <script src="js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fee Structure & Pricing Plans | Halenoor Quran Academy</title>
+  <meta name="description" content="Affordable online Quran class fee plans in USD, GBP, CAD, AUD, and PKR. Sibling discounts, 3-day free trial, no admission fees at Halenoor Quran Academy.">
+  <link rel="icon" type="image/svg+xml" href="images/logo.svg">
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            emerald: { 850: '#044e39', 900: '#064e3b', 950: '#022c22' },
+            amber: { 450: '#f59e0b', 550: '#d97706' }
+          },
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            arabic: ['"Scheherazade New"', '"Amiri"', 'serif'],
+            urdu: ['"Amiri"', 'serif']
+          }
+        }
+      }
+    }
+  </script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="bg-[#faf8f5] text-slate-800 antialiased selection:bg-amber-400 selection:text-emerald-950">
+
+  <!-- TOP BAR -->
+  <div class="bg-gradient-to-r from-emerald-950 via-emerald-900 to-emerald-950 text-white text-xs py-2 px-4 border-b border-amber-500/30">
+    <div class="max-w-7xl mx-auto flex justify-between items-center">
+      <span class="text-amber-200">💰 100% Transparent Fee Structure - No Hidden Registration Fees</span>
+      <a href="https://api.whatsapp.com/send?phone=923001234567" target="_blank" class="hover:text-amber-400 transition flex items-center gap-1.5">
+        <i class="fa-brands fa-whatsapp text-emerald-400"></i> WhatsApp: +92 300 1234567
+      </a>
+    </div>
+  </div>
+
+  <!-- HEADER -->
+  <header class="sticky top-0 z-50 glass-header shadow-sm">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-20">
+        <a href="index.html" class="flex items-center gap-3">
+          <img src="images/logo.svg" alt="Halenoor Quran Academy" class="h-14 w-auto">
+        </a>
+        <nav class="hidden lg:flex items-center space-x-7 font-medium text-sm text-slate-700">
+          <a href="index.html" class="hover:text-emerald-700 transition">Home</a>
+          <a href="about.html" class="hover:text-emerald-700 transition">About Us</a>
+          <a href="courses.html" class="hover:text-emerald-700 transition">Courses</a>
+          <a href="pricing.html" class="text-emerald-800 font-bold border-b-2 border-emerald-700 pb-1">Fee Structure</a>
+          <a href="contact.html" class="hover:text-emerald-700 transition">Contact</a>
+        </nav>
+        <div class="hidden sm:flex items-center gap-3">
+          <button class="open-trial-modal btn-shimmer bg-amber-500 hover:bg-amber-600 text-slate-950 font-extrabold text-xs px-5 py-2.5 rounded-full shadow transition">
+            Book 3-Day Free Trial
+          </button>
+        </div>
+        <div class="flex items-center lg:hidden">
+          <button id="mobileMenuBtn" class="text-slate-700 p-2"><i class="fa-solid fa-bars text-2xl"></i></button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- MOBILE NAV -->
+  <div id="mobileNavDrawer" class="hidden fixed inset-0 z-50 bg-emerald-950/90 backdrop-blur-lg text-white p-6">
+    <div class="flex items-center justify-between pb-6 border-b border-emerald-800">
+      <img src="images/logo-white.svg" alt="Halenoor Quran Academy" class="h-12 w-auto">
+      <button id="mobileMenuClose" class="text-amber-400 text-2xl"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <nav class="flex flex-col space-y-4 my-8 text-lg font-semibold">
+      <a href="index.html">Home</a>
+      <a href="about.html">About Us</a>
+      <a href="courses.html">All Courses</a>
+      <a href="pricing.html" class="text-amber-400">Fee Structure</a>
+      <a href="contact.html">Contact Us</a>
+      <a href="trial.html">Free Trial</a>
+    </nav>
+  </div>
+
+  <!-- HERO TITLE BANNER -->
+  <section class="py-16 bg-gradient-to-r from-emerald-950 via-emerald-900 to-emerald-950 text-white relative text-center islamic-pattern-dark">
+    <div class="max-w-4xl mx-auto px-4">
+      <span class="inline-block px-3 py-1 bg-amber-500/20 text-amber-300 text-xs font-bold rounded-full uppercase tracking-wider mb-3 border border-amber-500/30">
+        Affordable Learning
+      </span>
+      <h1 class="text-3xl sm:text-5xl font-extrabold tracking-tight mb-4">
+        Fee Plans & <span class="text-gold-gradient">Global Pricing</span>
+      </h1>
+      <p class="text-emerald-100 text-sm sm:text-base max-w-2xl mx-auto leading-relaxed">
+        We strive to keep authentic Quran education accessible to all Muslim households across the globe. Switch currency to view in your local funds.
+      </p>
+    </div>
+  </section>
+
+  <!-- PRICING CONTENT -->
+  <section class="py-20">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+      <!-- Currency Switcher Bar -->
+      <div class="bg-white rounded-2xl p-4 shadow-sm border border-slate-200 max-w-xl mx-auto mb-12 flex flex-col sm:flex-row items-center justify-between gap-4">
+        <span class="text-xs font-bold text-slate-700 uppercase tracking-wider flex items-center gap-2">
+          <i class="fa-solid fa-coins text-amber-500"></i> Select Your Currency:
+        </span>
+        <div class="flex items-center gap-1.5 flex-wrap">
+          <button class="currency-btn px-3 py-1.5 rounded-lg text-xs font-bold transition bg-amber-500 text-white shadow" data-currency="USD">USD ($)</button>
+          <button class="currency-btn px-3 py-1.5 rounded-lg text-xs font-bold transition bg-slate-100 text-slate-700 hover:bg-slate-200" data-currency="GBP">GBP (£)</button>
+          <button class="currency-btn px-3 py-1.5 rounded-lg text-xs font-bold transition bg-slate-100 text-slate-700 hover:bg-slate-200" data-currency="CAD">CAD (CA$)</button>
+          <button class="currency-btn px-3 py-1.5 rounded-lg text-xs font-bold transition bg-slate-100 text-slate-700 hover:bg-slate-200" data-currency="AUD">AUD (AU$)</button>
+          <button class="currency-btn px-3 py-1.5 rounded-lg text-xs font-bold transition bg-slate-100 text-slate-700 hover:bg-slate-200" data-currency="EUR">EUR (€)</button>
+          <button class="currency-btn px-3 py-1.5 rounded-lg text-xs font-bold transition bg-slate-100 text-slate-700 hover:bg-slate-200" data-currency="PKR">PKR (Rs)</button>
+        </div>
+      </div>
+
+      <!-- Pricing Plans Cards -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
+        
+        <!-- Plan 1 -->
+        <div class="bg-white rounded-3xl p-7 border border-slate-200 shadow-sm flex flex-col justify-between">
+          <div>
+            <div class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Package A</div>
+            <h3 class="text-xl font-bold text-slate-900 mb-1">2 Days / Week</h3>
+            <p class="text-xs text-slate-500 mb-6">8 live one-on-one classes per month</p>
+            <div class="flex items-baseline gap-1 mb-6">
+              <span class="text-4xl font-extrabold text-slate-900" data-plan-price="d2">$32</span>
+              <span class="text-xs text-slate-500 font-semibold">/ month</span>
+            </div>
+            <ul class="text-xs text-slate-600 space-y-3 mb-8">
+              <li class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-600"></i> 30 mins live 1-on-1 session</li>
+              <li class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-600"></i> Weekend or weekday slots</li>
+              <li class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-600"></i> Free Qaida & Tajweed materials</li>
+              <li class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-600"></i> 3-Day Free Trial</li>
+            </ul>
+          </div>
+          <button class="open-trial-modal w-full py-3 rounded-xl bg-slate-100 hover:bg-emerald-800 hover:text-white text-slate-800 font-bold text-xs transition" data-course="2 Days/Week Plan">
+            Enroll for Free Trial
+          </button>
+        </div>
+
+        <!-- Plan 2 -->
+        <div class="bg-white rounded-3xl p-7 border-2 border-amber-400 shadow-xl relative flex flex-col justify-between">
+          <div class="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-amber-500 text-slate-950 font-black text-[10px] px-3.5 py-1 rounded-full uppercase tracking-wider shadow">
+            Most Popular
+          </div>
+          <div>
+            <div class="text-xs font-bold text-amber-600 uppercase tracking-wider mb-2 mt-1">Package B (Recommended)</div>
+            <h3 class="text-xl font-bold text-slate-900 mb-1">3 Days / Week</h3>
+            <p class="text-xs text-slate-500 mb-6">12 live one-on-one classes per month</p>
+            <div class="flex items-baseline gap-1 mb-6">
+              <span class="text-4xl font-extrabold text-emerald-900" data-plan-price="d3">$45</span>
+              <span class="text-xs text-slate-500 font-semibold">/ month</span>
+            </div>
+            <ul class="text-xs text-slate-600 space-y-3 mb-8">
+              <li class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-600 font-bold"></i> 30 mins live 1-on-1 session</li>
+              <li class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-600 font-bold"></i> Optimal learning momentum</li>
+              <li class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-600 font-bold"></i> Islamic Studies & Duas included</li>
+              <li class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-600 font-bold"></i> Rescheduling / Makeup support</li>
+            </ul>
+          </div>
+          <button class="open-trial-modal btn-shimmer w-full py-3 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-slate-950 font-extrabold text-xs transition shadow-md" data-course="3 Days/Week Plan">
+            Start 3-Day Free Trial
+          </button>
+        </div>
+
+        <!-- Plan 3 -->
+        <div class="bg-white rounded-3xl p-7 border border-slate-200 shadow-sm flex flex-col justify-between">
+          <div>
+            <div class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Package C</div>
+            <h3 class="text-xl font-bold text-slate-900 mb-1">5 Days / Week</h3>
+            <p class="text-xs text-slate-500 mb-6">20 live one-on-one classes per month</p>
+            <div class="flex items-baseline gap-1 mb-6">
+              <span class="text-4xl font-extrabold text-slate-900" data-plan-price="d5">$65</span>
+              <span class="text-xs text-slate-500 font-semibold">/ month</span>
+            </div>
+            <ul class="text-xs text-slate-600 space-y-3 mb-8">
+              <li class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-600"></i> Daily continuous practice</li>
+              <li class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-600"></i> Rapid Quran completion</li>
+              <li class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-600"></i> Dedicated teacher pairing</li>
+              <li class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-600"></i> Weekly progress assessments</li>
+            </ul>
+          </div>
+          <button class="open-trial-modal w-full py-3 rounded-xl bg-slate-100 hover:bg-emerald-800 hover:text-white text-slate-800 font-bold text-xs transition" data-course="5 Days/Week Plan">
+            Enroll for Free Trial
+          </button>
+        </div>
+
+        <!-- Plan 4 -->
+        <div class="bg-white rounded-3xl p-7 border border-slate-200 shadow-sm flex flex-col justify-between">
+          <div>
+            <div class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Hifz Intensive</div>
+            <h3 class="text-xl font-bold text-slate-900 mb-1">5 Days / Extended</h3>
+            <p class="text-xs text-slate-500 mb-6">45-60 mins extended session daily</p>
+            <div class="flex items-baseline gap-1 mb-6">
+              <span class="text-4xl font-extrabold text-slate-900" data-plan-price="hifz">$85</span>
+              <span class="text-xs text-slate-500 font-semibold">/ month</span>
+            </div>
+            <ul class="text-xs text-slate-600 space-y-3 mb-8">
+              <li class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-600"></i> 45-60 min intensive session</li>
+              <li class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-600"></i> Sabaq, Sabqi & Manzil tracking</li>
+              <li class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-600"></i> Senior Hafiz / Qari mentor</li>
+              <li class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-600"></i> Monthly Hifz retention testing</li>
+            </ul>
+          </div>
+          <button class="open-trial-modal w-full py-3 rounded-xl bg-slate-100 hover:bg-emerald-800 hover:text-white text-slate-800 font-bold text-xs transition" data-course="Hifz Intensive Plan">
+            Enroll for Free Trial
+          </button>
+        </div>
+
+      </div>
+
+      <!-- Sibling Discount Calculator -->
+      <div class="bg-gradient-to-br from-emerald-900 to-emerald-950 rounded-3xl p-8 text-white shadow-xl max-w-4xl mx-auto mb-16 border border-amber-400/30">
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-center">
+          <div class="md:col-span-7">
+            <span class="text-xs font-bold text-amber-400 uppercase tracking-widest block mb-2">
+              Family & Sibling Discount
+            </span>
+            <h3 class="text-2xl font-black mb-3">Enrolling More Than One Child?</h3>
+            <p class="text-xs sm:text-sm text-emerald-100 leading-relaxed mb-4">
+              We offer generous discounts for multi-student households. 
+              Enjoy <strong>10% OFF</strong> on the 2nd student, and <strong>15% OFF</strong> on the 3rd and subsequent students in the same family!
+            </p>
+            <div class="flex items-center gap-4 text-xs text-amber-300">
+              <span><i class="fa-solid fa-check-double mr-1"></i> No Registration Fee</span>
+              <span><i class="fa-solid fa-check-double mr-1"></i> Coordinated Timings</span>
+            </div>
+          </div>
+
+          <div class="md:col-span-5 bg-emerald-800/80 rounded-2xl p-6 border border-emerald-700/60 text-center">
+            <div class="text-xs font-bold text-slate-200 uppercase mb-2">Get Custom Family Quote</div>
+            <a href="https://api.whatsapp.com/send?phone=923001234567&text=Assalam-o-Alaikum!%20I%20have%20multiple%20students%20and%20want%20to%20inquire%20about%20the%20family%20discount%20at%20Halenoor%20Quran%20Academy." target="_blank" class="w-full py-3 bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold rounded-xl text-xs flex items-center justify-center gap-2 transition shadow">
+              <i class="fa-brands fa-whatsapp text-base"></i>
+              <span>Calculate on WhatsApp</span>
+            </a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="bg-emerald-950 text-slate-400 py-8 border-t border-emerald-900 text-center text-xs">
+    <p>&copy; 2026 Halenoor Quran Academy. All Rights Reserved. | <a href="index.html" class="text-amber-400">Back to Home</a></p>
+  </footer>
+
+  <!-- FLOATING WHATSAPP -->
+  <a href="https://api.whatsapp.com/send?phone=923001234567" target="_blank" class="whatsapp-floating">
+    <div class="whatsapp-pulse"></div>
+    <i class="fa-brands fa-whatsapp text-3xl"></i>
+  </a>
+
+  <!-- MODAL -->
+  <div id="trialModal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 modal-overlay overflow-y-auto">
+    <div class="bg-white rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl border-2 border-amber-400 relative">
+      <button class="close-trial-modal absolute top-5 right-5 text-slate-400 hover:text-slate-700 text-xl"><i class="fa-solid fa-xmark"></i></button>
+      <h3 class="text-2xl font-black text-slate-900 mb-1">Book 3-Day Free Trial</h3>
+      <p class="text-slate-500 text-xs mb-5">Zero commitment. Experience our teaching quality firsthand.</p>
+      <form class="trial-form-submit space-y-4">
+        <div>
+          <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Full Name *</label>
+          <input type="text" name="studentName" required class="w-full px-3 py-2 rounded-xl border border-slate-200 text-sm focus:ring-2 focus:ring-emerald-600">
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-bold text-slate-700 uppercase mb-1">WhatsApp / Phone *</label>
+            <input type="tel" name="phone" required class="w-full px-3 py-2 rounded-xl border border-slate-200 text-sm focus:ring-2 focus:ring-emerald-600">
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Country *</label>
+            <input type="text" name="country" required class="w-full px-3 py-2 rounded-xl border border-slate-200 text-sm focus:ring-2 focus:ring-emerald-600">
+          </div>
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Selected Plan</label>
+          <input type="text" id="modalCourseSelect" name="course" value="Standard Plan (3 Days/Week)" class="w-full px-3 py-2 rounded-xl border border-slate-200 text-sm bg-slate-50">
+        </div>
+        <button type="submit" class="w-full py-3 bg-emerald-800 hover:bg-emerald-900 text-white font-bold rounded-xl text-sm transition">
+          Confirm Free Trial
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <script src="js/main.js"></script>
+</body>
+</html>

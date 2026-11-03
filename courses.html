@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>All Courses & Curriculum | Halenoor Quran Academy</title>
+  <meta name="description" content="Explore online Quran courses at Halenoor Quran Academy: Noorani Qaida, Quran with Tajweed, Hifz Program, Tafseer, Islamic Studies, and Arabic Grammar.">
+  <link rel="icon" type="image/svg+xml" href="images/logo.svg">
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            emerald: { 850: '#044e39', 900: '#064e3b', 950: '#022c22' },
+            amber: { 450: '#f59e0b', 550: '#d97706' }
+          },
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            arabic: ['"Scheherazade New"', '"Amiri"', 'serif'],
+            urdu: ['"Amiri"', 'serif']
+          }
+        }
+      }
+    }
+  </script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="bg-[#faf8f5] text-slate-800 antialiased selection:bg-amber-400 selection:text-emerald-950">
+
+  <!-- TOP BAR -->
+  <div class="bg-gradient-to-r from-emerald-950 via-emerald-900 to-emerald-950 text-white text-xs py-2 px-4 border-b border-amber-500/30">
+    <div class="max-w-7xl mx-auto flex justify-between items-center">
+      <span class="text-amber-200">📖 Structured Online Quran Syllabi for Kids & Adults</span>
+      <a href="https://api.whatsapp.com/send?phone=923001234567" target="_blank" class="hover:text-amber-400 transition flex items-center gap-1.5">
+        <i class="fa-brands fa-whatsapp text-emerald-400"></i> WhatsApp: +92 300 1234567
+      </a>
+    </div>
+  </div>
+
+  <!-- HEADER -->
+  <header class="sticky top-0 z-50 glass-header shadow-sm">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-20">
+        <a href="index.html" class="flex items-center gap-3">
+          <img src="images/logo.svg" alt="Halenoor Quran Academy" class="h-14 w-auto">
+        </a>
+        <nav class="hidden lg:flex items-center space-x-7 font-medium text-sm text-slate-700">
+          <a href="index.html" class="hover:text-emerald-700 transition">Home</a>
+          <a href="about.html" class="hover:text-emerald-700 transition">About Us</a>
+          <a href="courses.html" class="text-emerald-800 font-bold border-b-2 border-emerald-700 pb-1">Courses</a>
+          <a href="pricing.html" class="hover:text-emerald-700 transition">Fee Structure</a>
+          <a href="contact.html" class="hover:text-emerald-700 transition">Contact</a>
+        </nav>
+        <div class="hidden sm:flex items-center gap-3">
+          <button class="open-trial-modal btn-shimmer bg-amber-500 hover:bg-amber-600 text-slate-950 font-extrabold text-xs px-5 py-2.5 rounded-full shadow transition">
+            Book 3-Day Free Trial
+          </button>
+        </div>
+        <div class="flex items-center lg:hidden">
+          <button id="mobileMenuBtn" class="text-slate-700 p-2"><i class="fa-solid fa-bars text-2xl"></i></button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- MOBILE NAV -->
+  <div id="mobileNavDrawer" class="hidden fixed inset-0 z-50 bg-emerald-950/90 backdrop-blur-lg text-white p-6">
+    <div class="flex items-center justify-between pb-6 border-b border-emerald-800">
+      <img src="images/logo-white.svg" alt="Halenoor Quran Academy" class="h-12 w-auto">
+      <button id="mobileMenuClose" class="text-amber-400 text-2xl"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <nav class="flex flex-col space-y-4 my-8 text-lg font-semibold">
+      <a href="index.html">Home</a>
+      <a href="about.html">About Us</a>
+      <a href="courses.html" class="text-amber-400">All Courses</a>
+      <a href="pricing.html">Fee Structure</a>
+      <a href="contact.html">Contact Us</a>
+      <a href="trial.html">Free Trial</a>
+    </nav>
+  </div>
+
+  <!-- HERO TITLE BANNER -->
+  <section class="py-16 bg-gradient-to-r from-emerald-950 via-emerald-900 to-emerald-950 text-white relative text-center islamic-pattern-dark">
+    <div class="max-w-4xl mx-auto px-4">
+      <span class="inline-block px-3 py-1 bg-amber-500/20 text-amber-300 text-xs font-bold rounded-full uppercase tracking-wider mb-3 border border-amber-500/30">
+        Academic Programs
+      </span>
+      <h1 class="text-3xl sm:text-5xl font-extrabold tracking-tight mb-4">
+        Our Courses & <span class="text-gold-gradient">Syllabus Breakdown</span>
+      </h1>
+      <p class="text-emerald-100 text-sm sm:text-base max-w-2xl mx-auto leading-relaxed">
+        From foundational Arabic alphabet recognition to authentic Tajweed mastery and comprehensive Tafseer, all taught 1-on-1 by certified scholars.
+      </p>
+    </div>
+  </section>
+
+  <!-- COURSES DETAILED LIST -->
+  <section class="py-20">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-16">
+
+      <!-- Course 1 -->
+      <div id="qaida" class="bg-white rounded-3xl p-8 sm:p-10 border border-slate-200 shadow-sm grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+        <div class="lg:col-span-8">
+          <div class="flex items-center gap-3 mb-3">
+            <span class="px-3 py-1 rounded-full text-xs font-bold bg-amber-100 text-amber-800">Foundation</span>
+            <span class="text-xs font-semibold text-slate-500"><i class="fa-solid fa-clock mr-1 text-emerald-600"></i> Duration: 2 to 4 Months (based on student pace)</span>
+          </div>
+          <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 mb-3">1. Noorani Qaida for Beginners</h2>
+          <p class="text-slate-600 text-sm sm:text-base leading-relaxed mb-6">
+            The Noorani Qaida is the gold-standard stepping stone for every child and beginner looking to read the Holy Quran with accurate Arabic phonetics. Our tutors use digital interactive tools, colorful illustrations, and repetitive drills to ensure the student grasps each letter's articulation point (Makhraj).
+          </p>
+
+          <h3 class="font-bold text-slate-900 text-sm uppercase tracking-wider mb-3">Detailed Curriculum Modules:</h3>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs text-slate-700 mb-6">
+            <div class="bg-slate-50 p-3 rounded-xl border border-slate-100 flex items-start gap-2">
+              <i class="fa-solid fa-circle-check text-emerald-600 mt-0.5"></i>
+              <span><strong>Lesson 1-4:</strong> Individual Arabic Alphabets, Shapes & Joining Letters</span>
+            </div>
+            <div class="bg-slate-50 p-3 rounded-xl border border-slate-100 flex items-start gap-2">
+              <i class="fa-solid fa-circle-check text-emerald-600 mt-0.5"></i>
+              <span><strong>Lesson 5-8:</strong> Harakaat (Fatha, Kasra, Damma) & Tanween (Double Vowels)</span>
+            </div>
+            <div class="bg-slate-50 p-3 rounded-xl border border-slate-100 flex items-start gap-2">
+              <i class="fa-solid fa-circle-check text-emerald-600 mt-0.5"></i>
+              <span><strong>Lesson 9-12:</strong> Sukoon, Jazm, and Letters of Madd & Leen</span>
+            </div>
+            <div class="bg-slate-50 p-3 rounded-xl border border-slate-100 flex items-start gap-2">
+              <i class="fa-solid fa-circle-check text-emerald-600 mt-0.5"></i>
+              <span><strong>Lesson 13-17:</strong> Tashdeed (Shaddah), Nunation, and Final Fluency Drills</span>
+            </div>
+          </div>
+
+          <div class="flex flex-wrap items-center gap-3">
+            <button class="open-trial-modal px-6 py-2.5 bg-emerald-800 hover:bg-emerald-900 text-white rounded-xl text-xs font-bold transition shadow" data-course="Noorani Qaida for Beginners">
+              Book Free Trial for Noorani Qaida
+            </button>
+            <a href="https://api.whatsapp.com/send?phone=923001234567&text=Assalam-o-Alaikum!%20I%20want%20details%20about%20Noorani%20Qaida%20course." target="_blank" class="px-5 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-800 rounded-xl text-xs font-semibold transition">
+              Inquire on WhatsApp
+            </a>
+          </div>
+        </div>
+
+        <div class="lg:col-span-4 bg-emerald-50 rounded-2xl p-6 border border-emerald-100 text-center">
+          <div class="w-16 h-16 rounded-2xl bg-emerald-800 text-amber-300 flex items-center justify-center text-3xl mx-auto mb-4">
+            <i class="fa-solid fa-shapes"></i>
+          </div>
+          <h4 class="font-extrabold text-slate-900 text-lg mb-1">Target Audience</h4>
+          <p class="text-xs text-slate-600 mb-4">Children ages 4+, new Muslims (reverts), and adults who have never read Arabic before.</p>
+          <div class="text-xs text-emerald-900 bg-emerald-200/50 py-2 px-3 rounded-lg font-bold">
+            100% Guaranteed Reading Fluency
+          </div>
+        </div>
+      </div>
+
+      <!-- Course 2 -->
+      <div id="tajweed" class="bg-white rounded-3xl p-8 sm:p-10 border-2 border-amber-400/80 shadow-md grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+        <div class="lg:col-span-8">
+          <div class="flex items-center gap-3 mb-3">
+            <span class="px-3 py-1 rounded-full text-xs font-bold bg-amber-500 text-slate-950 uppercase tracking-wider">Flagship Course</span>
+            <span class="text-xs font-semibold text-slate-500"><i class="fa-solid fa-clock mr-1 text-emerald-600"></i> Duration: 6 to 12 Months</span>
+          </div>
+          <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 mb-3">2. Quran Reading with Tajweed Rules</h2>
+          <p class="text-slate-600 text-sm sm:text-base leading-relaxed mb-6">
+            Tajweed literally means "proficiency" and "beautification". Allah commanded in Surah Al-Muzzammil: <em>"And recite the Quran with measured recitation."</em> In this course, students learn to recite the Holy Quran with melodious tone, applying every rule of articulation and phonetic precision.
+          </p>
+
+          <h3 class="font-bold text-slate-900 text-sm uppercase tracking-wider mb-3">Core Learning Objectives:</h3>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs text-slate-700 mb-6">
+            <div class="bg-amber-50/50 p-3 rounded-xl border border-amber-100 flex items-start gap-2">
+              <i class="fa-solid fa-check text-amber-600 mt-0.5"></i>
+              <span>Rules of Noon Sakinah & Tanween (Izhar, Idgham, Iqlab, Ikhfa)</span>
+            </div>
+            <div class="bg-amber-50/50 p-3 rounded-xl border border-amber-100 flex items-start gap-2">
+              <i class="fa-solid fa-check text-amber-600 mt-0.5"></i>
+              <span>Rules of Meem Sakinah (Ikhfa Shafawi, Idgham Shafawi, Izhar Shafawi)</span>
+            </div>
+            <div class="bg-amber-50/50 p-3 rounded-xl border border-amber-100 flex items-start gap-2">
+              <i class="fa-solid fa-check text-amber-600 mt-0.5"></i>
+              <span>Qalqalah (Echoing sound), Heavy & Light Letters (Tafkheem & Tarqeeq)</span>
+            </div>
+            <div class="bg-amber-50/50 p-3 rounded-xl border border-amber-100 flex items-start gap-2">
+              <i class="fa-solid fa-check text-amber-600 mt-0.5"></i>
+              <span>Stopping Signs (Ahkam-e-Waqf) & Breath Control Management</span>
+            </div>
+          </div>
+
+          <div class="flex flex-wrap items-center gap-3">
+            <button class="open-trial-modal px-6 py-2.5 bg-amber-500 hover:bg-amber-600 text-slate-950 rounded-xl text-xs font-black transition shadow" data-course="Quran Reading with Tajweed">
+              Start Free Trial for Tajweed
+            </button>
+          </div>
+        </div>
+
+        <div class="lg:col-span-4 bg-amber-50/70 rounded-2xl p-6 border border-amber-200 text-center">
+          <div class="w-16 h-16 rounded-2xl bg-amber-500 text-slate-950 flex items-center justify-center text-3xl mx-auto mb-4">
+            <i class="fa-solid fa-book-open-reader"></i>
+          </div>
+          <h4 class="font-extrabold text-slate-900 text-lg mb-1">Ijaza Certified Mentors</h4>
+          <p class="text-xs text-slate-600 mb-4">Taught by reciters holding certified Asaneed (chains of transmission) back to the Holy Prophet ﷺ.</p>
+          <div class="text-xs text-amber-900 bg-amber-200 py-2 px-3 rounded-lg font-bold">
+            Includes Monthly Recitation Audio Tests
+          </div>
+        </div>
+      </div>
+
+      <!-- Course 3 -->
+      <div id="hifz" class="bg-white rounded-3xl p-8 sm:p-10 border border-slate-200 shadow-sm grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+        <div class="lg:col-span-8">
+          <div class="flex items-center gap-3 mb-3">
+            <span class="px-3 py-1 rounded-full text-xs font-bold bg-purple-100 text-purple-800">Noble Milestone</span>
+            <span class="text-xs font-semibold text-slate-500"><i class="fa-solid fa-clock mr-1 text-purple-600"></i> Full Hifz (2-3 Years) / Selected Surahs (3-6 Months)</span>
+          </div>
+          <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 mb-3">3. Quran Memorization Program (Hifz)</h2>
+          <p class="text-slate-600 text-sm sm:text-base leading-relaxed mb-6">
+            Memorizing the Holy Quran is one of the highest honors for any believer. The Prophet ﷺ said: <em>"The best among you are those who learn the Quran and teach it."</em> Halenoor Academy provides a structured, stress-free Hifz environment following the traditional Madrasa tri-part system.
+          </p>
+
+          <h3 class="font-bold text-slate-900 text-sm uppercase tracking-wider mb-3">The 3-Pillar Daily System:</h3>
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs text-slate-700 mb-6">
+            <div class="bg-purple-50 p-4 rounded-xl border border-purple-100 text-center">
+              <strong class="text-purple-900 block mb-1 text-sm">1. Sabaq (New Lesson)</strong>
+              <span>Daily new verses memorized and recited to the teacher with zero errors.</span>
+            </div>
+            <div class="bg-purple-50 p-4 rounded-xl border border-purple-100 text-center">
+              <strong class="text-purple-900 block mb-1 text-sm">2. Sabqi (Recent Work)</strong>
+              <span>Daily revision of the last 5-10 pages to lock recent memory into long-term storage.</span>
+            </div>
+            <div class="bg-purple-50 p-4 rounded-xl border border-purple-100 text-center">
+              <strong class="text-purple-900 block mb-1 text-sm">3. Manzil (Old Revision)</strong>
+              <span>Systematic daily revision of previously completed Juz so nothing is ever forgotten.</span>
+            </div>
+          </div>
+
+          <button class="open-trial-modal px-6 py-2.5 bg-purple-800 hover:bg-purple-900 text-white rounded-xl text-xs font-bold transition shadow" data-course="Quran Memorization (Hifz)">
+            Apply for Hifz Assessment Trial
+          </button>
+        </div>
+
+        <div class="lg:col-span-4 bg-purple-50 rounded-2xl p-6 border border-purple-100 text-center">
+          <div class="w-16 h-16 rounded-2xl bg-purple-800 text-white flex items-center justify-center text-3xl mx-auto mb-4">
+            <i class="fa-solid fa-crown"></i>
+          </div>
+          <h4 class="font-extrabold text-slate-900 text-lg mb-1">Huffaz Mentors</h4>
+          <p class="text-xs text-slate-600 mb-4">Guided exclusively by teachers who have memorized the full Quran and have at least 5 years of coaching experience.</p>
+          <div class="text-xs text-purple-900 bg-purple-200 py-2 px-3 rounded-lg font-bold">
+            Formal Sanad / Hifz Certificate
+          </div>
+        </div>
+      </div>
+
+      <!-- Course 4 -->
+      <div id="islamic-studies" class="bg-white rounded-3xl p-8 sm:p-10 border border-slate-200 shadow-sm grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+        <div class="lg:col-span-8">
+          <div class="flex items-center gap-3 mb-3">
+            <span class="px-3 py-1 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800">Essential Knowledge</span>
+            <span class="text-xs font-semibold text-slate-500"><i class="fa-solid fa-clock mr-1 text-emerald-600"></i> Integrated with Quran or Standalone</span>
+          </div>
+          <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 mb-3">4. Islamic Studies, Duas & Tarbiyah for Kids</h2>
+          <p class="text-slate-600 text-sm sm:text-base leading-relaxed mb-6">
+            Ensure your children grow up proud of their Islamic identity with sound knowledge of daily worship, moral ethics, and the prophetic life. This course can be taken alongside Quran reading or as an independent subject.
+          </p>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs text-slate-700 mb-6">
+            <div class="bg-slate-50 p-3 rounded-xl border border-slate-100 flex items-start gap-2">
+              <i class="fa-solid fa-circle-check text-emerald-600 mt-0.5"></i>
+              <span><strong>6 Kalimas:</strong> Memorization with Urdu & English translations</span>
+            </div>
+            <div class="bg-slate-50 p-3 rounded-xl border border-slate-100 flex items-start gap-2">
+              <i class="fa-solid fa-circle-check text-emerald-600 mt-0.5"></i>
+              <span><strong>Salah / Namaz Step-by-Step:</strong> Wudu, postures, Duas, and meaning</span>
+            </div>
+            <div class="bg-slate-50 p-3 rounded-xl border border-slate-100 flex items-start gap-2">
+              <i class="fa-solid fa-circle-check text-emerald-600 mt-0.5"></i>
+              <span><strong>40 Masnoon Duas:</strong> Eating, sleeping, entering mosque, travelling, etc.</span>
+            </div>
+            <div class="bg-slate-50 p-3 rounded-xl border border-slate-100 flex items-start gap-2">
+              <i class="fa-solid fa-circle-check text-emerald-600 mt-0.5"></i>
+              <span><strong>Seerat-un-Nabi ﷺ:</strong> Inspiring stories of Prophets and Companions</span>
+            </div>
+          </div>
+
+          <button class="open-trial-modal px-6 py-2.5 bg-emerald-800 hover:bg-emerald-900 text-white rounded-xl text-xs font-bold transition shadow" data-course="Islamic Studies for Kids">
+            Book Islamic Studies Trial
+          </button>
+        </div>
+
+        <div class="lg:col-span-4 bg-emerald-50 rounded-2xl p-6 border border-emerald-100 text-center">
+          <div class="w-16 h-16 rounded-2xl bg-emerald-700 text-amber-300 flex items-center justify-center text-3xl mx-auto mb-4">
+            <i class="fa-solid fa-child-reaching"></i>
+          </div>
+          <h4 class="font-extrabold text-slate-900 text-lg mb-1">Age-Appropriate Tarbiyah</h4>
+          <p class="text-xs text-slate-600 mb-4">Engaging stories, quizzes, and moral discussions tailored for children raised in Western environments.</p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="py-16 bg-emerald-950 text-white text-center">
+    <div class="max-w-4xl mx-auto px-4">
+      <h2 class="text-3xl font-extrabold mb-4">Not Sure Which Course is Right for You?</h2>
+      <p class="text-emerald-200 text-sm mb-6">Our academic supervisors will assess your current level for free during your 3-day trial.</p>
+      <button class="open-trial-modal px-8 py-3.5 bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold text-sm rounded-xl transition shadow">
+        Book Free Diagnostic Assessment
+      </button>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="bg-emerald-950 text-slate-400 py-8 border-t border-emerald-900 text-center text-xs">
+    <p>&copy; 2026 Halenoor Quran Academy. All Rights Reserved. | <a href="index.html" class="text-amber-400">Back to Home</a></p>
+  </footer>
+
+  <!-- FLOATING WHATSAPP -->
+  <a href="https://api.whatsapp.com/send?phone=923001234567" target="_blank" class="whatsapp-floating">
+    <div class="whatsapp-pulse"></div>
+    <i class="fa-brands fa-whatsapp text-3xl"></i>
+  </a>
+
+  <!-- MODAL -->
+  <div id="trialModal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 modal-overlay overflow-y-auto">
+    <div class="bg-white rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl border-2 border-amber-400 relative">
+      <button class="close-trial-modal absolute top-5 right-5 text-slate-400 hover:text-slate-700 text-xl"><i class="fa-solid fa-xmark"></i></button>
+      <h3 class="text-2xl font-black text-slate-900 mb-1">Book 3-Day Free Trial</h3>
+      <p class="text-slate-500 text-xs mb-5">Zero commitment. Experience our teaching quality firsthand.</p>
+      <form class="trial-form-submit space-y-4">
+        <div>
+          <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Full Name *</label>
+          <input type="text" name="studentName" required class="w-full px-3 py-2 rounded-xl border border-slate-200 text-sm focus:ring-2 focus:ring-emerald-600">
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-bold text-slate-700 uppercase mb-1">WhatsApp / Phone *</label>
+            <input type="tel" name="phone" required class="w-full px-3 py-2 rounded-xl border border-slate-200 text-sm focus:ring-2 focus:ring-emerald-600">
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Country *</label>
+            <input type="text" name="country" required class="w-full px-3 py-2 rounded-xl border border-slate-200 text-sm focus:ring-2 focus:ring-emerald-600">
+          </div>
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Selected Course</label>
+          <input type="text" id="modalCourseSelect" name="course" class="w-full px-3 py-2 rounded-xl border border-slate-200 text-sm bg-slate-50">
+        </div>
+        <button type="submit" class="w-full py-3 bg-emerald-800 hover:bg-emerald-900 text-white font-bold rounded-xl text-sm transition">
+          Confirm Free Trial
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <script src="js/main.js"></script>
+</body>
+</html>

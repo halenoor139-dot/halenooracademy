@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 100" width="100%" height="100%">
+  <defs>
+    <linearGradient id="goldGradW" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FEF08A" />
+      <stop offset="50%" stop-color="#F59E0B" />
+      <stop offset="100%" stop-color="#D97706" />
+    </linearGradient>
+    <filter id="glowW" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="3" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+  </defs>
+
+  <!-- Emblem Group -->
+  <g transform="translate(10, 8)">
+    <!-- Outer Glow Circle -->
+    <circle cx="42" cy="42" r="38" fill="#064E3B" stroke="url(#goldGradW)" stroke-width="2.5" />
+    <circle cx="42" cy="42" r="34" fill="none" stroke="rgba(254, 240, 138, 0.4)" stroke-width="1" stroke-dasharray="3,3" />
+
+    <!-- Crescent Moon -->
+    <path d="M 42 16 A 26 26 0 1 0 64 56 A 21 21 0 1 1 42 16 Z" fill="url(#goldGradW)" opacity="0.95" />
+
+    <!-- Mini Star / Light -->
+    <polygon points="56,22 58,28 64,28 59,32 61,38 56,34 51,38 53,32 48,28 54,28" fill="#FFF" filter="url(#glowW)" transform="scale(0.7) translate(22, 0)" />
+
+    <!-- Stylized Open Quran Book -->
+    <g transform="translate(26, 42)">
+      <!-- Left Page -->
+      <path d="M 16 18 C 10 14, 2 15, 0 17 L 0 5 C 3 4, 10 3, 16 7 Z" fill="#FFFFFF" />
+      <path d="M 15 17 C 10 14, 3 15, 1 16 L 1 6 C 4 5, 10 4, 15 8 Z" fill="#F0FDF4" />
+      <line x1="3" y1="8" x2="13" y2="10" stroke="#047857" stroke-width="0.8" opacity="0.7" />
+      <line x1="3" y1="11" x2="13" y2="13" stroke="#047857" stroke-width="0.8" opacity="0.7" />
+      <line x1="3" y1="14" x2="11" y2="15.5" stroke="#047857" stroke-width="0.8" opacity="0.7" />
+
+      <!-- Right Page -->
+      <path d="M 16 18 C 22 14, 30 15, 32 17 L 32 5 C 29 4, 22 3, 16 7 Z" fill="#FFFFFF" />
+      <path d="M 17 17 C 22 14, 29 15, 31 16 L 31 6 C 28 5, 22 4, 17 8 Z" fill="#F0FDF4" />
+      <line x1="19" y1="10" x2="29" y2="8" stroke="#047857" stroke-width="0.8" opacity="0.7" />
+      <line x1="19" y1="13" x2="29" y2="11" stroke="#047857" stroke-width="0.8" opacity="0.7" />
+      <line x1="21" y1="15.5" x2="29" y2="14" stroke="#047857" stroke-width="0.8" opacity="0.7" />
+
+      <!-- Spine -->
+      <path d="M 16 7 L 16 23" stroke="url(#goldGradW)" stroke-width="1.8" stroke-linecap="round" />
+      <path d="M 16 20 Q 18 24 16 27 Q 14 24 16 20" fill="url(#goldGradW)" />
+    </g>
+
+    <!-- Light Rays -->
+    <path d="M 42 22 L 42 26" stroke="#FEF08A" stroke-width="1.5" stroke-linecap="round" opacity="0.8" />
+    <path d="M 32 26 L 35 29" stroke="#FEF08A" stroke-width="1.5" stroke-linecap="round" opacity="0.8" />
+    <path d="M 28 36 L 32 37" stroke="#FEF08A" stroke-width="1.5" stroke-linecap="round" opacity="0.8" />
+  </g>
+
+  <!-- Typography Group -->
+  <g transform="translate(100, 26)">
+    <text x="0" y="26" font-family="'Plus Jakarta Sans', 'Cinzel', 'Outfit', sans-serif" font-size="28" font-weight="900" fill="#FFFFFF" letter-spacing="1">
+      HALE<tspan fill="#FBBF24">NOOR</tspan>
+    </text>
+    <text x="1" y="46" font-family="'Plus Jakarta Sans', 'Inter', sans-serif" font-size="12" font-weight="700" fill="#A7F3D0" letter-spacing="4.5">
+      QURAN ACADEMY
+    </text>
+    <text x="1" y="61" font-family="'Amiri', 'Traditional Arabic', serif" font-size="13" font-weight="600" fill="#FDE68A" opacity="0.95">
+      أكاديمية هالة نور للقرآن الكريم
+    </text>
+  </g>
+</svg>

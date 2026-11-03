@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admissions Desk & Lead Manager | Halenoor Quran Academy</title>
+  <link rel="icon" type="image/svg+xml" href="images/logo.svg">
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            emerald: { 850: '#044e39', 900: '#064e3b', 950: '#022c22' },
+            amber: { 450: '#f59e0b', 550: '#d97706' }
+          },
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="bg-[#f1f5f9] text-slate-800 antialiased min-h-screen flex flex-col">
+
+  <!-- TOP ADMIN BAR -->
+  <header class="bg-emerald-950 text-white shadow-md">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <a href="index.html">
+          <img src="images/logo-white.svg" alt="Halenoor Quran Academy" class="h-10 w-auto">
+        </a>
+        <div class="hidden sm:block border-l border-emerald-800 pl-3">
+          <span class="text-xs uppercase font-extrabold tracking-wider text-amber-400">Admissions Coordinator Desk</span>
+          <p class="text-[11px] text-emerald-300">Live Student Trial & Inquiry Manager</p>
+        </div>
+      </div>
+      <div class="flex items-center gap-3">
+        <a href="index.html" class="text-xs bg-emerald-900 hover:bg-emerald-800 text-emerald-200 px-3.5 py-2 rounded-xl transition flex items-center gap-1.5">
+          <i class="fa-solid fa-arrow-left"></i> View Live Site
+        </a>
+        <button id="exportCsvBtn" class="text-xs bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold px-4 py-2 rounded-xl transition shadow flex items-center gap-1.5">
+          <i class="fa-solid fa-file-excel"></i> Export CSV
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN ADMIN CONTAINER -->
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-grow w-full">
+    
+    <!-- STATS CARDS -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+      <div class="bg-white rounded-2xl p-5 border border-slate-200 shadow-sm flex items-center justify-between">
+        <div>
+          <span class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Total Inquiries</span>
+          <h3 id="statTotal" class="text-2xl font-black text-slate-900 mt-1">0</h3>
+        </div>
+        <div class="w-12 h-12 rounded-xl bg-emerald-50 text-emerald-700 flex items-center justify-center text-xl">
+          <i class="fa-solid fa-users"></i>
+        </div>
+      </div>
+
+      <div class="bg-white rounded-2xl p-5 border border-slate-200 shadow-sm flex items-center justify-between">
+        <div>
+          <span class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Pending Follow-up</span>
+          <h3 id="statPending" class="text-2xl font-black text-amber-600 mt-1">0</h3>
+        </div>
+        <div class="w-12 h-12 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center text-xl">
+          <i class="fa-solid fa-clock"></i>
+        </div>
+      </div>
+
+      <div class="bg-white rounded-2xl p-5 border border-slate-200 shadow-sm flex items-center justify-between">
+        <div>
+          <span class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Trial Scheduled</span>
+          <h3 id="statScheduled" class="text-2xl font-black text-blue-600 mt-1">0</h3>
+        </div>
+        <div class="w-12 h-12 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center text-xl">
+          <i class="fa-solid fa-calendar-check"></i>
+        </div>
+      </div>
+
+      <div class="bg-white rounded-2xl p-5 border border-slate-200 shadow-sm flex items-center justify-between">
+        <div>
+          <span class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Active Enrolled</span>
+          <h3 id="statEnrolled" class="text-2xl font-black text-emerald-700 mt-1">0</h3>
+        </div>
+        <div class="w-12 h-12 rounded-xl bg-emerald-100 text-emerald-800 flex items-center justify-center text-xl">
+          <i class="fa-solid fa-graduation-cap"></i>
+        </div>
+      </div>
+    </div>
+
+    <!-- CONTROLS & SEARCH BAR -->
+    <div class="bg-white rounded-2xl p-4 sm:p-5 border border-slate-200 shadow-sm mb-6 flex flex-col md:flex-row items-center justify-between gap-4">
+      <div class="relative w-full md:w-80">
+        <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
+        <input type="text" id="searchInput" placeholder="Search by student, guardian or phone..." class="w-full pl-9 pr-4 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:outline-none focus:border-emerald-600 transition">
+      </div>
+
+      <div class="flex items-center gap-3 w-full md:w-auto flex-wrap">
+        <select id="courseFilter" class="bg-slate-50 border border-slate-200 text-slate-700 text-xs font-semibold rounded-xl px-3 py-2 focus:outline-none">
+          <option value="all">All Courses</option>
+          <option value="Noorani Qaida">Noorani Qaida</option>
+          <option value="Tajweed">Quran with Tajweed</option>
+          <option value="Hifz">Quran Memorization (Hifz)</option>
+          <option value="Tafseer">Tafseer & Translation</option>
+          <option value="Islamic Studies">Islamic Studies for Kids</option>
+          <option value="Sisters">Sisters Special Program</option>
+        </select>
+
+        <button id="loadSampleBtn" class="text-xs bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold px-3 py-2 rounded-xl transition">
+          <i class="fa-solid fa-database mr-1 text-slate-500"></i> Load Demo Leads
+        </button>
+
+        <button id="clearLeadsBtn" class="text-xs bg-red-50 hover:bg-red-100 text-red-600 font-semibold px-3 py-2 rounded-xl transition">
+          <i class="fa-solid fa-trash mr-1"></i> Clear
+        </button>
+      </div>
+    </div>
+
+    <!-- LEADS TABLE -->
+    <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+      <div class="overflow-x-auto">
+        <table class="w-full text-left border-collapse text-xs">
+          <thead>
+            <tr class="bg-slate-50 border-b border-slate-200 text-slate-500 font-bold uppercase tracking-wider">
+              <th class="py-3 px-4">Date</th>
+              <th class="py-3 px-4">Student & Guardian</th>
+              <th class="py-3 px-4">Course</th>
+              <th class="py-3 px-4">Tutor Pref.</th>
+              <th class="py-3 px-4">Location / Timing</th>
+              <th class="py-3 px-4">Contact</th>
+              <th class="py-3 px-4">Status</th>
+              <th class="py-3 px-4 text-center">Actions</th>
+            </tr>
+          </thead>
+          <tbody id="leadsTableBody" class="divide-y divide-slate-100 text-slate-700">
+            <!-- Populated via JS -->
+          </tbody>
+        </table>
+      </div>
+
+      <!-- EMPTY STATE -->
+      <div id="emptyState" class="hidden py-16 text-center">
+        <div class="w-16 h-16 rounded-full bg-slate-100 text-slate-400 flex items-center justify-center mx-auto mb-3 text-2xl">
+          <i class="fa-regular fa-folder-open"></i>
+        </div>
+        <h4 class="font-bold text-slate-800 text-base mb-1">No Leads Found</h4>
+        <p class="text-slate-500 text-xs mb-4">When a student registers on the website, their trial inquiry will show here.</p>
+        <button onclick="document.getElementById('loadSampleBtn').click()" class="text-xs px-4 py-2 bg-emerald-800 hover:bg-emerald-900 text-white font-bold rounded-xl transition">
+          Insert Sample Leads
+        </button>
+      </div>
+    </div>
+
+  </main>
+
+  <footer class="bg-white border-t border-slate-200 py-4 text-center text-xs text-slate-500 mt-auto">
+    Halenoor Quran Academy &copy; 2026 • Local Data Storage Protected
+  </footer>
+
+  <script>
+    // Sample Initial Leads if none exist
+    const SAMPLE_LEADS = [
+      {
+        date: "2026-11-03T14:30:00.000Z",
+        studentName: "Muhammad Ibrahim",
+        guardianName: "Tariq Mahmood",
+        phone: "+44 7911 123456",
+        email: "tariq.uk@example.com",
+        country: "United Kingdom",
+        course: "Quran Reading with Tajweed",
+        tutorType: "Male Hafiz / Scholar",
+        timing: "Evenings (6:00 PM - 9:00 PM)",
+        notes: "Wants 3 days a week class, 8 years old child.",
+        status: "New"
+      },
+      {
+        date: "2026-11-03T16:15:00.000Z",
+        studentName: "Ayesha Fatima",
+        guardianName: "Dr. Asma Khan",
+        phone: "+1 416 555 0192",
+        email: "asma.k@example.com",
+        country: "Canada",
+        course: "Noorani Qaida for Beginners",
+        tutorType: "Female Quran Teacher (Alimah)",
+        timing: "Weekends (Morning)",
+        notes: "Complete beginner, 5 years old girl.",
+        status: "Contacted"
+      },
+      {
+        date: "2026-11-02T19:45:00.000Z",
+        studentName: "Zaid Omar",
+        guardianName: "Omar Siddiqui",
+        phone: "+1 214 555 7890",
+        email: "osiddiqui@example.com",
+        country: "USA (Texas)",
+        course: "Quran Memorization Program (Hifz)",
+        tutorType: "Male Hafiz / Scholar",
+        timing: "Afternoons (3:00 PM - 6:00 PM)",
+        notes: "Already memorized Juz 30, needs daily Hifz tracking.",
+        status: "Trial Scheduled"
+      }
+    ];
+
+    function getStoredLeads() {
+      try {
+        const raw = localStorage.getItem("halenoor_leads");
+        if (!raw) return [];
+        return JSON.parse(raw);
+      } catch (e) {
+        return [];
+      }
+    }
+
+    function saveLeads(leads) {
+      localStorage.setItem("halenoor_leads", JSON.stringify(leads));
+      renderTable();
+    }
+
+    function renderTable() {
+      let leads = getStoredLeads();
+      const searchQuery = document.getElementById("searchInput").value.toLowerCase().trim();
+      const courseFilter = document.getElementById("courseFilter").value;
+
+      // Update counters
+      document.getElementById("statTotal").textContent = leads.length;
+      document.getElementById("statPending").textContent = leads.filter(l => (l.status || "New") === "New").length;
+      document.getElementById("statScheduled").textContent = leads.filter(l => l.status === "Trial Scheduled").length;
+      document.getElementById("statEnrolled").textContent = leads.filter(l => l.status === "Enrolled").length;
+
+      // Filter
+      if (searchQuery) {
+        leads = leads.filter(l => 
+          (l.studentName || "").toLowerCase().includes(searchQuery) ||
+          (l.guardianName || "").toLowerCase().includes(searchQuery) ||
+          (l.phone || "").toLowerCase().includes(searchQuery) ||
+          (l.country || "").toLowerCase().includes(searchQuery)
+        );
+      }
+
+      if (courseFilter !== "all") {
+        leads = leads.filter(l => (l.course || "").toLowerCase().includes(courseFilter.toLowerCase()));
+      }
+
+      const tbody = document.getElementById("leadsTableBody");
+      const emptyState = document.getElementById("emptyState");
+
+      if (leads.length === 0) {
+        tbody.innerHTML = "";
+        emptyState.classList.remove("hidden");
+        return;
+      }
+
+      emptyState.classList.add("hidden");
+
+      tbody.innerHTML = leads.map((l, index) => {
+        const status = l.status || "New";
+        const dateStr = l.date ? new Date(l.date).toLocaleDateString("en-US", { month: "short", day: "numeric", hour: "2-digit", minute: "2-digit" }) : "Recent";
+        
+        // Clean phone for wa.me
+        const cleanPhone = (l.phone || "").replace(/[^0-9]/g, "");
+        const waMsg = encodeURIComponent(`Assalam-o-Alaikum ${l.guardianName || l.studentName}! We received your Free Trial request for ${l.course} at Halenoor Quran Academy. When would be the best time to start your child's 3-day trial?`);
+        const waLink = cleanPhone ? `https://api.whatsapp.com/send?phone=${cleanPhone}&text=${waMsg}` : `https://api.whatsapp.com/send?text=${waMsg}`;
+
+        return `
+          <tr class="hover:bg-slate-50/80 transition">
+            <td class="py-3 px-4 font-mono text-[11px] text-slate-500 whitespace-nowrap">${dateStr}</td>
+            <td class="py-3 px-4">
+              <div class="font-bold text-slate-900">${l.studentName}</div>
+              ${l.guardianName ? `<div class="text-[11px] text-slate-500">Parent: ${l.guardianName}</div>` : ""}
+            </td>
+            <td class="py-3 px-4">
+              <span class="inline-block px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-emerald-50 text-emerald-800 border border-emerald-200">
+                ${l.course || "Quran Tajweed"}
+              </span>
+            </td>
+            <td class="py-3 px-4 text-slate-600 text-[11px]">${l.tutorType || "Any Tutor"}</td>
+            <td class="py-3 px-4">
+              <div class="font-medium text-slate-800">${l.country || "International"}</div>
+              <div class="text-[11px] text-slate-500">${l.timing || "Flexible"}</div>
+            </td>
+            <td class="py-3 px-4">
+              <div class="font-mono text-slate-800 font-semibold">${l.phone || "N/A"}</div>
+              ${l.email ? `<div class="text-[11px] text-slate-500">${l.email}</div>` : ""}
+            </td>
+            <td class="py-3 px-4">
+              <select onchange="updateStatus(${index}, this.value)" class="bg-white border border-slate-200 rounded-lg px-2 py-1 text-[11px] font-semibold focus:outline-none">
+                <option value="New" ${status === "New" ? "selected" : ""}>🟡 New</option>
+                <option value="Contacted" ${status === "Contacted" ? "selected" : ""}>🔵 Contacted</option>
+                <option value="Trial Scheduled" ${status === "Trial Scheduled" ? "selected" : ""}>🟣 Trial Scheduled</option>
+                <option value="Enrolled" ${status === "Enrolled" ? "selected" : ""}>🟢 Enrolled</option>
+              </select>
+            </td>
+            <td class="py-3 px-4 text-center">
+              <div class="flex items-center justify-center gap-1.5">
+                <a href="${waLink}" target="_blank" title="Chat on WhatsApp" class="w-7 h-7 rounded-lg bg-emerald-100 hover:bg-emerald-200 text-emerald-800 flex items-center justify-center transition">
+                  <i class="fa-brands fa-whatsapp text-sm"></i>
+                </a>
+                <button onclick="deleteLead(${index})" title="Delete Lead" class="w-7 h-7 rounded-lg bg-slate-100 hover:bg-red-100 text-slate-500 hover:text-red-600 flex items-center justify-center transition">
+                  <i class="fa-regular fa-trash-can text-xs"></i>
+                </button>
+              </div>
+            </td>
+          </tr>
+        `;
+      }).join("");
+    }
+
+    window.updateStatus = function(index, newStatus) {
+      const leads = getStoredLeads();
+      if (leads[index]) {
+        leads[index].status = newStatus;
+        saveLeads(leads);
+      }
+    };
+
+    window.deleteLead = function(index) {
+      if (confirm("Are you sure you want to delete this inquiry?")) {
+        const leads = getStoredLeads();
+        leads.splice(index, 1);
+        saveLeads(leads);
+      }
+    };
+
+    // Load sample leads
+    document.getElementById("loadSampleBtn").addEventListener("click", () => {
+      const existing = getStoredLeads();
+      const combined = [...SAMPLE_LEADS, ...existing];
+      saveLeads(combined);
+    });
+
+    // Clear all
+    document.getElementById("clearLeadsBtn").addEventListener("click", () => {
+      if (confirm("Clear all trial inquiry records?")) {
+        localStorage.removeItem("halenoor_leads");
+        renderTable();
+      }
+    });
+
+    // Search and filters
+    document.getElementById("searchInput").addEventListener("input", renderTable);
+    document.getElementById("courseFilter").addEventListener("change", renderTable);
+
+    // Export CSV
+    document.getElementById("exportCsvBtn").addEventListener("click", () => {
+      const leads = getStoredLeads();
+      if (!leads.length) {
+        alert("No leads to export!");
+        return;
+      }
+
+      const headers = ["Date", "Student Name", "Parent Name", "Phone", "Email", "Country", "Course", "Tutor Preference", "Preferred Time", "Status", "Notes"];
+      const rows = leads.map(l => [
+        `"${l.date || ''}"`,
+        `"${l.studentName || ''}"`,
+        `"${l.guardianName || ''}"`,
+        `"${l.phone || ''}"`,
+        `"${l.email || ''}"`,
+        `"${l.country || ''}"`,
+        `"${l.course || ''}"`,
+        `"${l.tutorType || ''}"`,
+        `"${l.timing || ''}"`,
+        `"${l.status || 'New'}"`,
+        `"${(l.notes || '').replace(/"/g, '""')}"`
+      ]);
+
+      const csvContent = [headers.join(","), ...rows.map(e => e.join(","))].join("\n");
+      const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.setAttribute("href", url);
+      link.setAttribute("download", `Halenoor_Quran_Academy_Leads_${new Date().toISOString().slice(0, 10)}.csv`);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    });
+
+    // Auto load sample leads if completely empty on first visit
+    if (getStoredLeads().length === 0) {
+      saveLeads(SAMPLE_LEADS);
+    } else {
+      renderTable();
+    }
+  </script>
+</body>
+</html>

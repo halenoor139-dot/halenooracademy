@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" viewBox="0 0 80 80">
+  <defs>
+    <pattern id="islamicGrid" width="80" height="80" patternUnits="userSpaceOnUse">
+      <!-- 8-point geometric star pattern -->
+      <path d="M 40 0 L 52 28 L 80 40 L 52 52 L 40 80 L 28 52 L 0 40 L 28 28 Z" fill="none" stroke="rgba(217, 119, 6, 0.12)" stroke-width="1.2" />
+      <circle cx="40" cy="40" r="16" fill="none" stroke="rgba(4, 120, 87, 0.1)" stroke-width="1" />
+      <circle cx="40" cy="40" r="6" fill="none" stroke="rgba(217, 119, 6, 0.15)" stroke-width="1" />
+      
+      <!-- Corner quarter stars -->
+      <path d="M 0 0 L 12 0 L 0 12 Z" fill="none" stroke="rgba(217, 119, 6, 0.08)" />
+      <path d="M 80 0 L 68 0 L 80 12 Z" fill="none" stroke="rgba(217, 119, 6, 0.08)" />
+      <path d="M 0 80 L 12 80 L 0 68 Z" fill="none" stroke="rgba(217, 119, 6, 0.08)" />
+      <path d="M 80 80 L 68 80 L 80 68 Z" fill="none" stroke="rgba(217, 119, 6, 0.08)" />
+
+      <!-- Connecting diagonal lines -->
+      <line x1="0" y1="0" x2="28" y2="28" stroke="rgba(4, 120, 87, 0.07)" stroke-width="0.8" />
+      <line x1="80" y1="0" x2="52" y2="28" stroke="rgba(4, 120, 87, 0.07)" stroke-width="0.8" />
+      <line x1="0" y1="80" x2="28" y2="52" stroke="rgba(4, 120, 87, 0.07)" stroke-width="0.8" />
+      <line x1="80" y1="80" x2="52" y2="52" stroke="rgba(4, 120, 87, 0.07)" stroke-width="0.8" />
+    </pattern>
+  </defs>
+  <rect width="80" height="80" fill="url(#islamicGrid)" />
+</svg>

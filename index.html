@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -6,7 +6,9 @@
   <title>Halenoor Quran Academy | Learn Quran Online with Tajweed</title>
   <meta name="description" content="Halenoor Quran Academy - Premier online Quran academy offering 1-on-1 live classes for kids and adults worldwide. Certified male and female Quran tutors. Book 3 days free trial!">
   <meta name="keywords" content="Halenoor Quran Academy, online quran classes, learn quran with tajweed, female quran tutor, noorani qaida, hifz quran online, quran academy pakistan uk usa">
+  <link rel="icon" type="image/png" href="images/favicon.png">
   <link rel="icon" type="image/svg+xml" href="images/logo.svg">
+  <link rel="apple-touch-icon" href="images/favicon.png">
 
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -39,6 +41,8 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <!-- Canvas Confetti -->
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+  <!-- Translations Dictionary -->
+  <script src="js/translations.js"></script>
   <!-- Custom CSS -->
   <link rel="stylesheet" href="css/style.css">
 </head>
@@ -47,21 +51,23 @@
   <!-- ================= TOP ANNOUNCEMENT BAR ================= -->
   <div class="bg-gradient-to-r from-emerald-950 via-emerald-900 to-emerald-950 text-white text-xs py-2.5 px-4 border-b border-amber-500/30">
     <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-2">
-      <div class="flex items-center gap-2 text-center md:text-left">
-        <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-500 text-emerald-950 uppercase tracking-wide">
+      <div class="flex items-center gap-2 text-center md:text-left flex-wrap justify-center">
+        <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-500 text-emerald-950 uppercase tracking-wide" data-i18n="top_limited_offer">
           Limited Offer
         </span>
-        <span class="text-amber-200 font-medium">
+        <span class="text-amber-200 font-medium" data-i18n="top_announcement">
           🌟 Book Your 3-Day Free Trial Classes! Male & Female Tutors Available 24/7 Worldwide.
         </span>
       </div>
-      <div class="flex items-center gap-4 text-xs">
+      <div class="flex items-center gap-3 text-xs">
+        <!-- Language Switcher in Top Bar -->
+        <div class="lang-toggle-wrap">
+          <button type="button" class="lang-toggle-btn active" data-lang="en">English</button>
+          <button type="button" class="lang-toggle-btn font-urdu" data-lang="ur">اردو</button>
+        </div>
+        <span class="text-emerald-700 hidden sm:inline">|</span>
         <a href="https://api.whatsapp.com/send?phone=923208040672" target="_blank" class="hover:text-amber-400 transition flex items-center gap-1.5">
           <i class="fa-brands fa-whatsapp text-emerald-400 text-sm"></i> +92 320 8040672
-        </a>
-        <span class="text-emerald-700">|</span>
-        <a href="mailto:admissions@halenoor.com" class="hover:text-amber-400 transition hidden sm:flex items-center gap-1.5">
-          <i class="fa-regular fa-envelope text-amber-400"></i> admissions@halenoor.com
         </a>
       </div>
     </div>
@@ -78,29 +84,38 @@
 
         <!-- Desktop Navigation Links -->
         <nav class="hidden lg:flex items-center space-x-7 font-medium text-sm text-slate-700">
-          <a href="index.html" class="text-emerald-800 font-bold border-b-2 border-emerald-700 pb-1">Home</a>
-          <a href="about.html" class="hover:text-emerald-700 hover:border-b-2 hover:border-amber-500 pb-1 transition">About Us</a>
-          <a href="courses.html" class="hover:text-emerald-700 hover:border-b-2 hover:border-amber-500 pb-1 transition">Courses</a>
-          <a href="pricing.html" class="hover:text-emerald-700 hover:border-b-2 hover:border-amber-500 pb-1 transition">Fee Structure</a>
-          <a href="#why-us" class="hover:text-emerald-700 hover:border-b-2 hover:border-amber-500 pb-1 transition">Why Choose Us</a>
-          <a href="#testimonials" class="hover:text-emerald-700 hover:border-b-2 hover:border-amber-500 pb-1 transition">Reviews</a>
-          <a href="contact.html" class="hover:text-emerald-700 hover:border-b-2 hover:border-amber-500 pb-1 transition">Contact</a>
+          <a href="index.html" class="text-emerald-800 font-bold border-b-2 border-emerald-700 pb-1" data-i18n="nav_home">Home</a>
+          <a href="about.html" class="hover:text-emerald-700 hover:border-b-2 hover:border-amber-500 pb-1 transition" data-i18n="nav_about">About Us</a>
+          <a href="courses.html" class="hover:text-emerald-700 hover:border-b-2 hover:border-amber-500 pb-1 transition" data-i18n="nav_courses">Courses</a>
+          <a href="pricing.html" class="hover:text-emerald-700 hover:border-b-2 hover:border-amber-500 pb-1 transition" data-i18n="nav_pricing">Fee Structure</a>
+          <a href="#why-us" class="hover:text-emerald-700 hover:border-b-2 hover:border-amber-500 pb-1 transition" data-i18n="nav_why_us">Why Choose Us</a>
+          <a href="#testimonials" class="hover:text-emerald-700 hover:border-b-2 hover:border-amber-500 pb-1 transition" data-i18n="nav_reviews">Reviews</a>
+          <a href="contact.html" class="hover:text-emerald-700 hover:border-b-2 hover:border-amber-500 pb-1 transition" data-i18n="nav_contact">Contact</a>
         </nav>
 
         <!-- Right Action Buttons -->
         <div class="hidden sm:flex items-center gap-3">
+          <!-- Desktop Navbar Language Toggle -->
+          <div class="lang-toggle-wrap">
+            <button type="button" class="lang-toggle-btn active" data-lang="en">EN</button>
+            <button type="button" class="lang-toggle-btn font-urdu" data-lang="ur">اردو</button>
+          </div>
           <a href="https://api.whatsapp.com/send?phone=923208040672&text=Assalam-o-Alaikum!%20I%20want%20to%20inquire%20about%20Quran%20classes%20at%20Halenoor%20Quran%20Academy." target="_blank" class="px-4 py-2.5 rounded-full border border-emerald-600 text-emerald-800 hover:bg-emerald-50 text-xs font-bold transition flex items-center gap-2">
             <i class="fa-brands fa-whatsapp text-emerald-600 text-base"></i>
-            <span>WhatsApp Us</span>
+            <span data-i18n="nav_whatsapp">WhatsApp Us</span>
           </a>
           <button class="open-trial-modal btn-shimmer bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-slate-950 font-extrabold text-xs px-5 py-2.5 rounded-full shadow-md shadow-amber-500/20 transition flex items-center gap-2">
             <i class="fa-solid fa-graduation-cap"></i>
-            <span>Book Free Trial</span>
+            <span data-i18n="nav_book_trial">Book Free Trial</span>
           </button>
         </div>
 
         <!-- Mobile Menu Hamburger Button -->
-        <div class="flex items-center lg:hidden">
+        <div class="flex items-center lg:hidden gap-2">
+          <div class="lang-toggle-wrap sm:hidden">
+            <button type="button" class="lang-toggle-btn active" data-lang="en">EN</button>
+            <button type="button" class="lang-toggle-btn font-urdu" data-lang="ur">اردو</button>
+          </div>
           <button id="mobileMenuBtn" type="button" class="text-slate-700 hover:text-emerald-800 p-2 focus:outline-none" aria-label="Toggle Navigation">
             <i class="fa-solid fa-bars text-2xl"></i>
           </button>
@@ -111,7 +126,7 @@
 
   <!-- ================= MOBILE NAVIGATION DRAWER ================= -->
   <div id="mobileNavDrawer" class="hidden fixed inset-0 z-50 bg-emerald-950/90 backdrop-blur-lg text-white">
-    <div class="flex flex-col h-full p-6">
+    <div class="flex flex-col h-full p-6 overflow-y-auto">
       <div class="flex items-center justify-between pb-6 border-b border-emerald-800">
         <img src="images/logo-white.svg" alt="Halenoor Quran Academy" class="h-12 w-auto">
         <button id="mobileMenuClose" class="text-amber-400 text-2xl p-2 focus:outline-none">
@@ -119,22 +134,31 @@
         </button>
       </div>
 
-      <nav class="flex flex-col space-y-4 my-8 text-lg font-semibold">
-        <a href="index.html" class="text-amber-400 py-2">Home</a>
-        <a href="about.html" class="hover:text-amber-300 py-2">About Us</a>
-        <a href="courses.html" class="hover:text-amber-300 py-2">All Courses</a>
-        <a href="pricing.html" class="hover:text-amber-300 py-2">Fee Structure & Pricing</a>
-        <a href="contact.html" class="hover:text-amber-300 py-2">Contact Academy</a>
-        <a href="trial.html" class="hover:text-amber-300 py-2">Free Trial Registration</a>
+      <!-- Language Selector inside Mobile Menu -->
+      <div class="flex items-center justify-between p-3.5 bg-emerald-900/60 rounded-2xl border border-emerald-700/50 my-5">
+        <span class="text-xs text-amber-200 font-bold">Language / زبان منتخب کریں:</span>
+        <div class="lang-toggle-wrap">
+          <button type="button" class="lang-toggle-btn active" data-lang="en">English</button>
+          <button type="button" class="lang-toggle-btn font-urdu" data-lang="ur">اردو</button>
+        </div>
+      </div>
+
+      <nav class="flex flex-col space-y-4 my-2 text-lg font-semibold">
+        <a href="index.html" class="text-amber-400 py-2" data-i18n="nav_home">Home</a>
+        <a href="about.html" class="hover:text-amber-300 py-2" data-i18n="nav_about">About Us</a>
+        <a href="courses.html" class="hover:text-amber-300 py-2" data-i18n="nav_courses">All Courses</a>
+        <a href="pricing.html" class="hover:text-amber-300 py-2" data-i18n="nav_pricing">Fee Structure & Pricing</a>
+        <a href="contact.html" class="hover:text-amber-300 py-2" data-i18n="nav_contact">Contact Academy</a>
+        <a href="trial.html" class="hover:text-amber-300 py-2" data-i18n="nav_trial">Free Trial Registration</a>
       </nav>
 
       <div class="mt-auto space-y-3 pt-6 border-t border-emerald-800">
-        <button class="open-trial-modal w-full py-3.5 bg-amber-500 hover:bg-amber-600 text-emerald-950 font-bold rounded-xl text-center shadow-lg">
+        <button class="open-trial-modal w-full py-3.5 bg-amber-500 hover:bg-amber-600 text-emerald-950 font-bold rounded-xl text-center shadow-lg" data-i18n="hero_cta_trial">
           Book 3 Days Free Trial
         </button>
         <a href="https://api.whatsapp.com/send?phone=923208040672" target="_blank" class="w-full py-3 bg-emerald-800 hover:bg-emerald-700 text-white font-semibold rounded-xl text-center flex items-center justify-center gap-2">
           <i class="fa-brands fa-whatsapp text-emerald-400 text-lg"></i>
-          Chat on WhatsApp
+          <span data-i18n="nav_whatsapp">Chat on WhatsApp</span>
         </a>
       </div>
     </div>
@@ -161,22 +185,22 @@
           <!-- Tagline Pill -->
           <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-emerald-100/90 border border-emerald-300 text-emerald-900 text-xs sm:text-sm font-bold mb-6 shadow-sm">
             <span class="w-2 h-2 rounded-full bg-emerald-600 animate-ping"></span>
-            <span>Worldwide Online Quran Learning Platform</span>
-            <span class="text-amber-600">★ 4.9/5 Rating</span>
+            <span data-i18n="hero_badge">Worldwide Online Quran Learning Platform</span>
+            <span class="text-amber-600" data-i18n="hero_rating">★ 4.9/5 Rating</span>
           </div>
 
           <!-- Main Catchy Heading -->
-          <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-slate-900 tracking-tight leading-[1.15] mb-6">
+          <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-slate-900 tracking-tight leading-[1.15] mb-6" data-i18n="hero_title">
             Learn Holy Quran Online With <span class="text-gold-gradient">Tajweed</span> & Accuracy
           </h1>
 
           <!-- Urdu Subhead -->
-          <p class="font-urdu text-xl sm:text-2xl text-emerald-900 font-medium mb-4 dir-rtl leading-relaxed">
+          <p class="font-urdu text-xl sm:text-2xl text-emerald-900 font-medium mb-4 dir-rtl leading-relaxed" data-i18n="hero_urdu_subhead">
             قرآن مجید کی تجوید و ترتیل کے ساتھ نورانی تعلیم، گھر بیٹھے مستند اساتذہ کے ساتھ۔
           </p>
 
           <!-- English Description -->
-          <p class="text-slate-600 text-base sm:text-lg mb-8 max-w-2xl mx-auto lg:mx-0 leading-relaxed">
+          <p class="text-slate-600 text-base sm:text-lg mb-8 max-w-2xl mx-auto lg:mx-0 leading-relaxed" data-i18n="hero_desc">
             Halenoor Quran Academy provides personalized <strong>1-on-1 live interactive classes</strong> for kids, adults, brothers, and sisters worldwide. Learn Noorani Qaida, Quran Recitation, Tajweed, Memorization (Hifz), and Islamic Studies with certified male and female scholars.
           </p>
 
@@ -184,27 +208,27 @@
           <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 mb-8 text-left max-w-lg mx-auto lg:mx-0">
             <div class="flex items-center gap-2 text-xs sm:text-sm font-semibold text-slate-700">
               <i class="fa-solid fa-circle-check text-emerald-600 text-base"></i>
-              <span>3 Days Free Trial</span>
+              <span data-i18n="hero_bullet_1">3 Days Free Trial</span>
             </div>
             <div class="flex items-center gap-2 text-xs sm:text-sm font-semibold text-slate-700">
               <i class="fa-solid fa-circle-check text-emerald-600 text-base"></i>
-              <span>Female Tutors Available</span>
+              <span data-i18n="hero_bullet_2">Female Tutors Available</span>
             </div>
             <div class="flex items-center gap-2 text-xs sm:text-sm font-semibold text-slate-700">
               <i class="fa-solid fa-circle-check text-emerald-600 text-base"></i>
-              <span>Flexible Timings 24/7</span>
+              <span data-i18n="hero_bullet_3">Flexible Timings 24/7</span>
             </div>
             <div class="flex items-center gap-2 text-xs sm:text-sm font-semibold text-slate-700">
               <i class="fa-solid fa-circle-check text-emerald-600 text-base"></i>
-              <span>1-on-1 Live Sessions</span>
+              <span data-i18n="hero_bullet_4">1-on-1 Live Sessions</span>
             </div>
             <div class="flex items-center gap-2 text-xs sm:text-sm font-semibold text-slate-700">
               <i class="fa-solid fa-circle-check text-emerald-600 text-base"></i>
-              <span>Zoom & Skype Classes</span>
+              <span data-i18n="hero_bullet_5">Zoom & Skype Classes</span>
             </div>
             <div class="flex items-center gap-2 text-xs sm:text-sm font-semibold text-slate-700">
               <i class="fa-solid fa-circle-check text-emerald-600 text-base"></i>
-              <span>Monthly Progress Tests</span>
+              <span data-i18n="hero_bullet_6">Monthly Progress Tests</span>
             </div>
           </div>
 
@@ -212,12 +236,12 @@
           <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4">
             <button class="open-trial-modal btn-shimmer w-full sm:w-auto px-8 py-4 bg-gradient-to-r from-emerald-800 to-emerald-950 text-white font-extrabold rounded-2xl shadow-xl hover:shadow-2xl hover:scale-[1.02] transition flex items-center justify-center gap-3">
               <i class="fa-solid fa-calendar-check text-amber-400 text-lg"></i>
-              <span>Book 3-Day Free Trial</span>
+              <span data-i18n="hero_cta_trial">Book 3-Day Free Trial</span>
             </button>
 
             <a href="https://api.whatsapp.com/send?phone=923208040672&text=Assalam-o-Alaikum!%20I%20want%20to%20know%20more%20about%20Halenoor%20Quran%20Academy%20courses." target="_blank" class="w-full sm:w-auto px-7 py-4 bg-white border-2 border-emerald-600 hover:bg-emerald-50 text-emerald-900 font-bold rounded-2xl shadow-sm hover:shadow transition flex items-center justify-center gap-2.5">
               <i class="fa-brands fa-whatsapp text-emerald-600 text-xl"></i>
-              <span>WhatsApp Admission Desk</span>
+              <span data-i18n="hero_cta_wa">WhatsApp Admission Desk</span>
             </a>
           </div>
 
@@ -225,15 +249,15 @@
           <div class="mt-10 pt-6 border-t border-slate-200/80 flex items-center justify-center lg:justify-start gap-6 text-slate-500 text-xs">
             <div class="flex items-center gap-2">
               <i class="fa-solid fa-shield-halved text-emerald-700 text-sm"></i>
-              <span>No Credit Card Required</span>
+              <span data-i18n="trust_no_card">No Credit Card Required</span>
             </div>
             <div class="flex items-center gap-2">
               <i class="fa-solid fa-award text-amber-600 text-sm"></i>
-              <span>Ijaza Certified Tutors</span>
+              <span data-i18n="trust_ijaza">Ijaza Certified Tutors</span>
             </div>
             <div class="hidden sm:flex items-center gap-2">
               <i class="fa-solid fa-globe text-blue-600 text-sm"></i>
-              <span>Students in 25+ Countries</span>
+              <span data-i18n="trust_countries">Students in 25+ Countries</span>
             </div>
           </div>
         </div>
@@ -242,91 +266,93 @@
         <div class="lg:col-span-5">
           <div class="bg-white rounded-3xl p-6 sm:p-8 shadow-2xl border-2 border-amber-300 relative overflow-hidden">
             <!-- Ribbon Badge -->
-            <div class="absolute -top-1 -right-1 bg-gradient-to-r from-amber-500 to-amber-600 text-slate-950 font-black text-[11px] px-4 py-1.5 rounded-bl-2xl shadow uppercase tracking-wider">
+            <div class="absolute -top-1 -right-1 bg-gradient-to-r from-amber-500 to-amber-600 text-slate-950 font-black text-[11px] px-4 py-1.5 rounded-bl-2xl shadow uppercase tracking-wider" data-i18n="form_card_badge">
               100% Free Trial
             </div>
 
-            <div class="text-left mb-6">
-              <span class="text-xs font-bold text-emerald-700 uppercase tracking-widest flex items-center gap-1.5">
-                <i class="fa-solid fa-star text-amber-500"></i> Start Your Journey
-              </span>
-              <h2 class="text-2xl font-black text-slate-900 mt-1">Book 3 Days Free Trial</h2>
-              <p class="text-slate-500 text-xs mt-1">Take 3 live trial classes with our certified tutors before paying any fee.</p>
+            <div class="flex items-center gap-3.5 mb-6">
+              <img src="images/logo-circle.png" alt="Halenoor Quran Academy Logo" class="w-14 h-14 rounded-full ring-2 ring-amber-400 shadow-md flex-shrink-0">
+              <div class="text-left">
+                <span class="text-xs font-bold text-emerald-700 uppercase tracking-widest flex items-center gap-1.5">
+                  <i class="fa-solid fa-star text-amber-500"></i> <span data-i18n="form_card_sub">Start Your Journey</span>
+                </span>
+                <h2 class="text-2xl font-black text-slate-900 mt-0.5" data-i18n="form_card_title">Book 3 Days Free Trial</h2>
+                <p class="text-slate-500 text-xs mt-0.5" data-i18n="form_card_desc">Take 3 live trial classes with certified tutors before paying any fee.</p>
+              </div>
             </div>
 
             <!-- Booking Form -->
             <form class="trial-form-submit space-y-4">
               <div>
-                <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">Student / Parent Name *</label>
+                <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1" data-i18n="form_label_name">Student Full Name *</label>
                 <div class="relative">
                   <span class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
                     <i class="fa-regular fa-user text-sm"></i>
                   </span>
-                  <input type="text" name="studentName" required placeholder="e.g. Muhammad / Sarah" class="w-full pl-9 pr-4 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-600 focus:border-transparent">
+                  <input type="text" name="studentName" required data-i18n-ph="form_ph_name" placeholder="e.g. Muhammad / Sarah" class="w-full pl-9 pr-4 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-600 focus:border-transparent">
                 </div>
               </div>
 
               <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
-                  <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">WhatsApp / Phone *</label>
+                  <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1" data-i18n="form_label_phone">WhatsApp / Phone *</label>
                   <div class="relative">
                     <span class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
                       <i class="fa-brands fa-whatsapp text-sm"></i>
                     </span>
-                    <input type="tel" name="phone" required placeholder="+1 234 567 890" class="w-full pl-9 pr-3 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-600 focus:border-transparent">
+                    <input type="tel" name="phone" required data-i18n-ph="form_ph_phone" placeholder="+92 320 8040672" class="w-full pl-9 pr-3 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-600 focus:border-transparent">
                   </div>
                 </div>
 
                 <div>
-                  <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">Country / City *</label>
+                  <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1" data-i18n="form_label_country">Country / City *</label>
                   <div class="relative">
                     <span class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
                       <i class="fa-solid fa-earth-americas text-sm"></i>
                     </span>
-                    <input type="text" name="country" required placeholder="USA, UK, Pakistan..." class="w-full pl-9 pr-3 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-600 focus:border-transparent">
+                    <input type="text" name="country" required data-i18n-ph="form_ph_country" placeholder="USA, UK, Pakistan..." class="w-full pl-9 pr-3 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-600 focus:border-transparent">
                   </div>
                 </div>
               </div>
 
               <div>
-                <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">Select Desired Course *</label>
+                <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1" data-i18n="form_label_course">Select Desired Course *</label>
                 <select name="course" class="w-full px-3 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-600 focus:border-transparent bg-white text-slate-800">
-                  <option value="Noorani Qaida for Beginners">Noorani Qaida for Beginners</option>
-                  <option value="Quran Reading with Tajweed" selected>Quran Reading with Tajweed</option>
-                  <option value="Quran Memorization (Hifz)">Quran Memorization (Hifz-ul-Quran)</option>
-                  <option value="Quran Translation & Tafseer">Quran Translation & Tafseer</option>
-                  <option value="Islamic Studies for Kids">Islamic Studies for Kids (Namaz, Duas)</option>
-                  <option value="Quranic Arabic & Grammar">Quranic Arabic & Grammar</option>
-                  <option value="Sisters Special Quran Program">Sisters Special Quran Program</option>
+                  <option value="Noorani Qaida for Beginners" data-i18n="course_c1_title">Noorani Qaida for Beginners</option>
+                  <option value="Quran Reading with Tajweed" selected data-i18n="course_c2_title">Quran Reading with Tajweed</option>
+                  <option value="Quran Memorization (Hifz)" data-i18n="course_c3_title">Quran Memorization (Hifz-ul-Quran)</option>
+                  <option value="Quran Translation & Tafseer" data-i18n="course_c4_title">Quran Translation & Tafseer</option>
+                  <option value="Islamic Studies for Kids" data-i18n="course_c5_title">Islamic Studies for Kids (Namaz, Duas)</option>
+                  <option value="Sisters Special Quran Program" data-i18n="course_c6_title">Sisters Special Quran Program</option>
                 </select>
               </div>
 
               <div class="grid grid-cols-2 gap-3">
                 <div>
-                  <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">Tutor Preference</label>
+                  <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1" data-i18n="form_label_tutor">Tutor Preference</label>
                   <select name="tutorType" class="w-full px-3 py-2 rounded-xl border border-slate-200 text-xs focus:outline-none focus:ring-2 focus:ring-emerald-600 bg-white">
-                    <option value="Female Quran Tutor">Female Tutor</option>
-                    <option value="Male Quran Tutor">Male Tutor</option>
-                    <option value="Any Qualified Tutor" selected>Any Tutor</option>
+                    <option value="Female Quran Tutor" data-i18n="form_opt_female">Female Tutor</option>
+                    <option value="Male Quran Tutor" data-i18n="form_opt_male">Male Tutor</option>
+                    <option value="Any Qualified Tutor" selected data-i18n="form_opt_any_tutor">Any Tutor</option>
                   </select>
                 </div>
                 <div>
-                  <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">Class Time</label>
+                  <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1" data-i18n="form_label_time">Class Time</label>
                   <select name="timing" class="w-full px-3 py-2 rounded-xl border border-slate-200 text-xs focus:outline-none focus:ring-2 focus:ring-emerald-600 bg-white">
-                    <option value="Morning">Morning</option>
-                    <option value="Afternoon">Afternoon</option>
-                    <option value="Evening" selected>Evening</option>
-                    <option value="Weekend Only">Weekend Only</option>
+                    <option value="Morning" data-i18n="form_opt_morning">Morning</option>
+                    <option value="Afternoon" data-i18n="form_opt_afternoon">Afternoon</option>
+                    <option value="Evening" selected data-i18n="form_opt_evening">Evening</option>
+                    <option value="Weekend Only" data-i18n="form_opt_weekend">Weekend Only</option>
                   </select>
                 </div>
               </div>
 
               <button type="submit" class="btn-shimmer w-full py-3.5 px-6 rounded-xl bg-gradient-to-r from-emerald-700 to-emerald-900 hover:from-emerald-800 hover:to-emerald-950 text-white font-extrabold text-sm shadow-lg shadow-emerald-900/20 transition flex items-center justify-center gap-2">
                 <i class="fa-solid fa-paper-plane text-amber-400"></i>
-                <span>Submit & Get Instant Schedule</span>
+                <span data-i18n="form_btn_submit">Submit & Get Instant Schedule</span>
               </button>
 
-              <p class="text-[11px] text-slate-400 text-center">
+              <p class="text-[11px] text-slate-400 text-center" data-i18n="form_guarantee">
                 🔒 We respect your privacy. No spam. You will be connected via WhatsApp within 2 hours.
               </p>
             </form>
@@ -343,19 +369,19 @@
       <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center divide-y md:divide-y-0 md:divide-x divide-emerald-800">
         <div class="pt-4 md:pt-0">
           <div class="text-3xl sm:text-4xl font-extrabold text-amber-400 font-sans mb-1">5,000+</div>
-          <div class="text-xs sm:text-sm text-emerald-200 font-medium">Students Enrolled Worldwide</div>
+          <div class="text-xs sm:text-sm text-emerald-200 font-medium" data-i18n="metric_students_lbl">Students Enrolled Worldwide</div>
         </div>
         <div class="pt-4 md:pt-0">
           <div class="text-3xl sm:text-4xl font-extrabold text-amber-400 font-sans mb-1">100+</div>
-          <div class="text-xs sm:text-sm text-emerald-200 font-medium">Certified Male & Female Tutors</div>
+          <div class="text-xs sm:text-sm text-emerald-200 font-medium" data-i18n="metric_tutors_lbl">Certified Male & Female Tutors</div>
         </div>
         <div class="pt-4 md:pt-0">
           <div class="text-3xl sm:text-4xl font-extrabold text-amber-400 font-sans mb-1">25+</div>
-          <div class="text-xs sm:text-sm text-emerald-200 font-medium">Countries (USA, UK, CA, PK, UAE)</div>
+          <div class="text-xs sm:text-sm text-emerald-200 font-medium" data-i18n="metric_countries_lbl">Countries (USA, UK, CA, PK, UAE)</div>
         </div>
         <div class="pt-4 md:pt-0">
           <div class="text-3xl sm:text-4xl font-extrabold text-amber-400 font-sans mb-1">99.4%</div>
-          <div class="text-xs sm:text-sm text-emerald-200 font-medium">Parent & Student Satisfaction</div>
+          <div class="text-xs sm:text-sm text-emerald-200 font-medium" data-i18n="metric_rating_lbl">Parent & Student Satisfaction</div>
         </div>
       </div>
     </div>
@@ -371,7 +397,7 @@
               <i id="playVerseIcon" class="fa-solid fa-play ml-1"></i>
             </button>
             <div>
-              <span class="text-[11px] font-bold text-amber-400 uppercase tracking-widest block">
+              <span class="text-[11px] font-bold text-amber-400 uppercase tracking-widest block" data-i18n="ayah_pill">
                 Daily Quran Ayah & Recitation
               </span>
               <h3 id="verseTitle" class="text-xl sm:text-2xl font-bold text-white">Ayat-ul-Kursi (آية الكرسي)</h3>
@@ -381,7 +407,7 @@
 
           <div class="flex items-center gap-3">
             <button id="nextVerseBtn" class="px-4 py-2 rounded-xl bg-emerald-800/80 hover:bg-emerald-700 border border-emerald-600/50 text-xs font-semibold text-white flex items-center gap-2 transition">
-              <span>Next Ayah</span>
+              <span data-i18n="ayah_btn_next">Next Ayah</span>
               <i class="fa-solid fa-forward-step text-amber-400"></i>
             </button>
           </div>
@@ -446,14 +472,14 @@
         <!-- Text Column -->
         <div class="lg:col-span-7">
           <div class="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-amber-100 text-amber-900 text-xs font-bold uppercase tracking-wider mb-4">
-            <i class="fa-solid fa-mosque"></i> About Halenoor Quran Academy
+            <i class="fa-solid fa-mosque"></i> <span data-i18n="about_pill">About Halenoor Quran Academy</span>
           </div>
 
-          <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight leading-tight mb-4">
+          <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight leading-tight mb-4" data-i18n="about_heading">
             A Trusted Sanctuary for <span class="text-emerald-800">Sacred Islamic Learning</span>
           </h2>
 
-          <p class="text-slate-600 text-base leading-relaxed mb-6">
+          <p class="text-slate-600 text-base leading-relaxed mb-6" data-i18n="about_p1">
             At <strong>Halenoor Quran Academy</strong>, we believe every Muslim child and adult deserves the privilege of reading and understanding the Holy Quran with perfection and spiritual joy, no matter where they reside. Whether you are living in the United States, United Kingdom, Canada, Australia, Europe, or Pakistan, we bridge the distance by providing world-class online tutoring directly to your screen.
           </p>
 
@@ -463,8 +489,8 @@
                 <i class="fa-solid fa-heart"></i>
               </div>
               <div>
-                <h4 class="font-bold text-slate-900 text-base">Gentle, Child-Centric Pedagogy</h4>
-                <p class="text-slate-600 text-sm">We foster genuine love for the Quran in young minds through kindness, patience, rewarding milestones, and interactive whiteboards.</p>
+                <h4 class="font-bold text-slate-900 text-base" data-i18n="about_card1_title">Gentle, Child-Centric Pedagogy</h4>
+                <p class="text-slate-600 text-sm" data-i18n="about_card1_desc">We foster genuine love for the Quran in young minds through kindness, patience, rewarding milestones, and interactive whiteboards.</p>
               </div>
             </div>
 
@@ -473,8 +499,8 @@
                 <i class="fa-solid fa-person-dress"></i>
               </div>
               <div>
-                <h4 class="font-bold text-slate-900 text-base">Exclusive Female Teachers for Sisters & Girls</h4>
-                <p class="text-slate-600 text-sm">Complete privacy and comfort for female students with certified Aalimat, Hafizat, and Qariyaat who teach in English and Urdu.</p>
+                <h4 class="font-bold text-slate-900 text-base" data-i18n="about_card2_title">Exclusive Female Teachers for Sisters & Girls</h4>
+                <p class="text-slate-600 text-sm" data-i18n="about_card2_desc">Complete privacy and comfort for female students with certified Aalimat, Hafizat, and Qariyaat who teach in English and Urdu.</p>
               </div>
             </div>
 
@@ -483,17 +509,17 @@
                 <i class="fa-solid fa-chart-line"></i>
               </div>
               <div>
-                <h4 class="font-bold text-slate-900 text-base">Continuous Monitoring & Monthly Reports</h4>
-                <p class="text-slate-600 text-sm">Parents receive detailed monthly reports evaluating pronunciation, memory retention, attendance, and behavioral etiquettes.</p>
+                <h4 class="font-bold text-slate-900 text-base" data-i18n="about_card4_title">Continuous Monitoring & Monthly Reports</h4>
+                <p class="text-slate-600 text-sm" data-i18n="about_card4_desc">Parents receive detailed monthly reports evaluating pronunciation, memory retention, attendance, and behavioral etiquettes.</p>
               </div>
             </div>
           </div>
 
           <div class="flex flex-wrap items-center gap-4">
-            <a href="about.html" class="px-6 py-3 bg-emerald-800 hover:bg-emerald-900 text-white font-bold text-sm rounded-xl transition shadow">
+            <a href="about.html" class="px-6 py-3 bg-emerald-800 hover:bg-emerald-900 text-white font-bold text-sm rounded-xl transition shadow" data-i18n="about_btn_more">
               Read Our Full Story
             </a>
-            <button class="open-trial-modal px-6 py-3 bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold text-sm rounded-xl transition shadow">
+            <button class="open-trial-modal px-6 py-3 bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold text-sm rounded-xl transition shadow" data-i18n="course_btn_trial">
               Get Started for Free
             </button>
           </div>
@@ -508,13 +534,13 @@
       
       <!-- Section Header -->
       <div class="text-center max-w-3xl mx-auto mb-16">
-        <span class="inline-block px-3 py-1 bg-emerald-100 text-emerald-800 text-xs font-extrabold rounded-full uppercase tracking-wider mb-3">
+        <span class="inline-block px-3 py-1 bg-emerald-100 text-emerald-800 text-xs font-extrabold rounded-full uppercase tracking-wider mb-3" data-i18n="courses_pill">
           Curated Quranic Curriculum
         </span>
-        <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
+        <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight" data-i18n="courses_heading">
           Comprehensive Courses for All Age Groups
         </h2>
-        <p class="text-slate-600 text-base mt-4">
+        <p class="text-slate-600 text-base mt-4" data-i18n="courses_sub">
           From basic Arabic alphabet recognition to comprehensive Quran memorization and Tafseer, explore our structured programs tailored for kids, beginners, and advanced seekers.
         </p>
       </div>
@@ -532,8 +558,8 @@
             <div class="w-14 h-14 rounded-2xl bg-emerald-100 text-emerald-800 flex items-center justify-center text-2xl mb-4 font-bold">
               <i class="fa-solid fa-shapes"></i>
             </div>
-            <h3 class="text-xl font-extrabold text-slate-900 mb-2">Noorani Qaida for Beginners</h3>
-            <p class="text-slate-600 text-xs sm:text-sm leading-relaxed mb-6">
+            <h3 class="text-xl font-extrabold text-slate-900 mb-2" data-i18n="course_c1_title">Noorani Qaida for Beginners</h3>
+            <p class="text-slate-600 text-xs sm:text-sm leading-relaxed mb-6" data-i18n="course_c1_desc">
               The fundamental foundation course designed to teach children and beginners accurate letter recognition, Arabic phonetics, joining of words, Harakat, Tanween, and Sukoon.
             </p>
             <ul class="feature-check text-xs text-slate-700 space-y-2 mb-6">
@@ -564,8 +590,8 @@
             <div class="w-14 h-14 rounded-2xl bg-amber-100 text-amber-800 flex items-center justify-center text-2xl mb-4 font-bold">
               <i class="fa-solid fa-book-open-reader"></i>
             </div>
-            <h3 class="text-xl font-extrabold text-slate-900 mb-2">Quran Reading with Tajweed</h3>
-            <p class="text-slate-600 text-xs sm:text-sm leading-relaxed mb-6">
+            <h3 class="text-xl font-extrabold text-slate-900 mb-2" data-i18n="course_c2_title">Quran Reading with Tajweed</h3>
+            <p class="text-slate-600 text-xs sm:text-sm leading-relaxed mb-6" data-i18n="course_c2_desc">
               Master the recitation of the Holy Quran exactly as it was revealed to Prophet Muhammad ﷺ. Learn rules of Noon Sakinah, Meem Sakinah, Ghunna, Qalqalah, and Waqf.
             </p>
             <ul class="feature-check text-xs text-slate-700 space-y-2 mb-6">
@@ -593,8 +619,8 @@
             <div class="w-14 h-14 rounded-2xl bg-purple-100 text-purple-800 flex items-center justify-center text-2xl mb-4 font-bold">
               <i class="fa-solid fa-crown"></i>
             </div>
-            <h3 class="text-xl font-extrabold text-slate-900 mb-2">Quran Memorization (Hifz)</h3>
-            <p class="text-slate-600 text-xs sm:text-sm leading-relaxed mb-6">
+            <h3 class="text-xl font-extrabold text-slate-900 mb-2" data-i18n="course_c3_title">Quran Memorization (Hifz)</h3>
+            <p class="text-slate-600 text-xs sm:text-sm leading-relaxed mb-6" data-i18n="course_c3_desc">
               A comprehensive and disciplined memorization program under the guidance of senior Huffaz. Covers Full Quran Hifz, or Selected Surahs (Surah Yaseen, Mulk, Rahman, Kahf).
             </p>
             <ul class="feature-check text-xs text-slate-700 space-y-2 mb-6">
@@ -622,8 +648,8 @@
             <div class="w-14 h-14 rounded-2xl bg-blue-100 text-blue-800 flex items-center justify-center text-2xl mb-4 font-bold">
               <i class="fa-solid fa-language"></i>
             </div>
-            <h3 class="text-xl font-extrabold text-slate-900 mb-2">Quran Translation & Tafseer</h3>
-            <p class="text-slate-600 text-xs sm:text-sm leading-relaxed mb-6">
+            <h3 class="text-xl font-extrabold text-slate-900 mb-2" data-i18n="course_c4_title">Quran Translation & Tafseer</h3>
+            <p class="text-slate-600 text-xs sm:text-sm leading-relaxed mb-6" data-i18n="course_c4_desc">
               Understand the divine message word-by-word. Discover the context of revelation (Shan-e-Nuzool), historical stories of the Prophets, and how to apply Quranic wisdom to modern daily life.
             </p>
             <ul class="feature-check text-xs text-slate-700 space-y-2 mb-6">
@@ -651,8 +677,8 @@
             <div class="w-14 h-14 rounded-2xl bg-emerald-100 text-emerald-800 flex items-center justify-center text-2xl mb-4 font-bold">
               <i class="fa-solid fa-child-reaching"></i>
             </div>
-            <h3 class="text-xl font-extrabold text-slate-900 mb-2">Islamic Studies & Tarbiyah</h3>
-            <p class="text-slate-600 text-xs sm:text-sm leading-relaxed mb-6">
+            <h3 class="text-xl font-extrabold text-slate-900 mb-2" data-i18n="course_c5_title">Islamic Studies & Tarbiyah</h3>
+            <p class="text-slate-600 text-xs sm:text-sm leading-relaxed mb-6" data-i18n="course_c5_desc">
               Nurture your children with wholesome Islamic values. Covers step-by-step Namaz/Salah with translation, 6 Kalimas, 40 Masnoon Duas, Seerat-un-Nabi ﷺ, and Islamic manners (Adab).
             </p>
             <ul class="feature-check text-xs text-slate-700 space-y-2 mb-6">
@@ -680,8 +706,8 @@
             <div class="w-14 h-14 rounded-2xl bg-pink-100 text-pink-800 flex items-center justify-center text-2xl mb-4 font-bold">
               <i class="fa-solid fa-person-dress"></i>
             </div>
-            <h3 class="text-xl font-extrabold text-slate-900 mb-2">Female Quran Tutor Program</h3>
-            <p class="text-slate-600 text-xs sm:text-sm leading-relaxed mb-6">
+            <h3 class="text-xl font-extrabold text-slate-900 mb-2" data-i18n="course_c6_title">Female Quran Tutor Program</h3>
+            <p class="text-slate-600 text-xs sm:text-sm leading-relaxed mb-6" data-i18n="course_c6_desc">
               An exclusive, comfortable learning environment for Muslim daughters, working women, and mothers. Taught by certified female scholars (Aalimaat and Hafizaat).
             </p>
             <ul class="feature-check text-xs text-slate-700 space-y-2 mb-6">
@@ -717,13 +743,13 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       
       <div class="text-center max-w-3xl mx-auto mb-16">
-        <span class="inline-block px-3 py-1 bg-amber-100 text-amber-900 text-xs font-extrabold rounded-full uppercase tracking-wider mb-3">
+        <span class="inline-block px-3 py-1 bg-amber-100 text-amber-900 text-xs font-extrabold rounded-full uppercase tracking-wider mb-3" data-i18n="why_pill">
           Our Distinct Excellence
         </span>
-        <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
+        <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight" data-i18n="why_heading">
           Why Thousands of Parents Trust Halenoor Academy
         </h2>
-        <p class="text-slate-600 text-base mt-4">
+        <p class="text-slate-600 text-base mt-4" data-i18n="why_sub">
           We combine authentic Islamic scholarly standards with modern digital tools to make Quran education seamless, safe, and engaging.
         </p>
       </div>
@@ -1337,12 +1363,15 @@
         <i class="fa-solid fa-xmark"></i>
       </button>
 
-      <div class="text-left mb-6">
-        <span class="inline-block px-2.5 py-0.5 rounded-full text-[10px] font-extrabold bg-amber-100 text-amber-800 uppercase tracking-wider mb-2">
-          3 Days Free Trial
-        </span>
-        <h3 class="text-2xl font-black text-slate-900">Book Free Trial Class</h3>
-        <p class="text-slate-500 text-xs mt-1">Fill in the details below. Our coordinator will contact you to set up your trial class.</p>
+      <div class="flex items-center gap-3.5 mb-6">
+        <img src="images/logo-circle.png" alt="Halenoor Quran Academy" class="w-14 h-14 rounded-full ring-2 ring-amber-400 shadow-md flex-shrink-0">
+        <div class="text-left">
+          <span class="inline-block px-2.5 py-0.5 rounded-full text-[10px] font-extrabold bg-amber-100 text-amber-800 uppercase tracking-wider mb-1">
+            3 Days Free Trial
+          </span>
+          <h3 class="text-2xl font-black text-slate-900 leading-tight">Book Free Trial Class</h3>
+          <p class="text-slate-500 text-xs mt-0.5">Fill in the details below. Our coordinator will contact you.</p>
+        </div>
       </div>
 
       <form class="trial-form-submit space-y-4">

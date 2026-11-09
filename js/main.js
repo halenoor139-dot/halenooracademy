@@ -1,4 +1,4 @@
-﻿/**
+/**
  * Halenoor Quran Academy - Main Interactive Script
  * Provides: Currency Converter, WhatsApp Form Generator, Trial Modal, Audio Reciter, FAQ Accordion
  */
@@ -21,6 +21,7 @@ const ACADEMY_CONFIG = {
 
 // State
 let currentCurrency = "USD";
+let currentLanguage = localStorage.getItem("halenoor_lang") || "en";
 
 // Quran Verses for Daily Reciter Widget
 const QURAN_VERSES = [
@@ -64,6 +65,7 @@ let isAudioPlaying = false;
 
 // DOM Initialization
 document.addEventListener("DOMContentLoaded", () => {
+  setupLanguageSwitcher();
   setupMobileMenu();
   setupCurrencySwitcher();
   setupTrialModal();
@@ -72,6 +74,86 @@ document.addEventListener("DOMContentLoaded", () => {
   setupTrialForms();
   setupSmoothScroll();
 });
+
+// Bilingual Language Switcher (English & Urdu)
+function setupLanguageSwitcher() {
+  const langButtons = document.querySelectorAll(".lang-btn, .lang-toggle-btn");
+
+  // Apply saved or default language immediately
+  applyLanguage(currentLanguage);
+
+  langButtons.forEach(btn => {
+    btn.addEventListener("click", (e) => {
+      e.preventDefault();
+      const targetLang = btn.getAttribute("data-lang");
+      if (targetLang) {
+        currentLanguage = targetLang;
+        try {
+          localStorage.setItem("halenoor_lang", targetLang);
+        } catch (err) {
+          console.warn("Storage restricted", err);
+        }
+        applyLanguage(targetLang);
+      }
+    });
+  });
+}
+
+function applyLanguage(lang) {
+  currentLanguage = lang;
+  const isUrdu = lang === "ur";
+
+  // Set document attributes
+  document.documentElement.lang = isUrdu ? "ur" : "en";
+  document.documentElement.dir = isUrdu ? "rtl" : "ltr";
+
+  // Toggle body class for typography
+  if (isUrdu) {
+    document.body.classList.add("lang-ur");
+  } else {
+    document.body.classList.remove("lang-ur");
+  }
+
+  // Update active state on all toggle buttons
+  document.querySelectorAll(".lang-btn, .lang-toggle-btn").forEach(btn => {
+    if (btn.getAttribute("data-lang") === lang) {
+      btn.classList.add("active");
+    } else {
+      btn.classList.remove("active");
+    }
+  });
+
+  // Apply dictionary translations
+  if (typeof ACADEMY_TRANSLATIONS !== "undefined" && ACADEMY_TRANSLATIONS[lang]) {
+    const dict = ACADEMY_TRANSLATIONS[lang];
+
+    // Inner HTML translation
+    document.querySelectorAll("[data-i18n]").forEach(el => {
+      const key = el.getAttribute("data-i18n");
+      if (dict[key] !== undefined) {
+        el.innerHTML = dict[key];
+      }
+    });
+
+    // Placeholders
+    document.querySelectorAll("[data-i18n-ph]").forEach(el => {
+      const key = el.getAttribute("data-i18n-ph");
+      if (dict[key] !== undefined) {
+        el.placeholder = dict[key];
+      }
+    });
+
+    // Option tags
+    document.querySelectorAll("option[data-i18n]").forEach(opt => {
+      const key = opt.getAttribute("data-i18n");
+      if (dict[key] !== undefined) {
+        opt.textContent = dict[key];
+      }
+    });
+  }
+}
+
+window.applyLanguage = applyLanguage;
 
 // Mobile Navigation Toggle
 function setupMobileMenu() {

@@ -2,7 +2,7 @@
    Halenoor Quran Academy - Custom Luxury Islamic Academy Stylesheet
    ========================================================================== */
 
-@import url('https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Scheherazade+New:wght@500;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Noto+Nastaliq+Urdu:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Scheherazade+New:wght@500;700&display=swap');
 
 :root {
   --primary-emerald: #044e39;
@@ -32,6 +32,34 @@ body {
   background-color: var(--bg-cream);
   color: var(--text-dark);
   overflow-x: hidden;
+  transition: all 0.2s ease;
+}
+
+/* Bilingual Urdu Typography Support */
+body.lang-ur {
+  font-family: 'Noto Nastaliq Urdu', 'Amiri', 'Jameel Noori Nastaleeq', serif;
+  line-height: 2.1;
+}
+
+body.lang-ur h1,
+body.lang-ur h2,
+body.lang-ur h3,
+body.lang-ur h4,
+body.lang-ur h5,
+body.lang-ur h6 {
+  line-height: 1.7;
+}
+
+html[dir="rtl"] {
+  text-align: right;
+}
+
+html[dir="rtl"] .text-left {
+  text-align: right !important;
+}
+
+html[dir="rtl"] .text-right {
+  text-align: left !important;
 }
 
 /* Islamic Calligraphy & Arabic text */
@@ -41,7 +69,45 @@ body {
 }
 
 .font-urdu {
-  font-family: 'Amiri', 'Jameel Noori Nastaleeq', 'Urdu Typesetting', serif;
+  font-family: 'Noto Nastaliq Urdu', 'Amiri', 'Jameel Noori Nastaleeq', serif;
+}
+
+/* Language Switcher Pill styles */
+.lang-toggle-wrap {
+  display: inline-flex;
+  align-items: center;
+  background: rgba(2, 44, 34, 0.45);
+  border: 1px solid rgba(245, 158, 11, 0.45);
+  border-radius: 9999px;
+  padding: 2.5px;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+.lang-toggle-btn {
+  padding: 3px 9px;
+  font-size: 11px;
+  font-weight: 700;
+  border-radius: 9999px;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  color: #ecfdf5;
+  cursor: pointer;
+  border: none;
+  background: transparent;
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  line-height: 1.2;
+}
+
+.lang-toggle-btn:hover {
+  color: #fef3c7;
+}
+
+.lang-toggle-btn.active {
+  background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+  color: #022c22 !important;
+  font-weight: 800;
+  box-shadow: 0 2px 6px rgba(217, 119, 6, 0.35);
 }
 
 /* Islamic Geometric Backgrounds */

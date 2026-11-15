@@ -42,6 +42,10 @@
         </div>
       </div>
       <div class="flex items-center gap-3">
+        <div id="dbSyncBadge" class="hidden sm:flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-bold bg-emerald-900/80 text-emerald-300 border border-emerald-700">
+          <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+          <span>Firebase Cloud DB</span>
+        </div>
         <a href="index.html" class="text-xs bg-emerald-900 hover:bg-emerald-800 text-emerald-200 px-3.5 py-2 rounded-xl transition flex items-center gap-1.5">
           <i class="fa-solid fa-arrow-left"></i> View Live Site
         </a>
@@ -167,6 +171,11 @@
     Halenoor Quran Academy &copy; 2026 • Local Data Storage Protected
   </footer>
 
+  <!-- Firebase SDK & Firestore -->
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+  <script src="js/firebase-init.js"></script>
+
   <script>
     // Sample Initial Leads if none exist
     const SAMPLE_LEADS = [
@@ -211,7 +220,50 @@
       }
     ];
 
+    let firestoreLeads = [];
+    let isFirestoreActive = false;
+
+    // Real-time Firestore sync
+    function listenToFirestoreLeads() {
+      if (typeof firebase === "undefined" || !window.halenoorDb) return;
+      try {
+        window.halenoorDb.collection("trial_registrations")
+          .onSnapshot(snapshot => {
+            if (!snapshot.empty) {
+              isFirestoreActive = true;
+              firestoreLeads = [];
+              snapshot.forEach(doc => {
+                const data = doc.data();
+                firestoreLeads.push({
+                  id: doc.id,
+                  date: data.dateString || (data.submittedAt ? data.submittedAt.toDate().toISOString() : ""),
+                  studentName: data.studentName || "Student",
+                  guardianName: data.guardianName || "",
+                  phone: data.phone || "",
+                  email: data.email || "",
+                  country: data.country || "International",
+                  course: data.course || "Quran Tajweed",
+                  tutorType: data.tutorType || "Any Qualified Tutor",
+                  timing: data.timing || "Flexible",
+                  status: data.status || "New",
+                  notes: data.notes || ""
+                });
+              });
+              firestoreLeads.sort((a, b) => new Date(b.date || 0) - new Date(a.date || 0));
+              renderTable();
+            }
+          }, err => {
+            console.warn("Firestore snapshot listener:", err);
+          });
+      } catch (e) {
+        console.warn("Firestore sync error:", e);
+      }
+    }
+
     function getStoredLeads() {
+      if (isFirestoreActive && firestoreLeads.length > 0) {
+        return firestoreLeads;
+      }
       try {
         const raw = localStorage.getItem("halenoor_leads");
         if (!raw) return [];
@@ -316,6 +368,10 @@
     }
 
     window.updateStatus = function(index, newStatus) {
+      if (isFirestoreActive && firestoreLeads[index] && firestoreLeads[index].id && window.halenoorDb) {
+        window.halenoorDb.collection("trial_registrations").doc(firestoreLeads[index].id).update({ status: newStatus });
+        return;
+      }
       const leads = getStoredLeads();
       if (leads[index]) {
         leads[index].status = newStatus;
@@ -325,6 +381,10 @@
 
     window.deleteLead = function(index) {
       if (confirm("Are you sure you want to delete this inquiry?")) {
+        if (isFirestoreActive && firestoreLeads[index] && firestoreLeads[index].id && window.halenoorDb) {
+          window.halenoorDb.collection("trial_registrations").doc(firestoreLeads[index].id).delete();
+          return;
+        }
         const leads = getStoredLeads();
         leads.splice(index, 1);
         saveLeads(leads);
@@ -390,6 +450,9 @@
     } else {
       renderTable();
     }
+
+    // Connect real-time Firestore listener
+    listenToFirestoreLeads();
   </script>
 </body>
 </html>

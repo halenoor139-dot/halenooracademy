@@ -385,7 +385,7 @@ function setupTrialForms() {
       const timing = formData.get("timing") || "Flexible";
       const notes = formData.get("notes") || "None";
 
-      // Save locally
+      // Save locally & to Firebase Firestore
       try {
         const lead = {
           date: new Date().toISOString(),
@@ -402,6 +402,11 @@ function setupTrialForms() {
         const prevLeads = JSON.parse(localStorage.getItem("halenoor_leads") || "[]");
         prevLeads.unshift(lead);
         localStorage.setItem("halenoor_leads", JSON.stringify(prevLeads.slice(0, 50)));
+
+        // Automatically store to Firebase Cloud Firestore
+        if (typeof window.saveTrialToFirestore === "function") {
+          window.saveTrialToFirestore(lead);
+        }
       } catch (err) {
         console.error(err);
       }

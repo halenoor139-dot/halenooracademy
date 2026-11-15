@@ -13,7 +13,22 @@
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
+    // Immediate Theme Initialization (prevents flash of light mode)
+    (function() {
+      try {
+        var saved = localStorage.getItem('halenoor_theme');
+        var prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+        if (saved === 'dark' || (!saved && prefersDark)) {
+          document.documentElement.classList.add('dark');
+        } else {
+          document.documentElement.classList.remove('dark');
+        }
+      } catch (e) {}
+    })();
+  </script>
+  <script>
     tailwind.config = {
+      darkMode: 'class',
       theme: {
         extend: {
           colors: {
@@ -94,12 +109,19 @@
         </nav>
 
         <!-- Right Action Buttons -->
-        <div class="hidden sm:flex items-center gap-3">
+        <div class="hidden sm:flex items-center gap-2.5">
           <!-- Desktop Navbar Language Toggle -->
           <div class="lang-toggle-wrap">
             <button type="button" class="lang-toggle-btn active" data-lang="en">EN</button>
             <button type="button" class="lang-toggle-btn font-urdu" data-lang="ur">اردو</button>
           </div>
+          <!-- Night Vision Toggle Button -->
+          <button type="button" class="theme-toggle-btn" aria-label="Toggle Night Vision / Dark Mode" title="Toggle Night Vision (Dark Mode)">
+            <span class="theme-icon-container">
+              <i class="fa-solid fa-moon text-amber-500"></i>
+            </span>
+            <span class="theme-text hidden md:inline">Night Vision</span>
+          </button>
           <a href="https://api.whatsapp.com/send?phone=923208040672&text=Assalam-o-Alaikum!%20I%20want%20to%20inquire%20about%20Quran%20classes%20at%20Halenoor%20Quran%20Academy." target="_blank" class="px-4 py-2.5 rounded-full border border-emerald-600 text-emerald-800 hover:bg-emerald-50 text-xs font-bold transition flex items-center gap-2">
             <i class="fa-brands fa-whatsapp text-emerald-600 text-base"></i>
             <span data-i18n="nav_whatsapp">WhatsApp Us</span>
@@ -135,12 +157,25 @@
       </div>
 
       <!-- Language Selector inside Mobile Menu -->
-      <div class="flex items-center justify-between p-3.5 bg-emerald-900/60 rounded-2xl border border-emerald-700/50 my-5">
-        <span class="text-xs text-amber-200 font-bold">Language / زبان منتخب کریں:</span>
+      <div class="flex items-center justify-between p-3.5 bg-emerald-900/60 rounded-2xl border border-emerald-700/50 my-3">
+        <span class="text-xs text-amber-200 font-bold">Language / زبان:</span>
         <div class="lang-toggle-wrap">
           <button type="button" class="lang-toggle-btn active" data-lang="en">English</button>
           <button type="button" class="lang-toggle-btn font-urdu" data-lang="ur">اردو</button>
         </div>
+      </div>
+
+      <!-- Night Vision Mode inside Mobile Menu -->
+      <div class="flex items-center justify-between p-3.5 bg-emerald-900/60 rounded-2xl border border-emerald-700/50 mb-4">
+        <span class="text-xs text-amber-200 font-bold flex items-center gap-2">
+          <i class="fa-solid fa-moon text-amber-400"></i> Night Vision:
+        </span>
+        <button type="button" class="theme-toggle-btn px-3 py-1.5 rounded-lg text-xs font-bold" aria-label="Toggle Night Vision">
+          <span class="theme-icon-container mr-1">
+            <i class="fa-solid fa-moon text-amber-500"></i>
+          </span>
+          <span class="mobile-theme-text">Night Vision 🌙</span>
+        </button>
       </div>
 
       <nav class="flex flex-col space-y-4 my-2 text-lg font-semibold">
@@ -1355,6 +1390,15 @@
     <div class="whatsapp-pulse"></div>
     <i class="fa-brands fa-whatsapp text-3xl"></i>
   </a>
+
+  <!-- ================= FLOATING NIGHT VISION BUTTON ================= -->
+  <button type="button" class="floating-theme-toggle" aria-label="Toggle Night Vision / Dark Mode" title="Toggle Night Vision (Dark Mode)">
+    <span class="theme-icon-container">
+      <i class="fa-solid fa-moon text-amber-500 text-sm"></i>
+    </span>
+    <span class="theme-text">Night Vision</span>
+    <span class="night-vision-pulse"></span>
+  </button>
 
   <!-- ================= GLOBAL FREE TRIAL MODAL ================= -->
   <div id="trialModal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 modal-overlay overflow-y-auto">

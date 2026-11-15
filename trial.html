@@ -11,7 +11,22 @@
 
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
+    // Immediate Theme Initialization (prevents flash of light mode)
+    (function() {
+      try {
+        var saved = localStorage.getItem('halenoor_theme');
+        var prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+        if (saved === 'dark' || (!saved && prefersDark)) {
+          document.documentElement.classList.add('dark');
+        } else {
+          document.documentElement.classList.remove('dark');
+        }
+      } catch (e) {}
+    })();
+  </script>
+  <script>
     tailwind.config = {
+      darkMode: 'class',
       theme: {
         extend: {
           colors: {
@@ -53,6 +68,13 @@
           <a href="contact.html" class="hover:text-emerald-700 transition">Contact</a>
         </nav>
         <div class="hidden sm:flex items-center gap-3">
+          <!-- Night Vision Toggle Button -->
+          <button type="button" class="theme-toggle-btn" aria-label="Toggle Night Vision / Dark Mode" title="Toggle Night Vision (Dark Mode)">
+            <span class="theme-icon-container">
+              <i class="fa-solid fa-moon text-amber-500"></i>
+            </span>
+            <span class="theme-text hidden md:inline">Night Vision</span>
+          </button>
           <a href="https://api.whatsapp.com/send?phone=923208040672" target="_blank" class="px-5 py-2.5 rounded-full bg-emerald-800 hover:bg-emerald-900 text-white text-xs font-bold transition flex items-center gap-2">
             <i class="fa-brands fa-whatsapp text-emerald-400 text-sm"></i>
             <span>WhatsApp Admission</span>
@@ -250,6 +272,15 @@
     <div class="whatsapp-pulse"></div>
     <i class="fa-brands fa-whatsapp text-3xl"></i>
   </a>
+
+  <!-- Floating Night Vision Button -->
+  <button type="button" class="floating-theme-toggle" aria-label="Toggle Night Vision / Dark Mode" title="Toggle Night Vision (Dark Mode)">
+    <span class="theme-icon-container">
+      <i class="fa-solid fa-moon text-amber-500 text-sm"></i>
+    </span>
+    <span class="theme-text">Night Vision</span>
+    <span class="night-vision-pulse"></span>
+  </button>
 
   <script src="js/main.js"></script>
 </body>

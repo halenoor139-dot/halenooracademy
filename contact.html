@@ -11,7 +11,22 @@
 
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
+    // Immediate Theme Initialization (prevents flash of light mode)
+    (function() {
+      try {
+        var saved = localStorage.getItem('halenoor_theme');
+        var prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+        if (saved === 'dark' || (!saved && prefersDark)) {
+          document.documentElement.classList.add('dark');
+        } else {
+          document.documentElement.classList.remove('dark');
+        }
+      } catch (e) {}
+    })();
+  </script>
+  <script>
     tailwind.config = {
+      darkMode: 'class',
       theme: {
         extend: {
           colors: {
@@ -58,6 +73,13 @@
           <a href="contact.html" class="text-emerald-800 font-bold border-b-2 border-emerald-700 pb-1">Contact</a>
         </nav>
         <div class="hidden sm:flex items-center gap-3">
+          <!-- Night Vision Toggle Button -->
+          <button type="button" class="theme-toggle-btn" aria-label="Toggle Night Vision / Dark Mode" title="Toggle Night Vision (Dark Mode)">
+            <span class="theme-icon-container">
+              <i class="fa-solid fa-moon text-amber-500"></i>
+            </span>
+            <span class="theme-text hidden md:inline">Night Vision</span>
+          </button>
           <button class="open-trial-modal btn-shimmer bg-amber-500 hover:bg-amber-600 text-slate-950 font-extrabold text-xs px-5 py-2.5 rounded-full shadow transition">
             Book 3-Day Free Trial
           </button>
@@ -291,6 +313,15 @@
       </form>
     </div>
   </div>
+
+  <!-- Floating Night Vision Button -->
+  <button type="button" class="floating-theme-toggle" aria-label="Toggle Night Vision / Dark Mode" title="Toggle Night Vision (Dark Mode)">
+    <span class="theme-icon-container">
+      <i class="fa-solid fa-moon text-amber-500 text-sm"></i>
+    </span>
+    <span class="theme-text">Night Vision</span>
+    <span class="night-vision-pulse"></span>
+  </button>
 
   <script src="js/main.js"></script>
 </body>

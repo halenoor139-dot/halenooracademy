@@ -66,6 +66,7 @@ let isAudioPlaying = false;
 // DOM Initialization
 document.addEventListener("DOMContentLoaded", () => {
   setupNightVisionTheme();
+  setupFeaturedSlider();
   setupLanguageSwitcher();
   setupMobileMenu();
   setupCurrencySwitcher();
@@ -575,4 +576,104 @@ function setupNightVisionTheme() {
   });
 
   updateToggleButtons(isDark());
+}
+
+// Featured Courses Image Slider Controller
+function setupFeaturedSlider() {
+  const sliderWrap = document.getElementById('halenoor-slider-wrap');
+  if (!sliderWrap) return;
+
+  const slides = sliderWrap.querySelectorAll('.slider-slide');
+  const dots = sliderWrap.querySelectorAll('.slider-dot');
+  const prevBtn = document.getElementById('slider-prev-btn');
+  const nextBtn = document.getElementById('slider-next-btn');
+
+  if (!slides.length) return;
+
+  let currentIndex = 0;
+  let autoPlayTimer = null;
+  const slideInterval = 4500; // 4.5 seconds per slide
+
+  function showSlide(index) {
+    if (index < 0) index = slides.length - 1;
+    if (index >= slides.length) index = 0;
+    currentIndex = index;
+
+    slides.forEach((slide, i) => {
+      if (i === currentIndex) {
+        slide.classList.remove('opacity-0', 'pointer-events-none');
+        slide.classList.add('opacity-100');
+      } else {
+        slide.classList.remove('opacity-100');
+        slide.classList.add('opacity-0', 'pointer-events-none');
+      }
+    });
+
+    dots.forEach((dot, i) => {
+      if (i === currentIndex) {
+        dot.classList.remove('w-2.5', 'bg-slate-300', 'bg-slate-700');
+        dot.classList.add('w-8', 'bg-amber-400');
+      } else {
+        dot.classList.remove('w-8', 'bg-amber-400');
+        dot.classList.add('w-2.5', 'bg-slate-300');
+      }
+    });
+  }
+
+  function nextSlide() {
+    showSlide(currentIndex + 1);
+  }
+
+  function prevSlide() {
+    showSlide(currentIndex - 1);
+  }
+
+  function startAutoPlay() {
+    stopAutoPlay();
+    autoPlayTimer = setInterval(nextSlide, slideInterval);
+  }
+
+  function stopAutoPlay() {
+    if (autoPlayTimer) {
+      clearInterval(autoPlayTimer);
+      autoPlayTimer = null;
+    }
+  }
+
+  if (nextBtn) nextBtn.addEventListener('click', () => { nextSlide(); startAutoPlay(); });
+  if (prevBtn) prevBtn.addEventListener('click', () => { prevSlide(); startAutoPlay(); });
+
+  dots.forEach((dot, i) => {
+    dot.addEventListener('click', () => {
+      showSlide(i);
+      startAutoPlay();
+    });
+  });
+
+  // Pause on hover
+  sliderWrap.addEventListener('mouseenter', stopAutoPlay);
+  sliderWrap.addEventListener('mouseleave', startAutoPlay);
+
+  // Touch Swipe Support for Mobile
+  let touchStartX = 0;
+  let touchEndX = 0;
+
+  sliderWrap.addEventListener('touchstart', (e) => {
+    touchStartX = e.changedTouches[0].screenX;
+    stopAutoPlay();
+  }, { passive: true });
+
+  sliderWrap.addEventListener('touchend', (e) => {
+    touchEndX = e.changedTouches[0].screenX;
+    const diff = touchStartX - touchEndX;
+    if (Math.abs(diff) > 40) {
+      if (diff > 0) nextSlide();
+      else prevSlide();
+    }
+    startAutoPlay();
+  }, { passive: true });
+
+  // Initialize
+  showSlide(0);
+  startAutoPlay();
 }

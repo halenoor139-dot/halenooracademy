@@ -422,6 +422,93 @@
     </div>
   </section>
 
+  <!-- ================= FEATURED PROGRAMS SLIDER ================= -->
+  <section class="py-12 bg-emerald-950/20 border-b border-amber-500/15" id="course-slider-section">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <!-- Section Title -->
+      <div class="text-center mb-6">
+        <span class="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full text-xs font-bold bg-amber-400/20 text-amber-300 border border-amber-400/30 uppercase tracking-wider">
+          <i class="fa-solid fa-sparkles text-amber-400"></i> Featured Course Programs
+        </span>
+        <h2 class="text-2xl sm:text-3xl lg:text-4xl font-black text-slate-900 mt-2">
+          Explore Our <span class="text-gold-gradient">Specialized Classes</span>
+        </h2>
+        <p class="text-xs sm:text-sm text-slate-600 mt-1">
+          1-on-1 personalized Quran &amp; Islamic studies with certified tutors &bull; 3 Days Free Trial
+        </p>
+      </div>
+
+      <!-- Slider Container -->
+      <div class="relative group" id="halenoor-slider-wrap">
+        <div class="relative w-full overflow-hidden rounded-3xl shadow-2xl border-2 border-amber-400/60 bg-slate-950 aspect-[16/9] max-h-[520px]">
+          
+          <!-- Slides Track -->
+          <div id="slider-track" class="w-full h-full relative">
+            
+            <!-- Slide 1: Noorani Qaida -->
+            <div class="slider-slide absolute inset-0 opacity-100 transition-opacity duration-700 ease-in-out flex items-center justify-center bg-black" data-slide-index="0">
+              <img src="images/1.jpeg" alt="Noorani Qaida Class - Hale Noor Quran Academy" class="w-full h-full object-contain sm:object-cover">
+            </div>
+
+            <!-- Slide 2: Nazra Class -->
+            <div class="slider-slide absolute inset-0 opacity-0 transition-opacity duration-700 ease-in-out flex items-center justify-center bg-black pointer-events-none" data-slide-index="1">
+              <img src="images/3.jpeg" alt="Nazra Class - Read Quran with Correct Pronunciation" class="w-full h-full object-contain sm:object-cover">
+            </div>
+
+            <!-- Slide 3: Hifz e Quran -->
+            <div class="slider-slide absolute inset-0 opacity-0 transition-opacity duration-700 ease-in-out flex items-center justify-center bg-black pointer-events-none" data-slide-index="2">
+              <img src="images/4.jpeg" alt="Hifz e Quran Class - Memorize with Confidence" class="w-full h-full object-contain sm:object-cover">
+            </div>
+
+            <!-- Slide 4: Faham e Deen -->
+            <div class="slider-slide absolute inset-0 opacity-0 transition-opacity duration-700 ease-in-out flex items-center justify-center bg-black pointer-events-none" data-slide-index="3">
+              <img src="images/2.jpeg" alt="Faham e Deen Course - Understand Islam with Wisdom" class="w-full h-full object-contain sm:object-cover">
+            </div>
+
+            <!-- Slide 5: Academy Official Logo Emblem -->
+            <div class="slider-slide absolute inset-0 opacity-0 transition-opacity duration-700 ease-in-out flex items-center justify-center bg-slate-950 pointer-events-none p-4" data-slide-index="4">
+              <img src="images/logo.jpeg" alt="Hale Noor Path of Guidance Official Emblem" class="w-full h-full object-contain max-h-[460px]">
+            </div>
+
+          </div>
+
+          <!-- Left Navigation Arrow -->
+          <button id="slider-prev-btn" class="absolute left-3 sm:left-5 top-1/2 -translate-y-1/2 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-slate-950/70 hover:bg-amber-500 text-white hover:text-slate-950 border border-amber-400/50 backdrop-blur-md flex items-center justify-center text-sm sm:text-base transition-all duration-200 transform hover:scale-110 active:scale-95 shadow-xl z-20 focus:outline-none" aria-label="Previous Slide">
+            <i class="fa-solid fa-chevron-left"></i>
+          </button>
+
+          <!-- Right Navigation Arrow -->
+          <button id="slider-next-btn" class="absolute right-3 sm:right-5 top-1/2 -translate-y-1/2 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-slate-950/70 hover:bg-amber-500 text-white hover:text-slate-950 border border-amber-400/50 backdrop-blur-md flex items-center justify-center text-sm sm:text-base transition-all duration-200 transform hover:scale-110 active:scale-95 shadow-xl z-20 focus:outline-none" aria-label="Next Slide">
+            <i class="fa-solid fa-chevron-right"></i>
+          </button>
+
+        </div>
+
+        <!-- Indicator Dots -->
+        <div class="flex items-center justify-center gap-2.5 mt-4" id="slider-dots">
+          <button class="slider-dot w-8 h-2.5 rounded-full bg-amber-400 transition-all duration-300" data-dot-index="0" aria-label="Go to Slide 1"></button>
+          <button class="slider-dot w-2.5 h-2.5 rounded-full bg-slate-300 hover:bg-amber-300 transition-all duration-300" data-dot-index="1" aria-label="Go to Slide 2"></button>
+          <button class="slider-dot w-2.5 h-2.5 rounded-full bg-slate-300 hover:bg-amber-300 transition-all duration-300" data-dot-index="2" aria-label="Go to Slide 3"></button>
+          <button class="slider-dot w-2.5 h-2.5 rounded-full bg-slate-300 hover:bg-amber-300 transition-all duration-300" data-dot-index="3" aria-label="Go to Slide 4"></button>
+          <button class="slider-dot w-2.5 h-2.5 rounded-full bg-slate-300 hover:bg-amber-300 transition-all duration-300" data-dot-index="4" aria-label="Go to Slide 5"></button>
+        </div>
+
+        <!-- Quick Action Buttons under Slider -->
+        <div class="mt-4 flex flex-wrap items-center justify-center gap-3 text-center">
+          <button class="open-trial-modal px-6 py-2.5 rounded-xl bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-500 hover:to-amber-600 text-emerald-950 font-extrabold text-xs shadow-md transition transform hover:-translate-y-0.5">
+            <i class="fa-solid fa-calendar-check mr-1.5"></i> Book Free Trial for Selected Course
+          </button>
+          <a href="https://api.whatsapp.com/send?phone=923208040672&text=Assalam-o-Alaikum!%20I%20am%20interested%20in%20enrolling%20in%20your%20Quran%20courses." target="_blank" class="px-5 py-2.5 rounded-xl bg-emerald-800 hover:bg-emerald-900 text-white font-bold text-xs shadow-md transition flex items-center gap-1.5">
+            <i class="fa-brands fa-whatsapp text-emerald-400 text-sm"></i> WhatsApp Coordinator: 0320 8040672
+          </a>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
   <!-- ================= INTERACTIVE DAILY QURAN VERSE & AUDIO RECITER ================= -->
   <section class="py-12 bg-emerald-900/10 border-b border-amber-500/15">
     <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">

@@ -316,6 +316,17 @@ function initFreeTrialForm() {
         name, parentName, course, tutorGender, whatsapp, email
       });
       localStorage.setItem('halenoor_trial_submissions', JSON.stringify(submissions));
+
+      // Save automatically to Firebase Cloud Firestore
+      if (typeof window.saveTrialToFirestore === "function") {
+        window.saveTrialToFirestore({
+          name, parentName, course, tutorGender, whatsapp, email,
+          country: country || "",
+          city: city || "",
+          timezone: timezone || "",
+          preferredTime: preferredTime || ""
+        });
+      }
     } catch (err) {}
 
     // Open Success Modal with Action Buttons

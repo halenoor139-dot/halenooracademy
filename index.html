@@ -22,6 +22,20 @@
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
+    // Immediate Theme Initialization (prevents flash of unstyled light theme)
+    (function() {
+      try {
+        var saved = localStorage.getItem('halenoor_theme');
+        var prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+        if (saved === 'dark' || (!saved && prefersDark)) {
+          document.documentElement.classList.add('dark');
+        } else {
+          document.documentElement.classList.remove('dark');
+        }
+      } catch (e) {}
+    })();
+  </script>
+  <script>
     tailwind.config = {
       darkMode: 'class',
       theme: {
@@ -133,7 +147,15 @@
       </nav>
 
       <!-- CTA Buttons & Mobile Toggle -->
-      <div class="flex items-center gap-3">
+      <div class="flex items-center gap-2.5 sm:gap-3">
+        <!-- Night Vision / Dark Theme Toggle Button -->
+        <button type="button" class="theme-toggle-btn" aria-label="Toggle Night Vision / Dark Theme" title="Toggle Night Vision (Dark Mode)">
+          <span class="theme-icon-container">
+            <i class="fa-solid fa-moon text-amber-500"></i>
+          </span>
+          <span class="theme-text hidden sm:inline">Night Vision</span>
+        </button>
+
         <a href="#free-trial" class="hidden sm:inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-bold text-emerald-950 bg-gradient-to-r from-amber-400 via-amber-300 to-amber-400 hover:from-amber-300 hover:to-amber-400 shadow-md shadow-amber-400/30 transition transform hover:-translate-y-0.5 active:translate-y-0">
           <i class="fa-solid fa-graduation-cap"></i>
           <span>Book Free Trial</span>
@@ -178,7 +200,20 @@
       </nav>
     </div>
 
-    <div class="pt-6 border-t border-slate-100 flex flex-col gap-3">
+    <div class="pt-4 border-t border-slate-100 flex flex-col gap-3">
+      <!-- Mobile Night Vision Toggle -->
+      <div class="flex items-center justify-between p-3 rounded-xl bg-slate-100 border border-slate-200">
+        <span class="text-xs font-bold flex items-center gap-2 text-slate-800">
+          <i class="fa-solid fa-moon text-amber-500"></i> Night Vision Mode
+        </span>
+        <button type="button" class="theme-toggle-btn px-3 py-1.5 rounded-lg text-xs font-bold" aria-label="Toggle Night Vision">
+          <span class="theme-icon-container mr-1">
+            <i class="fa-solid fa-moon text-amber-500"></i>
+          </span>
+          <span class="mobile-theme-text">Night Vision 🌙</span>
+        </button>
+      </div>
+
       <a href="#free-trial" class="mobile-nav-link w-full py-3 text-center rounded-xl bg-amber-400 text-emerald-950 font-bold shadow-md hover:bg-amber-300 transition">
         <i class="fa-solid fa-calendar-check mr-2"></i> Book Free 3-Day Trial
       </a>
@@ -1519,6 +1554,15 @@
     <i class="fa-brands fa-whatsapp text-2xl"></i>
     <span class="font-bold text-sm hidden md:inline">Chat on WhatsApp</span>
   </a>
+
+  <!-- ================= FLOATING NIGHT VISION BUTTON ================= -->
+  <button type="button" class="floating-theme-toggle" aria-label="Toggle Night Vision / Dark Mode" title="Toggle Night Vision (Dark Mode)">
+    <span class="theme-icon-container">
+      <i class="fa-solid fa-moon text-amber-500 text-sm"></i>
+    </span>
+    <span class="theme-text">Night Vision</span>
+    <span class="night-vision-pulse"></span>
+  </button>
 
   <!-- ================= SYLLABUS MODAL ================= -->
   <div id="syllabus-modal" class="fixed inset-0 z-50 bg-slate-950/70 modal-backdrop hidden items-center justify-center p-4">

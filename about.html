@@ -15,6 +15,52 @@
   <meta property="og:image" content="assets/images/logo.png">
   <meta property="og:type" content="website">
   <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    // Immediate Theme Initialization (prevents flash of unstyled light theme)
+    (function() {
+      try {
+        var saved = localStorage.getItem('halenoor_theme');
+        var prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+        if (saved === 'dark' || (!saved && prefersDark)) {
+          document.documentElement.classList.add('dark');
+        } else {
+          document.documentElement.classList.remove('dark');
+        }
+      } catch (e) {}
+    })();
+  </script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            emerald: {
+              50: '#ecfdf5',
+              100: '#d1fae5',
+              200: '#a7f3d0',
+              600: '#059669',
+              700: '#047857',
+              800: '#065f46',
+              900: '#064e3b',
+              950: '#022c22',
+            },
+            gold: {
+              300: '#fde68a',
+              400: '#fbbf24',
+              500: '#f59e0b',
+              600: '#d97706',
+              700: '#b45309',
+            }
+          },
+          fontFamily: {
+            sans: ['Outfit', 'Plus Jakarta Sans', 'sans-serif'],
+            arabic: ['Amiri', 'serif'],
+          }
+        }
+      }
+    }
+  </script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <link rel="stylesheet" href="assets/css/style.css">
 </head>
@@ -65,7 +111,15 @@
           <a href="contact.html" class="hover:text-emerald-700 transition">Contact</a>
         </nav>
 
-        <div class="flex items-center gap-3">
+        <div class="flex items-center gap-2.5 sm:gap-3">
+          <!-- Night Vision / Dark Theme Toggle Button -->
+          <button type="button" class="theme-toggle-btn" aria-label="Toggle Night Vision / Dark Theme" title="Toggle Night Vision (Dark Mode)">
+            <span class="theme-icon-container">
+              <i class="fa-solid fa-moon text-amber-500"></i>
+            </span>
+            <span class="theme-text hidden sm:inline">Night Vision</span>
+          </button>
+
           <a href="index.html#free-trial" class="px-5 py-2.5 rounded-xl bg-gradient-to-r from-emerald-700 to-emerald-900 text-white font-semibold text-sm shadow hover:from-emerald-800 hover:to-emerald-950 transition">
             Book Free Trial
           </a>
@@ -189,6 +243,15 @@
       <i class="fa-brands fa-whatsapp text-3xl"></i>
     </a>
   </div>
+
+  <!-- Floating Night Vision Button -->
+  <button type="button" class="floating-theme-toggle" aria-label="Toggle Night Vision / Dark Mode" title="Toggle Night Vision (Dark Mode)">
+    <span class="theme-icon-container">
+      <i class="fa-solid fa-moon text-amber-500 text-sm"></i>
+    </span>
+    <span class="theme-text">Night Vision</span>
+    <span class="night-vision-pulse"></span>
+  </button>
 
   <script src="assets/js/main.js"></script>
 </body>

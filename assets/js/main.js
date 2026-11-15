@@ -152,6 +152,7 @@ const QURAN_RECITATIONS = [
 
 // Initialize on DOM load
 document.addEventListener('DOMContentLoaded', () => {
+  initNightVisionTheme();
   initCurrencySwitcher();
   initFeeCalculator();
   initFreeTrialForm();
@@ -600,4 +601,81 @@ function prefillTrialCourse(courseName) {
   if (trialSection) {
     trialSection.scrollIntoView({ behavior: 'smooth' });
   }
+}
+
+// 9. Night Vision / Dark Theme Controller
+function initNightVisionTheme() {
+  const root = document.documentElement;
+  const STORAGE_KEY = 'halenoor_theme';
+
+  function isDark() {
+    return root.classList.contains('dark');
+  }
+
+  function updateToggleButtons(darkActive) {
+    const toggles = document.querySelectorAll('.theme-toggle-btn, .floating-theme-toggle');
+    toggles.forEach(btn => {
+      btn.setAttribute('aria-pressed', darkActive ? 'true' : 'false');
+      btn.setAttribute('title', darkActive ? 'Switch to Day Light Mode' : 'Switch to Night Vision (Dark Mode)');
+      
+      const iconSpan = btn.querySelector('.theme-icon-container');
+      const textSpan = btn.querySelector('.theme-text');
+      const mobileTextSpan = btn.querySelector('.mobile-theme-text');
+
+      if (darkActive) {
+        if (iconSpan) {
+          iconSpan.innerHTML = '<i class="fa-solid fa-sun text-amber-400"></i>';
+        }
+        if (textSpan) {
+          textSpan.textContent = 'Day Mode';
+        }
+        if (mobileTextSpan) {
+          mobileTextSpan.textContent = 'Day Mode ☀️';
+        }
+      } else {
+        if (iconSpan) {
+          iconSpan.innerHTML = '<i class="fa-solid fa-moon text-amber-500"></i>';
+        }
+        if (textSpan) {
+          textSpan.textContent = 'Night Vision';
+        }
+        if (mobileTextSpan) {
+          mobileTextSpan.textContent = 'Night Vision 🌙';
+        }
+      }
+    });
+  }
+
+  function toggleNightVision() {
+    // Add smooth transition class
+    root.classList.add('theme-transitioning');
+
+    const willBeDark = !isDark();
+    if (willBeDark) {
+      root.classList.add('dark');
+      try { localStorage.setItem(STORAGE_KEY, 'dark'); } catch (e) {}
+    } else {
+      root.classList.remove('dark');
+      try { localStorage.setItem(STORAGE_KEY, 'light'); } catch (e) {}
+    }
+
+    updateToggleButtons(willBeDark);
+
+    // Remove transition helper after animation finishes
+    setTimeout(() => {
+      root.classList.remove('theme-transitioning');
+    }, 350);
+  }
+
+  // Bind all theme toggles
+  const toggles = document.querySelectorAll('.theme-toggle-btn, .floating-theme-toggle');
+  toggles.forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
+      toggleNightVision();
+    });
+  });
+
+  // Sync initial UI state based on current class
+  updateToggleButtons(isDark());
 }

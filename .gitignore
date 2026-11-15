@@ -1,0 +1,5 @@
+# Local/Temporary folders
+New folder/
+*.log
+.DS_Store
+Thumbs.db

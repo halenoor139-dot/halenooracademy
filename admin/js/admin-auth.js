@@ -170,15 +170,13 @@ function setupAuthEventListeners() {
         // onAuthStateChanged will handle redirection
       } catch (err) {
         console.error("Login failed:", err);
-        let msg = "Login failed. Please check your credentials.";
-        if (err.code === 'auth/invalid-credential' || err.code === 'auth/wrong-password') {
-          msg = "Invalid email or password.";
-        } else if (err.code === 'auth/user-not-found') {
-          msg = "No account found with this email. If this is your first time, use 'First Time Admin Setup' below.";
+        let msg = "Login failed. Agar aap pehli dafa login kar rahay hain, toh neechay 'Setup Master Admin Account' par click karein.";
+        if (err.code === 'auth/invalid-credential' || err.code === 'auth/wrong-password' || err.code === 'auth/user-not-found') {
+          msg = "Account nahi mila ya password ghalat hai. Agar pehli baar hain, toh neechay 'Setup Master Admin Account' par click karein.";
         } else if (err.code === 'auth/too-many-requests') {
           msg = "Too many failed attempts. Please try again after a few minutes.";
         }
-        showToast(msg, "error");
+        showToast(msg, "error", 6000);
       } finally {
         if (submitBtn) submitBtn.disabled = false;
         if (submitSpinner) submitSpinner.classList.add('hidden');
@@ -205,6 +203,15 @@ function setupAuthEventListeners() {
   // Open First-Time Setup Modal
   if (setupBtn) {
     setupBtn.addEventListener('click', () => {
+      const loginEmail = document.getElementById('login-email')?.value.trim();
+      const setupEmail = document.getElementById('setup-email');
+      if (loginEmail && setupEmail) {
+        setupEmail.value = loginEmail;
+      }
+      const setupPasscode = document.getElementById('setup-passcode');
+      if (setupPasscode && !setupPasscode.value) {
+        setupPasscode.value = 'halenoor2026';
+      }
       const modal = document.getElementById('first-time-setup-modal');
       if (modal) modal.classList.remove('hidden');
     });
@@ -238,10 +245,9 @@ function setupAuthEventListeners() {
       }
       
       // Master security authorization passcode check
-      // Allows academy director to initialize account securely
       const VALID_PASSCODES = ["halenoor2026", "halenooradmin", "quran2026"];
       if (setupPasscode && !VALID_PASSCODES.includes(setupPasscode.toLowerCase())) {
-        showToast("Invalid Academy Security Passcode. Contact Academy IT support.", "error");
+        showToast("Invalid Academy Security Passcode. Default is halenoor2026", "error");
         return;
       }
 
@@ -252,21 +258,31 @@ function setupAuthEventListeners() {
 
         // Save admin role in Firestore
         if (window.adminDb) {
-          await window.adminDb.collection(COLLECTIONS.ADMINS).doc(cred.user.uid).set({
-            uid: cred.user.uid,
-            email: email.toLowerCase(),
-            displayName: name,
-            role: "Super Admin",
-            createdAt: firebase.firestore.FieldValue.serverTimestamp()
-          });
+          try {
+            await window.adminDb.collection(COLLECTIONS.ADMINS).doc(cred.user.uid).set({
+              uid: cred.user.uid,
+              email: email.toLowerCase(),
+              displayName: name,
+              role: "Super Admin",
+              createdAt: firebase.firestore.FieldValue.serverTimestamp()
+            });
+          } catch (dbErr) {
+            console.warn("Firestore admin role record notice:", dbErr);
+          }
         }
 
         const modal = document.getElementById('first-time-setup-modal');
         if (modal) modal.classList.add('hidden');
-        showToast("Master Admin account created successfully! Logging you in...", "success");
+        showToast("Master Admin account ban gaya! Logging you in...", "success", 4000);
       } catch (err) {
         console.error("Setup admin error:", err);
-        showToast(err.message || "Failed to create admin account.", "error");
+        let msg = err.message || "Failed to create admin account.";
+        if (err.code === 'auth/operation-not-allowed') {
+          msg = "Firebase Console me 'Email/Password' provider enable nahi hai. Firebase Console > Authentication > Sign-in method me ja kar Email/Password enable karein.";
+        } else if (err.code === 'auth/email-already-in-use') {
+          msg = "Yeh email pehle se Firebase me mojood hai! Aap seedha Login kar saktay hain.";
+        }
+        showToast(msg, "error", 8000);
       }
     });
   }

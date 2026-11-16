@@ -161,6 +161,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initMobileMenu();
   initFAQAccordion();
   initSmoothScroll();
+  initFirebasePublicSync();
 });
 
 // 1. Currency Switcher
@@ -266,7 +267,7 @@ function initFreeTrialForm() {
     // Graceful fallback
   }
 
-  trialForm.addEventListener('submit', (e) => {
+  trialForm.addEventListener('submit', async (e) => {
     e.preventDefault();
 
     // Get input values
@@ -276,6 +277,8 @@ function initFreeTrialForm() {
     const course = document.getElementById('student-course')?.value || "Noorani Qaida";
     const tutorGender = document.querySelector('input[name="tutor-gender"]:checked')?.value || "Female Tutor Preferred";
     const country = document.getElementById('student-country')?.value.trim() || "USA / International";
+    const city = document.getElementById('student-city')?.value?.trim() || "";
+    const timezone = document.getElementById('student-timezone')?.value?.trim() || "";
     const whatsapp = document.getElementById('student-whatsapp')?.value.trim();
     const email = document.getElementById('student-email')?.value.trim();
     const preferredTime = document.getElementById('preferred-time')?.value || "Evening Slot";
@@ -319,15 +322,18 @@ function initFreeTrialForm() {
 
       // Save automatically to Firebase Cloud Firestore
       if (typeof window.saveTrialToFirestore === "function") {
-        window.saveTrialToFirestore({
-          name, parentName, course, tutorGender, whatsapp, email,
+        await window.saveTrialToFirestore({
+          name, parentName, age, course, tutorGender, whatsapp, email,
           country: country || "",
           city: city || "",
           timezone: timezone || "",
-          preferredTime: preferredTime || ""
+          preferredTime: preferredTime || "",
+          notes: notes !== "None" ? notes : ""
         });
       }
-    } catch (err) {}
+    } catch (err) {
+      console.warn("Trial submission notice:", err);
+    }
 
     // Open Success Modal with Action Buttons
     showSuccessModal(name, course, tutorGender, waUrl);
@@ -790,4 +796,219 @@ function setupFeaturedSlider() {
   // Initialize
   showSlide(0);
   startAutoPlay();
+}
+
+
+// =============================================================
+// 10. REAL-TIME FIREBASE SYNC WITH PUBLIC WEBSITE
+// =============================================================
+async function initFirebasePublicSync() {
+  // Sync Sliders
+  syncDynamicSliders();
+  // Sync Courses
+  syncDynamicCourses();
+  // Sync Testimonials
+  syncDynamicTestimonials();
+  // Sync Teachers
+  syncDynamicTeachers();
+  // Sync Gallery
+  syncDynamicGallery();
+
+  // Listen for real-time updates if halenoorDb is available
+  if (window.halenoorDb) {
+    try {
+      window.halenoorDb.collection("courses").onSnapshot(() => syncDynamicCourses(), () => {});
+      window.halenoorDb.collection("sliders").onSnapshot(() => syncDynamicSliders(), () => {});
+      window.halenoorDb.collection("testimonials").onSnapshot(() => syncDynamicTestimonials(), () => {});
+    } catch (e) {
+      console.warn("Real-time listener notice:", e);
+    }
+  }
+}
+
+// 1. Dynamic Sliders
+async function syncDynamicSliders() {
+  if (typeof window.fetchPublicSliders !== 'function') return;
+  const sliders = await window.fetchPublicSliders();
+  if (!sliders || !sliders.length) return;
+
+  const track = document.getElementById('slider-track');
+  const dotsContainer = document.getElementById('slider-dots');
+  if (!track || !dotsContainer) return;
+
+  track.innerHTML = sliders.map((s, idx) => `
+    <div class="slider-slide absolute inset-0 ${idx === 0 ? 'opacity-100' : 'opacity-0 pointer-events-none'} transition-opacity duration-700 ease-in-out flex items-center justify-center bg-black" data-slide-index="${idx}">
+      <img src="${s.imageUrl || 'assets/images/1.jpeg'}" alt="${s.title}" class="w-full h-full object-contain sm:object-cover">
+    </div>
+  `).join('');
+
+  dotsContainer.innerHTML = sliders.map((_, idx) => `
+    <button class="slider-dot ${idx === 0 ? 'w-8 bg-amber-400' : 'w-2.5 bg-slate-300 hover:bg-amber-300'} h-2.5 rounded-full transition-all duration-300" data-dot-index="${idx}" aria-label="Go to Slide ${idx + 1}"></button>
+  `).join('');
+
+  // Re-initialize slider carousel
+  setupFeaturedSlider();
+}
+
+// 2. Dynamic Courses
+async function syncDynamicCourses() {
+  if (typeof window.fetchPublicCourses !== 'function') return;
+  const courses = await window.fetchPublicCourses();
+  if (!courses || !courses.length) return;
+
+  // Update COURSE_SYLLABI dictionary so syllabus modal works for all dynamic courses
+  courses.forEach(c => {
+    COURSE_SYLLABI[c.id] = {
+      title: c.title,
+      arabicTitle: c.arabicTitle || '',
+      duration: c.duration || '2 - 4 Months',
+      target: c.targetAudience || 'Students of all ages',
+      classesPerWeek: c.classesPerWeek || '3 - 5 classes/week (30 mins each)',
+      levels: c.syllabusModules && c.syllabusModules.length ? c.syllabusModules : [
+        { level: "Module 1", desc: c.shortDescription || "Foundational concepts and practice." }
+      ],
+      prerequisites: c.prerequisites || 'None! Zero prior Arabic knowledge needed.',
+      includes: c.includes || ["1-on-1 Certified Tutor", "Interactive Digital Qaida PDF", "Daily Tajweed Correction", "Certificate of Completion"]
+    };
+  });
+
+  const coursesSection = document.getElementById('courses');
+  if (!coursesSection) return;
+  const grid = coursesSection.querySelector('.grid');
+  if (!grid) return;
+
+  grid.innerHTML = courses.map(course => {
+    return `
+      <div class="bg-white rounded-2xl p-7 border border-slate-200/80 shadow-sm hover:shadow-xl transition-all flex flex-col justify-between islamic-card group">
+        <div>
+          <div class="flex items-center justify-between mb-4">
+            <span class="w-12 h-12 rounded-xl bg-emerald-50 text-emerald-700 flex items-center justify-center text-xl font-bold group-hover:bg-emerald-600 group-hover:text-white transition">
+              <i class="${course.iconClass || 'fa-solid fa-book-open'}"></i>
+            </span>
+            <span class="text-xs font-bold px-2.5 py-1 rounded-full bg-amber-100 text-amber-800 border border-amber-200">
+              ${course.category || 'Specialized'}
+            </span>
+          </div>
+
+          <div class="font-arabic text-right text-emerald-800 text-lg font-bold">${course.arabicTitle || ''}</div>
+          <h3 class="text-xl font-bold text-slate-900 mb-2">${course.title}</h3>
+          <p class="text-sm text-slate-600 mb-5 leading-relaxed">
+            ${course.shortDescription || 'Learn with certified scholars in private 1-on-1 live interactive sessions.'}
+          </p>
+
+          <ul class="space-y-2 mb-6 text-xs text-slate-600">
+            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-600"></i> ${course.duration || 'Flexible Learning Pace'}</li>
+            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-600"></i> ${course.classesPerWeek || '3 - 5 classes/week (30 mins)'}</li>
+            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-600"></i> Certified Male &amp; Female Scholars</li>
+          </ul>
+        </div>
+
+        <div class="pt-5 border-t border-slate-100 flex items-center justify-between gap-3">
+          <button onclick="openSyllabusModal('${course.id}')" class="text-xs font-bold text-emerald-800 hover:text-emerald-950 underline transition">
+            <i class="fa-regular fa-file-lines mr-1"></i> View Syllabus
+          </button>
+          <button onclick="prefillTrialCourse('${course.title.replace(/'/g, "\\'")}')" class="px-4 py-2 rounded-lg bg-emerald-700 text-white font-bold text-xs hover:bg-emerald-800 transition">
+            Enroll Free Trial
+          </button>
+        </div>
+      </div>
+    `;
+  }).join('');
+
+  // Update Free Trial course dropdown options
+  const select = document.getElementById('student-course');
+  if (select) {
+    const currentVal = select.value;
+    select.innerHTML = courses.map(c => `<option value="${c.title}">${c.title}</option>`).join('');
+    if (currentVal) select.value = currentVal;
+  }
+}
+
+// 3. Dynamic Testimonials
+async function syncDynamicTestimonials() {
+  if (typeof window.fetchPublicTestimonials !== 'function') return;
+  const testimonials = await window.fetchPublicTestimonials();
+  if (!testimonials || !testimonials.length) return;
+
+  const testSection = document.querySelector('section.py-20.bg-white:has(.fa-star)');
+  if (!testSection) return;
+  const grid = testSection.querySelector('.grid');
+  if (!grid) return;
+
+  grid.innerHTML = testimonials.map(t => {
+    const stars = Array(Number(t.rating) || 5).fill('<i class="fa-solid fa-star"></i>').join('');
+    const initials = (t.clientName || 'P').substring(0, 2).toUpperCase();
+
+    return `
+      <div class="bg-stone-50 rounded-2xl p-7 border border-stone-200 flex flex-col justify-between">
+        <div>
+          <div class="flex items-center gap-1 text-amber-400 text-sm mb-4">
+            ${stars}
+          </div>
+          <p class="text-sm text-slate-700 leading-relaxed italic mb-6">
+            "${t.feedback}"
+          </p>
+        </div>
+        <div class="flex items-center gap-3 pt-4 border-t border-stone-200/80">
+          <div class="w-10 h-10 rounded-full bg-emerald-700 text-white font-bold flex items-center justify-center text-sm">
+            ${initials}
+          </div>
+          <div>
+            <h5 class="text-sm font-bold text-slate-900">${t.clientName}</h5>
+            <p class="text-xs text-slate-500">${t.location || 'Parent / Student'}</p>
+          </div>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+// 4. Dynamic Teachers Showcase
+async function syncDynamicTeachers() {
+  if (typeof window.fetchPublicTeachers !== 'function') return;
+  const teachers = await window.fetchPublicTeachers();
+  if (!teachers || !teachers.length) return;
+
+  const container = document.getElementById('teachers-showcase-container');
+  if (!container) return;
+
+  container.innerHTML = teachers.map(t => `
+    <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm hover:shadow-md transition text-center flex flex-col items-center">
+      <img src="${t.imageUrl || 'assets/images/logo.png'}" alt="${t.name}" class="w-20 h-20 rounded-full object-cover border-2 border-amber-400 shadow-md mb-3">
+      <h4 class="font-bold text-slate-900 text-base">${t.name}</h4>
+      <div class="font-arabic text-emerald-800 text-sm font-bold">${t.arabicTitle || ''}</div>
+      <span class="inline-block px-2.5 py-0.5 rounded-full text-xs font-semibold ${t.gender === 'Female' ? 'bg-pink-100 text-pink-800' : 'bg-blue-100 text-blue-800'} my-2">
+        ${t.gender === 'Female' ? 'Female Quran Tutor' : 'Male Scholar & Qari'}
+      </span>
+      <p class="text-xs text-slate-600 line-clamp-2 mb-3">${t.qualification || ''}</p>
+      <div class="text-[11px] font-semibold text-emerald-700 bg-emerald-50 px-3 py-1 rounded-full border border-emerald-200">
+        ${t.experience || 'Experienced Tutor'}
+      </div>
+    </div>
+  `).join('');
+}
+
+// 5. Dynamic Gallery Showcase
+async function syncDynamicGallery() {
+  if (typeof window.fetchPublicGallery !== 'function') return;
+  const items = await window.fetchPublicGallery();
+  if (!items || !items.length) return;
+
+  const container = document.getElementById('gallery-showcase-container');
+  if (!container) return;
+
+  container.innerHTML = items.map(item => `
+    <div class="bg-white rounded-2xl overflow-hidden border border-slate-200 shadow-sm group">
+      <div class="aspect-video bg-black overflow-hidden relative">
+        <img src="${item.imageUrl || 'assets/images/1.jpeg'}" alt="${item.title}" class="w-full h-full object-cover group-hover:scale-105 transition duration-300">
+        <span class="absolute top-2 left-2 text-[10px] font-bold px-2 py-0.5 rounded-full bg-slate-950/70 text-amber-300 backdrop-blur-sm">
+          ${item.category || 'Academy'}
+        </span>
+      </div>
+      <div class="p-3.5">
+        <h5 class="font-bold text-slate-900 text-xs truncate">${item.title}</h5>
+        <p class="text-[11px] text-slate-500 truncate mt-0.5">${item.description || ''}</p>
+      </div>
+    </div>
+  `).join('');
 }

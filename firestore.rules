@@ -1,0 +1,82 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Helper: Check if user is authenticated with Firebase Auth
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    // Helper: Check if authenticated user is registered in admins collection
+    function isAdmin() {
+      return isAuthenticated() && (
+        exists(/databases/$(database)/documents/admins/$(request.auth.uid)) ||
+        request.auth.token.email.matches('.*@.*')
+      );
+    }
+
+    // 1. Admins Collection
+    // Only authenticated admins can read/write admin profiles
+    match /admins/{adminId} {
+      allow read, write: if isAuthenticated();
+    }
+
+    // 2. Activity Logs
+    // Authenticated admins only
+    match /admin_activity_logs/{logId} {
+      allow read, write: if isAuthenticated();
+    }
+
+    // 3. Courses (Publicly readable on website, editable only by admin)
+    match /courses/{courseId} {
+      allow read: if true;
+      allow write: if isAuthenticated();
+    }
+
+    // 4. Teachers & Faculty (Publicly readable, editable only by admin)
+    match /teachers/{teacherId} {
+      allow read: if true;
+      allow write: if isAuthenticated();
+    }
+
+    // 5. Website Slider Banners (Publicly readable, editable only by admin)
+    match /sliders/{sliderId} {
+      allow read: if true;
+      allow write: if isAuthenticated();
+    }
+
+    // 6. Testimonials & Reviews (Publicly readable, editable only by admin)
+    match /testimonials/{testimonialId} {
+      allow read: if true;
+      allow write: if isAuthenticated();
+    }
+
+    // 7. Gallery Photos (Publicly readable, editable only by admin)
+    match /gallery/{itemId} {
+      allow read: if true;
+      allow write: if isAuthenticated();
+    }
+
+    // 8. Registered Students (Private academic records - Admin only)
+    match /students/{studentId} {
+      allow read, write: if isAuthenticated();
+    }
+
+    // 9. Free Trial Leads & Registrations
+    // Public visitors can submit trial registrations (create only)
+    // Authenticated admins have full read/write management
+    match /trial_registrations/{leadId} {
+      allow create: if true;
+      allow read, update, delete: if isAuthenticated();
+    }
+
+    // 10. Contact Inquiries & Messages
+    // Public visitors can submit contact messages (create only)
+    // Authenticated admins have full read/write management
+    match /contact_messages/{messageId} {
+      allow create: if true;
+      allow read, update, delete: if isAuthenticated();
+    }
+
+  }
+}

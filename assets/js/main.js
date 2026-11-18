@@ -8,10 +8,10 @@
 const ACADEMY_CONFIG = {
   name: "Hale Noor Online Quran Academy",
   arabicName: "هالة نور أكاديمية القرآن الكريم",
-  whatsappNumber: "923123456789", // Academy official WhatsApp (replace with client's actual number)
+  whatsappNumber: "923208040672", // Academy official WhatsApp (replace with client's actual number)
   email: "info@halenoorquran.com",
   admissionsEmail: "admissions@halenoorquran.com",
-  phoneDisplay: "+92 312 3456789"
+  phoneDisplay: "+92 320 8040672"
 };
 
 // Pricing Data across currencies
@@ -338,7 +338,92 @@ function initFreeTrialForm() {
     // Open Success Modal with Action Buttons
     showSuccessModal(name, course, tutorGender, waUrl);
   });
+
+  // Handle Quick Hero and Page trial forms (.trial-form-submit)
+  const quickTrialForms = document.querySelectorAll('.trial-form-submit');
+  quickTrialForms.forEach(form => {
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const formData = new FormData(form);
+      const name = (formData.get('studentName') || form.querySelector('input[name="studentName"]')?.value || '').trim();
+      const parentName = (formData.get('guardianName') || form.querySelector('input[name="guardianName"]')?.value || '').trim();
+      const whatsapp = (formData.get('phone') || form.querySelector('input[name="phone"]')?.value || '').trim();
+      const country = (formData.get('country') || form.querySelector('input[name="country"]')?.value || 'International').trim();
+      const course = formData.get('course') || form.querySelector('select[name="course"]')?.value || 'Quran Reading with Tajweed';
+      const tutorGender = formData.get('tutorType') || form.querySelector('select[name="tutorType"]')?.value || 'Female Tutor Preferred';
+      const preferredTime = formData.get('timing') || 'Evening';
+
+      if (!name || !whatsapp) {
+        alert("Please enter Student Name and WhatsApp Number.");
+        return;
+      }
+
+      const messageLines = [
+        *Assalamu Alaikum! New Free Trial Registration*,
+        *Academy:* Hale Noor Online Quran Academy,
+        ---------------------------------,
+        *Student Name:* ,
+        parentName ? *Guardian/Parent:*  : null,
+        *Selected Course:* ,
+        *Preferred Tutor:* ,
+        *Country / Location:* ,
+        *WhatsApp:* ,
+        *Preferred Time:* ,
+        ---------------------------------,
+        Please confirm my 3-Day Free Trial class timing. JazakAllah Khair!
+      ].filter(Boolean);
+
+      const waText = encodeURIComponent(messageLines.join('\n'));
+      const waUrl = https://api.whatsapp.com/send?phone=&text=;
+
+      try {
+        const submissions = JSON.parse(localStorage.getItem('halenoor_trial_submissions') || '[]');
+        submissions.push({ date: new Date().toISOString(), name, parentName, course, tutorGender, whatsapp });
+        localStorage.setItem('halenoor_trial_submissions', JSON.stringify(submissions));
+
+        if (typeof window.saveTrialToFirestore === "function") {
+          await window.saveTrialToFirestore({
+            name, parentName, course, tutorGender, whatsapp, country, preferredTime
+          });
+        }
+      } catch (err) {
+        console.warn("Trial submit error:", err);
+      }
+
+      showSuccessModal(name, course, tutorGender, waUrl);
+    });
+  });
 }
+
+// Global Hero Tab Switcher (Trial Form <-> Quran Player)
+window.switchHeroTab = function(tab) {
+  const trialBox = document.getElementById('hero-trial-box');
+  const playerBox = document.getElementById('hero-player-box');
+  const trialBtn = document.getElementById('tab-trial-btn');
+  const playerBtn = document.getElementById('tab-player-btn');
+
+  if (!trialBox || !playerBox) return;
+
+  if (tab === 'trial') {
+    trialBox.classList.remove('hidden');
+    playerBox.classList.add('hidden');
+    if (trialBtn) {
+      trialBtn.className = "flex-1 py-2 px-3 rounded-lg text-xs font-black transition bg-gradient-to-r from-amber-400 to-amber-500 text-emerald-950 shadow";
+    }
+    if (playerBtn) {
+      playerBtn.className = "flex-1 py-2 px-3 rounded-lg text-xs font-bold text-slate-600 hover:text-emerald-950 transition";
+    }
+  } else {
+    playerBox.classList.remove('hidden');
+    trialBox.classList.add('hidden');
+    if (playerBtn) {
+      playerBtn.className = "flex-1 py-2 px-3 rounded-lg text-xs font-black transition bg-gradient-to-r from-amber-400 to-amber-500 text-emerald-950 shadow";
+    }
+    if (trialBtn) {
+      trialBtn.className = "flex-1 py-2 px-3 rounded-lg text-xs font-bold text-slate-600 hover:text-emerald-950 transition";
+    }
+  }
+};
 
 function showSuccessModal(name, course, tutorGender, waUrl) {
   const modal = document.getElementById('success-modal');

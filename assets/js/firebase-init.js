@@ -2,12 +2,12 @@
  * Halenoor Quran Academy - Firebase Initialization & Public Site Sync Connector
  */
 const firebaseConfig = {
-  apiKey: "AIzaSyAsTVOoIKOtIK5AqiszWCpK_Gp35FUV60",
+  apiKey: "AIzaSyAstTv0oIK0t1K5AqiszwCgk_Gp35FUv60",
   authDomain: "halenoor-quran-academy-382f9.firebaseapp.com",
   projectId: "halenoor-quran-academy-382f9",
   storageBucket: "halenoor-quran-academy-382f9.firebasestorage.app",
-  messagingSenderId: "979848989887",
-  appId: "1:979848989887:web:70bc0e65b0787683efbd48a"
+  messagingSenderId: "979848909887",
+  appId: "1:979848909887:web:70b0e65b0787683efbd48a"
 };
 
 let halenoorDb = null;

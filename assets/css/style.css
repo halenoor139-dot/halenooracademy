@@ -1,5 +1,5 @@
 /* Hale Noor Online Quran Academy - Custom Styles */
-@import url('https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400;1,700&family=Outfit:wght@300;400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400;1,700&family=Noto+Nastaliq+Urdu:wght@400;600;700&family=Outfit:wght@300;400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
 
 :root {
   --primary-emerald: #064e3b;
@@ -524,7 +524,148 @@ html.dark .night-vision-pulse {
     padding: 0.75rem;
     border-radius: 9999px;
   }
-  .floating-theme-toggle .theme-text {
+  .floating-theme-toggle .theme-text,
+  .floating-theme-toggle .floating-theme-text {
     display: none;
+  }
+}
+
+/* ========================================================
+   DUAL DAY / NIGHT SEGMENTED SWITCHER & LANGUAGE SWITCHER
+   ======================================================== */
+
+.theme-toggle-btn {
+  background-color: #f1f5f9;
+  border-color: #cbd5e1;
+  transition: all 0.25s ease;
+}
+
+html.dark .theme-toggle-btn {
+  background-color: #0b221d !important;
+  border-color: #174e40 !important;
+}
+
+.theme-mode-day,
+.theme-mode-night {
+  cursor: pointer;
+  user-select: none;
+  color: #475569;
+  font-weight: 700;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.theme-mode-day:hover,
+.theme-mode-night:hover {
+  color: #064e3b;
+}
+
+html.dark .theme-mode-day,
+html.dark .theme-mode-night {
+  color: #94a3b8;
+}
+
+html.dark .theme-mode-day:hover,
+html.dark .theme-mode-night:hover {
+  color: #34d399;
+}
+
+.theme-mode-day.active-mode {
+  background-color: #ffffff;
+  color: #064e3b;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.15);
+  font-weight: 800;
+}
+
+html.dark .theme-mode-day.active-mode {
+  background-color: #0f332b;
+  color: #34d399;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
+}
+
+.theme-mode-night.active-mode {
+  background-color: #064e3b;
+  color: #fbbf24;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+  font-weight: 800;
+}
+
+html.dark .theme-mode-night.active-mode {
+  background-color: #065f46;
+  color: #fde68a;
+  box-shadow: 0 0 12px rgba(251, 191, 36, 0.35);
+}
+
+.lang-switcher-wrap {
+  transition: all 0.25s ease;
+}
+
+html.dark .lang-switcher-wrap {
+  background-color: #0b221d !important;
+  border-color: #174e40 !important;
+}
+
+.lang-btn {
+  cursor: pointer;
+  user-select: none;
+  color: #475569;
+  font-weight: 700;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.lang-btn:hover {
+  color: #064e3b;
+}
+
+html.dark .lang-btn {
+  color: #94a3b8;
+}
+
+html.dark .lang-btn:hover {
+  color: #34d399;
+}
+
+.lang-btn.active-lang {
+  background-color: #064e3b;
+  color: #fde68a;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+  font-weight: 800;
+}
+
+html.dark .lang-btn.active-lang {
+  background-color: #059669;
+  color: #ffffff;
+  box-shadow: 0 0 10px rgba(5, 150, 105, 0.4);
+}
+
+/* RTL and Urdu Typography */
+html[dir="rtl"], html.lang-ur {
+  direction: rtl;
+  text-align: right;
+}
+
+html[dir="rtl"] body,
+html.lang-ur body {
+  font-family: 'Noto Nastaliq Urdu', 'Amiri', 'Outfit', 'Plus Jakarta Sans', serif, sans-serif;
+  line-height: 1.85;
+}
+
+html[dir="rtl"] .floating-theme-toggle {
+  left: auto !important;
+  right: 1.5rem !important;
+}
+
+html[dir="rtl"] a[href*="wa.me"].fixed {
+  right: auto !important;
+  left: 1.5rem !important;
+}
+
+@media (max-width: 640px) {
+  html[dir="rtl"] .floating-theme-toggle {
+    left: auto !important;
+    right: 1.25rem !important;
+  }
+  html[dir="rtl"] a[href*="wa.me"].fixed {
+    right: auto !important;
+    left: 1.25rem !important;
   }
 }

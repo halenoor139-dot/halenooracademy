@@ -25,15 +25,26 @@
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
-    // Immediate Theme Initialization (prevents flash of unstyled light theme)
+    // Immediate Theme & Language Initialization (Defaults to Day Light Mode)
     (function() {
       try {
-        var saved = localStorage.getItem('halenoor_theme');
-        var prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-        if (saved === 'dark' || (!saved && prefersDark)) {
+        var savedTheme = localStorage.getItem('halenoor_theme');
+        // Default to Day Mode unless the user explicitly saved 'dark'
+        if (savedTheme === 'dark') {
           document.documentElement.classList.add('dark');
         } else {
           document.documentElement.classList.remove('dark');
+        }
+
+        var savedLang = localStorage.getItem('halenoor_lang');
+        if (savedLang === 'ur') {
+          document.documentElement.setAttribute('lang', 'ur');
+          document.documentElement.setAttribute('dir', 'rtl');
+          document.documentElement.classList.add('lang-ur');
+        } else {
+          document.documentElement.setAttribute('lang', 'en');
+          document.documentElement.setAttribute('dir', 'ltr');
+          document.documentElement.classList.remove('lang-ur');
         }
       } catch (e) {}
     })();
@@ -74,7 +85,7 @@
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Outfit:wght@300;400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Noto+Nastaliq+Urdu:wght@400;600;700&family=Outfit:wght@300;400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 
   <!-- Font Awesome 6 Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
@@ -89,28 +100,28 @@
     <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-2">
       <!-- Announcement -->
       <div class="flex items-center gap-2 text-center md:text-left">
-        <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-semibold bg-amber-500/20 text-amber-300 border border-amber-500/40">
+        <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-semibold bg-amber-500/20 text-amber-300 border border-amber-500/40" data-i18n="top_announcement">
           <i class="fa-solid fa-moon mr-1.5 text-xs text-amber-300"></i> New Admissions
         </span>
-        <span class="text-emerald-100 font-medium">
+        <span class="text-emerald-100 font-medium" data-i18n="top_announcement_text">
           Start Your <strong>3-Day Free Trial</strong> Today! Male &amp; Female Certified Tutors Available.
         </span>
       </div>
 
-      <!-- Quick Contact & Currency Switcher -->
-      <div class="flex items-center gap-4 text-xs">
+      <!-- Quick Contact, Currency Switcher & Language Switcher -->
+      <div class="flex items-center gap-3 sm:gap-4 text-xs">
         <a href="tel:03208040672" class="flex items-center gap-1.5 text-amber-300 hover:text-white transition">
           <i class="fa-solid fa-phone text-amber-400 text-xs"></i>
-          <span>Call: 0320 8040672</span>
+          <span data-i18n="top_call">Call: 0320 8040672</span>
         </a>
         <span class="text-emerald-800 hidden sm:inline">|</span>
         <a href="https://wa.me/923208040672?text=Assalamu%20Alaikum%20Hale%20Noor%20Academy%2C%20I%20want%20to%20book%20a%20free%20trial%20class." target="_blank" class="flex items-center gap-1.5 text-emerald-300 hover:text-white transition">
           <i class="fa-brands fa-whatsapp text-emerald-400 text-sm"></i>
-          <span>WhatsApp: +92 320 8040672</span>
+          <span data-i18n="top_whatsapp">WhatsApp: +92 320 8040672</span>
         </a>
         <span class="text-emerald-800 hidden sm:inline">|</span>
         <div class="flex items-center gap-1">
-          <label for="top-currency-select" class="text-emerald-300 hidden sm:inline"><i class="fa-solid fa-globe mr-1"></i>Currency:</label>
+          <label for="top-currency-select" class="text-emerald-300 hidden sm:inline"><i class="fa-solid fa-globe mr-1"></i><span data-i18n="top_currency">Currency:</span></label>
           <select id="top-currency-select" class="currency-selector bg-emerald-900 text-amber-300 font-bold text-xs py-1 px-2 rounded border border-emerald-700 focus:outline-none focus:ring-1 focus:ring-amber-400">
             <option value="USD">USD ($)</option>
             <option value="GBP">GBP (£)</option>
@@ -121,6 +132,12 @@
             <option value="AED">AED</option>
             <option value="SAR">SAR</option>
           </select>
+        </div>
+        <span class="text-emerald-800 hidden sm:inline">|</span>
+        <!-- Top Language Selector -->
+        <div class="lang-switcher-wrap flex items-center bg-emerald-900/90 rounded border border-emerald-700/80 p-0.5 text-xs font-bold select-none">
+          <button type="button" class="lang-btn lang-btn-en px-2 py-0.5 rounded text-[11px] text-emerald-200 transition" data-lang="en">EN</button>
+          <button type="button" class="lang-btn lang-btn-ur px-2 py-0.5 rounded text-[11px] font-arabic text-emerald-200 transition" data-lang="ur">اردو</button>
         </div>
       </div>
     </div>
@@ -143,30 +160,42 @@
       </a>
 
       <!-- Desktop Navigation Links -->
-      <nav class="hidden lg:flex items-center gap-7 text-sm font-semibold text-slate-700">
-        <a href="#home" class="hover:text-emerald-700 transition">Home</a>
-        <a href="#about" class="hover:text-emerald-700 transition">About Us</a>
-        <a href="#courses" class="hover:text-emerald-700 transition">Courses</a>
-        <a href="#why-us" class="hover:text-emerald-700 transition">Why Choose Us</a>
-        <a href="#pricing" class="hover:text-emerald-700 transition">Fee Plans</a>
-        <a href="#calculator" class="hover:text-emerald-700 transition">Calculator</a>
-        <a href="#faqs" class="hover:text-emerald-700 transition">FAQs</a>
-        <a href="#contact" class="hover:text-emerald-700 transition">Contact</a>
+      <nav class="hidden lg:flex items-center gap-6 text-sm font-semibold text-slate-700">
+        <a href="#courses" class="hover:text-emerald-700 transition" data-i18n="nav_courses">Courses</a>
+        <a href="#why-us" class="hover:text-emerald-700 transition" data-i18n="nav_why_us">Why Choose Us</a>
+        <a href="#pricing" class="hover:text-emerald-700 transition" data-i18n="nav_pricing">Fee Plans</a>
+        <a href="#calculator" class="hover:text-emerald-700 transition" data-i18n="nav_calculator">Calculator</a>
+        <a href="#faqs" class="hover:text-emerald-700 transition" data-i18n="nav_faqs">FAQs</a>
+        <a href="#contact" class="hover:text-emerald-700 transition" data-i18n="nav_contact">Contact</a>
+        <a href="/admin" class="text-xs px-2.5 py-1 rounded-lg bg-emerald-50 text-emerald-800 hover:bg-emerald-100 font-bold transition flex items-center gap-1 border border-emerald-200">
+          <i class="fa-solid fa-lock text-[10px]"></i>
+          <span data-i18n="nav_admin_portal">Admin Portal</span>
+        </a>
       </nav>
 
-      <!-- CTA Buttons & Mobile Toggle -->
-      <div class="flex items-center gap-2.5 sm:gap-3">
-        <!-- Night Vision / Dark Theme Toggle Button -->
-        <button type="button" class="theme-toggle-btn" aria-label="Toggle Night Vision / Dark Theme" title="Toggle Night Vision (Dark Mode)">
-          <span class="theme-icon-container">
-            <i class="fa-solid fa-moon text-amber-500"></i>
+      <!-- CTA Buttons & Controls -->
+      <div class="flex items-center gap-2 sm:gap-2.5">
+        <!-- Dual Day / Night Mode Segmented Switcher -->
+        <div class="theme-toggle-btn flex items-center bg-slate-100 p-0.5 rounded-xl border border-slate-200 cursor-pointer text-xs font-bold transition select-none" role="button" aria-label="Toggle Day / Night Mode" title="Switch Day / Night Mode">
+          <span class="theme-mode-day flex items-center gap-1 px-2.5 py-1 rounded-lg transition-all text-slate-700">
+            <i class="fa-solid fa-sun text-amber-500 text-xs"></i>
+            <span class="hidden sm:inline" data-i18n="theme_day">Day</span>
           </span>
-          <span class="theme-text hidden sm:inline">Night Vision</span>
-        </button>
+          <span class="theme-mode-night flex items-center gap-1 px-2.5 py-1 rounded-lg transition-all text-slate-700">
+            <i class="fa-solid fa-moon text-amber-400 text-xs"></i>
+            <span class="hidden sm:inline" data-i18n="theme_night">Night</span>
+          </span>
+        </div>
 
-        <a href="#free-trial" class="hidden sm:inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-bold text-emerald-950 bg-gradient-to-r from-amber-400 via-amber-300 to-amber-400 hover:from-amber-300 hover:to-amber-400 shadow-md shadow-amber-400/30 transition transform hover:-translate-y-0.5 active:translate-y-0">
+        <!-- Language Switcher (Desktop) -->
+        <div class="hidden sm:flex lang-switcher-wrap items-center bg-slate-100 p-0.5 rounded-xl border border-slate-200 text-xs font-bold select-none">
+          <button type="button" class="lang-btn lang-btn-en px-2.5 py-1 rounded-lg transition-all" data-lang="en">English</button>
+          <button type="button" class="lang-btn lang-btn-ur px-2.5 py-1 rounded-lg transition-all font-arabic text-xs" data-lang="ur">اردو</button>
+        </div>
+
+        <a href="#free-trial" class="hidden sm:inline-flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-bold text-emerald-950 bg-gradient-to-r from-amber-400 via-amber-300 to-amber-400 hover:from-amber-300 hover:to-amber-400 shadow-md shadow-amber-400/30 transition transform hover:-translate-y-0.5 active:translate-y-0">
           <i class="fa-solid fa-graduation-cap"></i>
-          <span>Book Free Trial</span>
+          <span data-i18n="nav_book_trial">Book Free Trial</span>
         </a>
 
         <!-- Mobile Menu Hamburger -->
@@ -196,34 +225,48 @@
       </div>
 
       <nav class="flex flex-col gap-3 py-6 text-base font-semibold text-slate-700">
-        <a href="#home" class="mobile-nav-link py-2 px-3 rounded-lg hover:bg-emerald-50 hover:text-emerald-800 transition">Home</a>
-        <a href="#about" class="mobile-nav-link py-2 px-3 rounded-lg hover:bg-emerald-50 hover:text-emerald-800 transition">About Academy</a>
-        <a href="#courses" class="mobile-nav-link py-2 px-3 rounded-lg hover:bg-emerald-50 hover:text-emerald-800 transition">Courses &amp; Syllabus</a>
-        <a href="#why-us" class="mobile-nav-link py-2 px-3 rounded-lg hover:bg-emerald-50 hover:text-emerald-800 transition">Why Choose Us</a>
-        <a href="#pricing" class="mobile-nav-link py-2 px-3 rounded-lg hover:bg-emerald-50 hover:text-emerald-800 transition">Fee Plans</a>
-        <a href="#calculator" class="mobile-nav-link py-2 px-3 rounded-lg hover:bg-emerald-50 hover:text-emerald-800 transition">Fee Calculator</a>
-        <a href="#recitation" class="mobile-nav-link py-2 px-3 rounded-lg hover:bg-emerald-50 hover:text-emerald-800 transition">Audio Recitation</a>
-        <a href="#faqs" class="mobile-nav-link py-2 px-3 rounded-lg hover:bg-emerald-50 hover:text-emerald-800 transition">FAQs</a>
-        <a href="#contact" class="mobile-nav-link py-2 px-3 rounded-lg hover:bg-emerald-50 hover:text-emerald-800 transition">Contact Us</a>
+        <a href="#courses" class="mobile-nav-link py-2 px-3 rounded-lg hover:bg-emerald-50 hover:text-emerald-800 transition" data-i18n="nav_courses">Courses &amp; Syllabus</a>
+        <a href="#why-us" class="mobile-nav-link py-2 px-3 rounded-lg hover:bg-emerald-50 hover:text-emerald-800 transition" data-i18n="nav_why_us">Why Choose Us</a>
+        <a href="#pricing" class="mobile-nav-link py-2 px-3 rounded-lg hover:bg-emerald-50 hover:text-emerald-800 transition" data-i18n="nav_pricing">Fee Plans</a>
+        <a href="#calculator" class="mobile-nav-link py-2 px-3 rounded-lg hover:bg-emerald-50 hover:text-emerald-800 transition" data-i18n="nav_calculator">Fee Calculator</a>
+        <a href="#faqs" class="mobile-nav-link py-2 px-3 rounded-lg hover:bg-emerald-50 hover:text-emerald-800 transition" data-i18n="nav_faqs">FAQs</a>
+        <a href="#contact" class="mobile-nav-link py-2 px-3 rounded-lg hover:bg-emerald-50 hover:text-emerald-800 transition" data-i18n="nav_contact">Contact Us</a>
+        <a href="/admin" class="mobile-nav-link py-2 px-3 rounded-lg bg-emerald-50 text-emerald-800 font-bold transition flex items-center gap-2">
+          <i class="fa-solid fa-lock text-xs"></i>
+          <span data-i18n="nav_admin_portal">Admin Portal</span>
+        </a>
       </nav>
     </div>
 
     <div class="pt-4 border-t border-slate-100 flex flex-col gap-3">
-      <!-- Mobile Night Vision Toggle -->
+      <!-- Mobile Language Switcher -->
       <div class="flex items-center justify-between p-3 rounded-xl bg-slate-100 border border-slate-200">
         <span class="text-xs font-bold flex items-center gap-2 text-slate-800">
-          <i class="fa-solid fa-moon text-amber-500"></i> Night Vision Mode
+          <i class="fa-solid fa-language text-emerald-700"></i> Language / زبان
         </span>
-        <button type="button" class="theme-toggle-btn px-3 py-1.5 rounded-lg text-xs font-bold" aria-label="Toggle Night Vision">
-          <span class="theme-icon-container mr-1">
-            <i class="fa-solid fa-moon text-amber-500"></i>
+        <div class="lang-switcher-wrap flex items-center bg-white p-0.5 rounded-lg border border-slate-300 text-xs font-bold">
+          <button type="button" class="lang-btn lang-btn-en px-2.5 py-1 rounded-md transition" data-lang="en">EN</button>
+          <button type="button" class="lang-btn lang-btn-ur px-2.5 py-1 rounded-md transition font-arabic text-xs" data-lang="ur">اردو</button>
+        </div>
+      </div>
+
+      <!-- Mobile Day / Night Mode Segmented Switcher -->
+      <div class="flex items-center justify-between p-3 rounded-xl bg-slate-100 border border-slate-200">
+        <span class="text-xs font-bold flex items-center gap-2 text-slate-800">
+          <i class="fa-solid fa-circle-half-stroke text-amber-500"></i> Day / Night Mode
+        </span>
+        <div class="theme-toggle-btn flex items-center bg-white p-0.5 rounded-lg border border-slate-300 text-xs font-bold cursor-pointer select-none">
+          <span class="theme-mode-day px-2 py-1 rounded-md transition flex items-center gap-1">
+            <i class="fa-solid fa-sun text-amber-500 text-xs"></i> <span data-i18n="theme_day">Day</span>
           </span>
-          <span class="mobile-theme-text">Night Vision 🌙</span>
-        </button>
+          <span class="theme-mode-night px-2 py-1 rounded-md transition flex items-center gap-1">
+            <i class="fa-solid fa-moon text-amber-400 text-xs"></i> <span data-i18n="theme_night">Night</span>
+          </span>
+        </div>
       </div>
 
       <a href="#free-trial" class="mobile-nav-link w-full py-3 text-center rounded-xl bg-amber-400 text-emerald-950 font-bold shadow-md hover:bg-amber-300 transition">
-        <i class="fa-solid fa-calendar-check mr-2"></i> Book Free 3-Day Trial
+        <i class="fa-solid fa-calendar-check mr-2"></i> <span data-i18n="nav_book_trial">Book Free 3-Day Trial</span>
       </a>
       <a href="https://wa.me/923208040672" target="_blank" class="w-full py-3 text-center rounded-xl bg-emerald-700 text-white font-bold hover:bg-emerald-800 transition flex items-center justify-center gap-2">
         <i class="fa-brands fa-whatsapp text-lg"></i> Direct WhatsApp
@@ -248,7 +291,7 @@
           <p class="font-arabic text-emerald-100 text-sm sm:text-base mt-1">
             «خَيْرُكُمْ مَنْ تَعَلَّمَ الْقُرْآنَ وَعَلَّمَهُ»
           </p>
-          <p class="text-[11px] sm:text-xs text-emerald-300 italic font-sans mt-0.5">
+          <p class="text-[11px] sm:text-xs text-emerald-300 italic font-sans mt-0.5" data-i18n="hadith_quote">
             "The best among you are those who learn the Quran and teach it." — Sahih Bukhari
           </p>
         </div>
@@ -261,14 +304,14 @@
           
           <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-400/30 text-xs sm:text-sm font-semibold mb-6">
             <span class="w-2 h-2 rounded-full bg-amber-400 animate-ping"></span>
-            <span>Worldwide Certified Online Quran Tutoring</span>
+            <span data-i18n="hero_badge">Worldwide Certified Online Quran Tutoring</span>
           </div>
 
           <h1 class="text-3xl sm:text-4xl md:text-5xl lg:text-5xl font-extrabold tracking-tight leading-tight text-white mb-6">
-            Learn the Holy Quran Online with <span class="text-amber-400 underline decoration-amber-400/40 decoration-4">Tajweed</span> from the Comfort of Your Home
+            <span data-i18n="hero_title_1">Learn the Holy Quran Online with</span> <span class="text-amber-400 underline decoration-amber-400/40 decoration-4" data-i18n="hero_title_tajweed">Tajweed</span> <span data-i18n="hero_title_2">from the Comfort of Your Home</span>
           </h1>
 
-          <p class="text-base sm:text-lg text-emerald-100/90 leading-relaxed max-w-2xl mx-auto lg:mx-0 mb-8 font-normal">
+          <p class="text-base sm:text-lg text-emerald-100/90 leading-relaxed max-w-2xl mx-auto lg:mx-0 mb-8 font-normal" data-i18n="hero_desc">
             Personalized <strong>1-on-1 Live Interactive Classes</strong> for kids and adults. Guided by certified Male &amp; dedicated <strong>Female Quran Tutors</strong>. Designed for families in the USA, UK, Canada, Australia, Europe, Gulf, and Pakistan.
           </p>
 
@@ -276,12 +319,12 @@
           <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 mb-10">
             <a href="#free-trial" class="w-full sm:w-auto px-8 py-4 rounded-xl text-base font-bold bg-gradient-to-r from-amber-400 via-amber-300 to-amber-500 text-emerald-950 shadow-xl shadow-amber-500/25 hover:from-amber-300 hover:to-amber-400 transition transform hover:-translate-y-1 text-center flex items-center justify-center gap-3">
               <i class="fa-solid fa-calendar-check text-lg"></i>
-              <span>Book 3 Days Free Trial</span>
+              <span data-i18n="hero_btn_trial">Book 3 Days Free Trial</span>
             </a>
             
             <a href="https://wa.me/923208040672?text=Assalamu%20Alaikum%20Hale%20Noor%20Academy%2C%20I%20am%20interested%20in%20online%20Quran%20classes." target="_blank" class="w-full sm:w-auto px-6 py-4 rounded-xl text-base font-bold bg-emerald-800/80 hover:bg-emerald-700/90 text-white border border-emerald-600/80 backdrop-blur-md transition flex items-center justify-center gap-2">
               <i class="fa-brands fa-whatsapp text-emerald-400 text-xl"></i>
-              <span>WhatsApp Admission Desk</span>
+              <span data-i18n="hero_btn_whatsapp">WhatsApp Admission Desk</span>
             </a>
           </div>
 
@@ -289,19 +332,19 @@
           <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 max-w-2xl mx-auto lg:mx-0">
             <div class="bg-emerald-900/60 border border-emerald-700/40 rounded-xl p-3 text-center">
               <p class="text-amber-300 font-extrabold text-lg sm:text-xl">500+</p>
-              <p class="text-[11px] sm:text-xs text-emerald-200">Active Students</p>
+              <p class="text-[11px] sm:text-xs text-emerald-200" data-i18n="hero_stat_students">Active Students</p>
             </div>
             <div class="bg-emerald-900/60 border border-emerald-700/40 rounded-xl p-3 text-center">
               <p class="text-amber-300 font-extrabold text-lg sm:text-xl">🧕 Female</p>
-              <p class="text-[11px] sm:text-xs text-emerald-200">Tutors Available</p>
+              <p class="text-[11px] sm:text-xs text-emerald-200" data-i18n="hero_stat_female">Tutors Available</p>
             </div>
             <div class="bg-emerald-900/60 border border-emerald-700/40 rounded-xl p-3 text-center">
               <p class="text-amber-300 font-extrabold text-lg sm:text-xl">24 / 7</p>
-              <p class="text-[11px] sm:text-xs text-emerald-200">Flexible Timings</p>
+              <p class="text-[11px] sm:text-xs text-emerald-200" data-i18n="hero_stat_timings">Flexible Timings</p>
             </div>
             <div class="bg-emerald-900/60 border border-emerald-700/40 rounded-xl p-3 text-center">
               <p class="text-amber-300 font-extrabold text-lg sm:text-xl">100% Free</p>
-              <p class="text-[11px] sm:text-xs text-emerald-200">3-Day Trial Class</p>
+              <p class="text-[11px] sm:text-xs text-emerald-200" data-i18n="hero_stat_trial">3-Day Trial Class</p>
             </div>
           </div>
 
@@ -314,10 +357,10 @@
             <!-- Top Mode Switcher Tabs -->
             <div class="flex items-center gap-1.5 p-1 bg-slate-100 rounded-xl mb-4 border border-slate-200">
               <button type="button" id="tab-trial-btn" onclick="switchHeroTab('trial')" class="flex-1 py-2 px-3 rounded-lg text-xs font-black transition bg-gradient-to-r from-amber-400 to-amber-500 text-emerald-950 shadow">
-                <i class="fa-solid fa-gift mr-1"></i> Book 3 Days Free Trial
+                <i class="fa-solid fa-gift mr-1"></i> <span data-i18n="hero_tab_trial">Book 3 Days Free Trial</span>
               </button>
               <button type="button" id="tab-player-btn" onclick="switchHeroTab('player')" class="flex-1 py-2 px-3 rounded-lg text-xs font-bold text-slate-600 hover:text-emerald-950 transition">
-                <i class="fa-solid fa-play mr-1"></i> Quran Player
+                <i class="fa-solid fa-play mr-1"></i> <span data-i18n="hero_tab_player">Quran Player</span>
               </button>
             </div>
 
@@ -326,77 +369,77 @@
               <div class="flex items-center justify-between mb-3">
                 <div>
                   <span class="inline-flex items-center gap-1 text-[10px] font-extrabold uppercase tracking-wider text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">
-                    <i class="fa-solid fa-star text-amber-500"></i> 100% Free Trial
+                    <i class="fa-solid fa-star text-amber-500"></i> <span data-i18n="hero_card_tag">100% Free Trial</span>
                   </span>
-                  <h3 class="text-xl sm:text-2xl font-black text-slate-900 mt-1">Book 3 Days Free Trial</h3>
-                  <p class="text-xs text-slate-500">Take 3 live 1-on-1 trial classes with certified tutors before paying any fee.</p>
+                  <h3 class="text-xl sm:text-2xl font-black text-slate-900 mt-1" data-i18n="hero_card_title">Book 3 Days Free Trial</h3>
+                  <p class="text-xs text-slate-500" data-i18n="hero_card_sub">Take 3 live 1-on-1 trial classes with certified tutors before paying any fee.</p>
                 </div>
               </div>
 
               <!-- Quick Free Trial Form -->
               <form class="trial-form-submit space-y-3">
                 <div>
-                  <label class="block text-[11px] font-bold text-slate-700 uppercase tracking-wider mb-1">Student's Full Name *</label>
+                  <label class="block text-[11px] font-bold text-slate-700 uppercase tracking-wider mb-1" data-i18n="form_lbl_name">Student's Full Name *</label>
                   <div class="relative">
                     <span class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
                       <i class="fa-regular fa-user text-xs"></i>
                     </span>
-                    <input type="text" name="studentName" required placeholder="e.g. Ibrahim / Ayesha Khan" class="w-full pl-8 pr-3 py-2 text-xs rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-emerald-700 bg-slate-50">
+                    <input type="text" name="studentName" required placeholder="e.g. Ibrahim / Ayesha Khan" data-i18n-placeholder="form_ph_name" class="w-full pl-8 pr-3 py-2 text-xs rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-emerald-700 bg-slate-50">
                   </div>
                 </div>
 
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
                   <div>
-                    <label class="block text-[11px] font-bold text-slate-700 uppercase tracking-wider mb-1">WhatsApp / Phone *</label>
+                    <label class="block text-[11px] font-bold text-slate-700 uppercase tracking-wider mb-1" data-i18n="form_lbl_phone">WhatsApp / Phone *</label>
                     <div class="relative">
                       <span class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
                         <i class="fa-brands fa-whatsapp text-xs text-emerald-600"></i>
                       </span>
-                      <input type="tel" name="phone" required placeholder="+92 320 8040672" class="w-full pl-8 pr-3 py-2 text-xs rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-emerald-700 bg-slate-50">
+                      <input type="tel" name="phone" required placeholder="+92 320 8040672" data-i18n-placeholder="form_ph_phone" class="w-full pl-8 pr-3 py-2 text-xs rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-emerald-700 bg-slate-50">
                     </div>
                   </div>
                   <div>
-                    <label class="block text-[11px] font-bold text-slate-700 uppercase tracking-wider mb-1">Country / City *</label>
+                    <label class="block text-[11px] font-bold text-slate-700 uppercase tracking-wider mb-1" data-i18n="form_lbl_country">Country / City *</label>
                     <div class="relative">
                       <span class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
                         <i class="fa-solid fa-location-dot text-xs"></i>
                       </span>
-                      <input type="text" name="country" required placeholder="USA, UK, Pakistan..." class="w-full pl-8 pr-3 py-2 text-xs rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-emerald-700 bg-slate-50">
+                      <input type="text" name="country" required placeholder="USA, UK, Pakistan..." data-i18n-placeholder="form_ph_country" class="w-full pl-8 pr-3 py-2 text-xs rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-emerald-700 bg-slate-50">
                     </div>
                   </div>
                 </div>
 
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
                   <div>
-                    <label class="block text-[11px] font-bold text-slate-700 uppercase tracking-wider mb-1">Select Course *</label>
+                    <label class="block text-[11px] font-bold text-slate-700 uppercase tracking-wider mb-1" data-i18n="form_lbl_course">Select Course *</label>
                     <select name="course" class="w-full px-2.5 py-2 text-xs rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-emerald-700 bg-slate-50 text-slate-800">
-                      <option value="Noorani Qaida for Beginners">Noorani Qaida (Beginners &amp; Kids)</option>
-                      <option value="Quran Reading with Tajweed" selected>Quran Reading with Tajweed</option>
-                      <option value="Hifz-ul-Quran (Memorization)">Hifz-ul-Quran (Memorization)</option>
-                      <option value="Quran Translation &amp; Tafseer">Quran Translation &amp; Tafseer</option>
-                      <option value="Islamic Studies for Kids">Islamic Studies &amp; Daily Duas</option>
-                      <option value="Quranic Arabic &amp; Grammar">Quranic Arabic &amp; Grammar</option>
+                      <option value="Noorani Qaida for Beginners" data-i18n="course_opt_1">Noorani Qaida (Beginners &amp; Kids)</option>
+                      <option value="Quran Reading with Tajweed" selected data-i18n="course_opt_2">Quran Reading with Tajweed</option>
+                      <option value="Hifz-ul-Quran (Memorization)" data-i18n="course_opt_3">Hifz-ul-Quran (Memorization)</option>
+                      <option value="Quran Translation &amp; Tafseer" data-i18n="course_opt_4">Quran Translation &amp; Tafseer</option>
+                      <option value="Islamic Studies for Kids" data-i18n="course_opt_5">Islamic Studies &amp; Daily Duas</option>
+                      <option value="Quranic Arabic &amp; Grammar" data-i18n="course_opt_6">Quranic Arabic &amp; Grammar</option>
                     </select>
                   </div>
                   <div>
-                    <label class="block text-[11px] font-bold text-slate-700 uppercase tracking-wider mb-1">Tutor Preference</label>
+                    <label class="block text-[11px] font-bold text-slate-700 uppercase tracking-wider mb-1" data-i18n="form_lbl_tutor">Tutor Preference</label>
                     <select name="tutorType" class="w-full px-2.5 py-2 text-xs rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-emerald-700 bg-slate-50 text-slate-800">
-                      <option value="Female Tutor Preferred">🧕 Female Quran Tutor</option>
-                      <option value="Male Tutor (Hafiz/Scholar)">🧔 Male Tutor (Hafiz / Scholar)</option>
-                      <option value="Any Qualified Tutor">Any Qualified Tutor</option>
+                      <option value="Female Tutor Preferred" data-i18n="tutor_opt_female">🧕 Female Quran Tutor</option>
+                      <option value="Male Tutor (Hafiz/Scholar)" data-i18n="tutor_opt_male">🧔 Male Tutor (Hafiz / Scholar)</option>
+                      <option value="Any Qualified Tutor" data-i18n="tutor_opt_any">Any Qualified Tutor</option>
                     </select>
                   </div>
                 </div>
 
                 <button type="submit" class="w-full py-3 rounded-xl bg-gradient-to-r from-amber-400 via-amber-300 to-amber-500 hover:from-amber-300 hover:to-amber-400 text-emerald-950 font-black text-xs uppercase tracking-wider shadow-lg transition transform hover:-translate-y-0.5 flex items-center justify-center gap-2">
                   <i class="fa-solid fa-calendar-check text-sm"></i>
-                  <span>Book 3 Days Free Trial Now</span>
+                  <span data-i18n="form_btn_submit_short">Book 3 Days Free Trial Now</span>
                 </button>
 
                 <div class="pt-2 border-t border-slate-200 flex items-center justify-between text-[10px] text-slate-500 font-medium">
-                  <span class="flex items-center gap-1"><i class="fa-solid fa-check text-emerald-600"></i> No Credit Card</span>
-                  <span class="flex items-center gap-1"><i class="fa-solid fa-check text-emerald-600"></i> Cancel Anytime</span>
-                  <span class="flex items-center gap-1"><i class="fa-solid fa-check text-emerald-600"></i> 100% Free</span>
+                  <span class="flex items-center gap-1"><i class="fa-solid fa-check text-emerald-600"></i> <span data-i18n="form_guar_card">No Credit Card</span></span>
+                  <span class="flex items-center gap-1"><i class="fa-solid fa-check text-emerald-600"></i> <span data-i18n="form_guar_cancel">Cancel Anytime</span></span>
+                  <span class="flex items-center gap-1"><i class="fa-solid fa-check text-emerald-600"></i> <span data-i18n="form_guar_free">100% Free</span></span>
                 </div>
               </form>
             </div>
@@ -469,12 +512,12 @@
       <!-- Section Title -->
       <div class="text-center mb-6">
         <span class="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full text-xs font-bold bg-amber-400/20 text-amber-300 border border-amber-400/30 uppercase tracking-wider">
-          <i class="fa-solid fa-sparkles text-amber-400"></i> Featured Course Programs
+          <i class="fa-solid fa-sparkles text-amber-400"></i> <span data-i18n="slider_badge">Featured Course Programs</span>
         </span>
-        <h2 class="text-2xl sm:text-3xl lg:text-4xl font-black text-slate-900 mt-2">
+        <h2 class="text-2xl sm:text-3xl lg:text-4xl font-black text-slate-900 mt-2" data-i18n="slider_heading">
           Explore Our <span class="text-gold-gradient">Specialized Classes</span>
         </h2>
-        <p class="text-xs sm:text-sm text-slate-600 mt-1">
+        <p class="text-xs sm:text-sm text-slate-600 mt-1" data-i18n="slider_sub">
           1-on-1 personalized Quran &amp; Islamic studies with certified tutors &bull; 3 Days Free Trial
         </p>
       </div>
@@ -537,10 +580,10 @@
         <!-- Quick Action Buttons under Slider -->
         <div class="mt-4 flex flex-wrap items-center justify-center gap-3 text-center">
           <a href="#free-trial" class="px-6 py-2.5 rounded-xl bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-500 hover:to-amber-600 text-emerald-950 font-extrabold text-xs shadow-md transition transform hover:-translate-y-0.5">
-            <i class="fa-solid fa-calendar-check mr-1.5"></i> Book Free Trial for Selected Course
+            <i class="fa-solid fa-calendar-check mr-1.5"></i> <span data-i18n="slider_btn_trial">Book Free Trial for Selected Course</span>
           </a>
           <a href="https://wa.me/923208040672?text=Assalam-o-Alaikum!%20I%20am%20interested%20in%20enrolling%20in%20your%20Quran%20courses." target="_blank" class="px-5 py-2.5 rounded-xl bg-emerald-800 hover:bg-emerald-900 text-white font-bold text-xs shadow-md transition flex items-center gap-1.5">
-            <i class="fa-brands fa-whatsapp text-emerald-400 text-sm"></i> WhatsApp Coordinator: 0320 8040672
+            <i class="fa-brands fa-whatsapp text-emerald-400 text-sm"></i> <span data-i18n="slider_btn_whatsapp">WhatsApp Coordinator: 0320 8040672</span>
           </a>
         </div>
 
@@ -565,13 +608,13 @@
               <div class="flex items-center gap-4 mb-6">
                 <img src="assets/images/logo.png" alt="Hale Noor Academy Logo" class="w-20 h-20 rounded-full object-cover border-2 border-amber-400 shadow-xl shadow-amber-500/20">
                 <div>
-                  <span class="inline-block px-3 py-1 rounded-full text-xs font-bold bg-amber-400/20 text-amber-300 border border-amber-400/30 mb-1.5">
+                  <span class="inline-block px-3 py-1 rounded-full text-xs font-bold bg-amber-400/20 text-amber-300 border border-amber-400/30 mb-1.5" data-i18n="about_badge">
                     About Hale Noor
                   </span>
-                  <h3 class="text-xl font-extrabold text-white leading-tight">
+                  <h3 class="text-xl font-extrabold text-white leading-tight" data-i18n="about_card_title">
                     Path of Guidance
                   </h3>
-                  <p class="text-xs text-emerald-200 mt-0.5">Illuminating Hearts with Quranic Light</p>
+                  <p class="text-xs text-emerald-200 mt-0.5" data-i18n="about_card_sub">Illuminating Hearts with Quranic Light</p>
                 </div>
               </div>
 
@@ -579,16 +622,16 @@
                 <div class="flex items-center gap-3 bg-emerald-950/50 p-2.5 rounded-xl border border-emerald-700/50">
                   <i class="fa-solid fa-user-check text-amber-400 text-lg"></i>
                   <div>
-                    <h5 class="text-xs font-bold text-white">Certified Qaris &amp; Huffaz</h5>
-                    <p class="text-[11px] text-emerald-200">Sanad holders from recognized Islamic boards</p>
+                    <h5 class="text-xs font-bold text-white" data-i18n="about_card_feat1_title">Certified Qaris &amp; Huffaz</h5>
+                    <p class="text-[11px] text-emerald-200" data-i18n="about_card_feat1_desc">Sanad holders from recognized Islamic boards</p>
                   </div>
                 </div>
 
                 <div class="flex items-center gap-3 bg-emerald-950/50 p-2.5 rounded-xl border border-emerald-700/50">
                   <i class="fa-solid fa-person-breastfeeding text-amber-400 text-lg"></i>
                   <div>
-                    <h5 class="text-xs font-bold text-white">Kids-Friendly Pedagogy</h5>
-                    <p class="text-[11px] text-emerald-200">Patient, nurturing, and engaging teaching</p>
+                    <h5 class="text-xs font-bold text-white" data-i18n="about_card_feat2_title">Kids-Friendly Pedagogy</h5>
+                    <p class="text-[11px] text-emerald-200" data-i18n="about_card_feat2_desc">Patient, nurturing, and engaging teaching</p>
                   </div>
                 </div>
               </div>
@@ -615,18 +658,18 @@
         <!-- About Description -->
         <div class="lg:col-span-7">
           <div class="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-emerald-50 text-emerald-800 font-bold text-xs uppercase tracking-wider mb-3">
-            <i class="fa-solid fa-mosque"></i> Welcome to Hale Noor Quran Academy
+            <i class="fa-solid fa-mosque"></i> <span data-i18n="about_welcome">Welcome to Hale Noor Quran Academy</span>
           </div>
 
-          <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight leading-tight mb-6">
+          <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight leading-tight mb-6" data-i18n="about_heading">
             Empowering Muslim Families Worldwide to Connect with the Words of Allah
           </h2>
 
-          <p class="text-base text-slate-600 leading-relaxed mb-6">
+          <p class="text-base text-slate-600 leading-relaxed mb-6" data-i18n="about_p1">
             At <strong>Hale Noor Online Quran Academy</strong> (ہالہ نور آن لائن اکیڈمی), our sacred mission is to provide accessible, high-standard Quranic education to children, youth, and adults across the globe. Living in non-Muslim countries often makes it difficult to find qualified, fluent, and caring Quran teachers. We bridge this distance directly into your living room through secure, live, one-on-one sessions.
           </p>
 
-          <p class="text-base text-slate-600 leading-relaxed mb-8">
+          <p class="text-base text-slate-600 leading-relaxed mb-8" data-i18n="about_p2">
             Whether your child is starting their first Arabic letters in <strong>Noorani Qaida</strong>, seeking melodious fluency in <strong>Tajweed</strong>, embarking on the noble journey of <strong>Hifz</strong>, or an adult wanting to understand Quran with translation and Tafseer — our certified faculty guides you at your own pace.
           </p>
 
@@ -635,43 +678,43 @@
             <div class="flex items-start gap-3">
               <span class="w-6 h-6 rounded-full bg-emerald-100 text-emerald-800 flex items-center justify-center text-xs mt-0.5 font-bold">✓</span>
               <div>
-                <h4 class="text-sm font-bold text-slate-800">100% 1-on-1 Focused Classes</h4>
-                <p class="text-xs text-slate-500">No group chaos. Complete teacher attention on your child.</p>
+                <h4 class="text-sm font-bold text-slate-800" data-i18n="about_f1_title">100% 1-on-1 Focused Classes</h4>
+                <p class="text-xs text-slate-500" data-i18n="about_f1_desc">No group chaos. Complete teacher attention on your child.</p>
               </div>
             </div>
 
             <div class="flex items-start gap-3">
               <span class="w-6 h-6 rounded-full bg-emerald-100 text-emerald-800 flex items-center justify-center text-xs mt-0.5 font-bold">✓</span>
               <div>
-                <h4 class="text-sm font-bold text-slate-800">Female Tutors for Sisters &amp; Girls</h4>
-                <p class="text-xs text-slate-500">Dedicated female teachers for a safe &amp; comfortable environment.</p>
+                <h4 class="text-sm font-bold text-slate-800" data-i18n="about_f2_title">Female Tutors for Sisters &amp; Girls</h4>
+                <p class="text-xs text-slate-500" data-i18n="about_f2_desc">Dedicated female teachers for a safe &amp; comfortable environment.</p>
               </div>
             </div>
 
             <div class="flex items-start gap-3">
               <span class="w-6 h-6 rounded-full bg-emerald-100 text-emerald-800 flex items-center justify-center text-xs mt-0.5 font-bold">✓</span>
               <div>
-                <h4 class="text-sm font-bold text-slate-800">Monthly Performance Reports</h4>
-                <p class="text-xs text-slate-500">Track Makharij, revision pace, and Tajweed accuracy.</p>
+                <h4 class="text-sm font-bold text-slate-800" data-i18n="about_f3_title">Monthly Performance Reports</h4>
+                <p class="text-xs text-slate-500" data-i18n="about_f3_desc">Track Makharij, revision pace, and Tajweed accuracy.</p>
               </div>
             </div>
 
             <div class="flex items-start gap-3">
               <span class="w-6 h-6 rounded-full bg-emerald-100 text-emerald-800 flex items-center justify-center text-xs mt-0.5 font-bold">✓</span>
               <div>
-                <h4 class="text-sm font-bold text-slate-800">Flexible Rescheduling</h4>
-                <p class="text-xs text-slate-500">Makeup classes available if you need to travel or miss a slot.</p>
+                <h4 class="text-sm font-bold text-slate-800" data-i18n="about_f4_title">Flexible Rescheduling</h4>
+                <p class="text-xs text-slate-500" data-i18n="about_f4_desc">Makeup classes available if you need to travel or miss a slot.</p>
               </div>
             </div>
           </div>
 
           <div class="flex flex-wrap items-center gap-4">
             <a href="#courses" class="px-6 py-3 rounded-xl bg-emerald-800 text-white font-bold text-sm hover:bg-emerald-700 transition flex items-center gap-2">
-              <span>Explore All Courses</span>
+              <span data-i18n="about_btn_courses">Explore All Courses</span>
               <i class="fa-solid fa-arrow-right text-xs"></i>
             </a>
             <a href="about.html" class="px-6 py-3 rounded-xl bg-amber-50 text-amber-900 border border-amber-200 font-bold text-sm hover:bg-amber-100 transition flex items-center gap-2">
-              <span>Read Full Academy Story</span>
+              <span data-i18n="about_btn_story">Read Full Academy Story</span>
               <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
             </a>
           </div>
@@ -689,13 +732,13 @@
       
       <!-- Section Header -->
       <div class="text-center max-w-3xl mx-auto mb-16">
-        <span class="inline-block px-3 py-1 rounded-md bg-emerald-100 text-emerald-800 font-bold text-xs uppercase tracking-wider mb-3">
+        <span class="inline-block px-3 py-1 rounded-md bg-emerald-100 text-emerald-800 font-bold text-xs uppercase tracking-wider mb-3" data-i18n="courses_badge">
           Curriculum &amp; Courses
         </span>
-        <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight leading-tight">
+        <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight leading-tight" data-i18n="courses_heading">
           Comprehensive Quranic Courses for All Ages
         </h2>
-        <p class="text-base text-slate-600 mt-4">
+        <p class="text-base text-slate-600 mt-4" data-i18n="courses_sub">
           Structured step-by-step learning path from basic Arabic letters to advanced Tajweed, Hifz, and Tafseer. Click <strong>"View Syllabus"</strong> for module breakdowns.
         </p>
       </div>
@@ -716,8 +759,8 @@
             </div>
 
             <div class="font-arabic text-right text-emerald-800 text-lg font-bold">القاعدة النورانية</div>
-            <h3 class="text-xl font-bold text-slate-900 mb-2">Noorani Qaida with Tajweed</h3>
-            <p class="text-sm text-slate-600 mb-5 leading-relaxed">
+            <h3 class="text-xl font-bold text-slate-900 mb-2" data-i18n="course_1_title">Noorani Qaida with Tajweed</h3>
+            <p class="text-sm text-slate-600 mb-5 leading-relaxed" data-i18n="course_1_desc">
               The essential first foundation. Master Arabic alphabet recognition, correct Makharij (pronunciation points), Harakaat, Tanween, and Sukoon.
             </p>
 
@@ -730,9 +773,9 @@
 
           <div class="pt-5 border-t border-slate-100 flex items-center justify-between gap-3">
             <button onclick="openSyllabusModal('qaida')" class="text-xs font-bold text-emerald-800 hover:text-emerald-950 underline transition">
-              <i class="fa-regular fa-file-lines mr-1"></i> View Syllabus
+              <i class="fa-regular fa-file-lines mr-1"></i> <span data-i18n="course_btn_syllabus">View Syllabus</span>
             </button>
-            <button onclick="prefillTrialCourse('Noorani Qaida')" class="px-4 py-2 rounded-lg bg-emerald-700 text-white font-bold text-xs hover:bg-emerald-800 transition">
+            <button onclick="prefillTrialCourse('Noorani Qaida')" class="px-4 py-2 rounded-lg bg-emerald-700 text-white font-bold text-xs hover:bg-emerald-800 transition" data-i18n="course_btn_trial">
               Enroll Free Trial
             </button>
           </div>
@@ -751,8 +794,8 @@
             </div>
 
             <div class="font-arabic text-right text-emerald-800 text-lg font-bold">تلاوة القرآن بالتجويد</div>
-            <h3 class="text-xl font-bold text-slate-900 mb-2">Quran Reading with Tajweed (Nazra)</h3>
-            <p class="text-sm text-slate-600 mb-5 leading-relaxed">
+            <h3 class="text-xl font-bold text-slate-900 mb-2" data-i18n="course_2_title">Quran Reading with Tajweed (Nazra)</h3>
+            <p class="text-sm text-slate-600 mb-5 leading-relaxed" data-i18n="course_2_desc">
               Fluent recitation of the Holy Quran from Surah Al-Fatihah to An-Nas with rules of Madd, Waqf (stopping signs), Ghunnah, and Qalqalah.
             </p>
 
@@ -765,9 +808,9 @@
 
           <div class="pt-5 border-t border-slate-100 flex items-center justify-between gap-3">
             <button onclick="openSyllabusModal('nazra')" class="text-xs font-bold text-emerald-800 hover:text-emerald-950 underline transition">
-              <i class="fa-regular fa-file-lines mr-1"></i> View Syllabus
+              <i class="fa-regular fa-file-lines mr-1"></i> <span data-i18n="course_btn_syllabus">View Syllabus</span>
             </button>
-            <button onclick="prefillTrialCourse('Quran Reading with Tajweed')" class="px-4 py-2 rounded-lg bg-emerald-700 text-white font-bold text-xs hover:bg-emerald-800 transition">
+            <button onclick="prefillTrialCourse('Quran Reading with Tajweed')" class="px-4 py-2 rounded-lg bg-emerald-700 text-white font-bold text-xs hover:bg-emerald-800 transition" data-i18n="course_btn_trial">
               Enroll Free Trial
             </button>
           </div>
@@ -786,8 +829,8 @@
             </div>
 
             <div class="font-arabic text-right text-emerald-800 text-lg font-bold">حفظ القرآن الكريم</div>
-            <h3 class="text-xl font-bold text-slate-900 mb-2">Hifz-ul-Quran (Memorization)</h3>
-            <p class="text-sm text-slate-600 mb-5 leading-relaxed">
+            <h3 class="text-xl font-bold text-slate-900 mb-2" data-i18n="course_3_title">Hifz-ul-Quran (Memorization)</h3>
+            <p class="text-sm text-slate-600 mb-5 leading-relaxed" data-i18n="course_3_desc">
               Systematic daily memorization under the guidance of experienced Huffaz. Includes Sabaq (new lesson), Sabqi (recent Juz), and Manzil (old revision).
             </p>
 
@@ -800,9 +843,9 @@
 
           <div class="pt-5 border-t border-slate-100 flex items-center justify-between gap-3">
             <button onclick="openSyllabusModal('hifz')" class="text-xs font-bold text-emerald-800 hover:text-emerald-950 underline transition">
-              <i class="fa-regular fa-file-lines mr-1"></i> View Syllabus
+              <i class="fa-regular fa-file-lines mr-1"></i> <span data-i18n="course_btn_syllabus">View Syllabus</span>
             </button>
-            <button onclick="prefillTrialCourse('Hifz-ul-Quran')" class="px-4 py-2 rounded-lg bg-emerald-700 text-white font-bold text-xs hover:bg-emerald-800 transition">
+            <button onclick="prefillTrialCourse('Hifz-ul-Quran')" class="px-4 py-2 rounded-lg bg-emerald-700 text-white font-bold text-xs hover:bg-emerald-800 transition" data-i18n="course_btn_trial">
               Enroll Free Trial
             </button>
           </div>
@@ -821,8 +864,8 @@
             </div>
 
             <div class="font-arabic text-right text-emerald-800 text-lg font-bold">ترجمة وتفسير القرآن</div>
-            <h3 class="text-xl font-bold text-slate-900 mb-2">Quran Translation &amp; Tafseer</h3>
-            <p class="text-sm text-slate-600 mb-5 leading-relaxed">
+            <h3 class="text-xl font-bold text-slate-900 mb-2" data-i18n="course_4_title">Quran Translation &amp; Tafseer</h3>
+            <p class="text-sm text-slate-600 mb-5 leading-relaxed" data-i18n="course_4_desc">
               Understand the Divine Message directly. Word-by-word Urdu/English translation, context of revelations (Shan-e-Nuzool), and practical life lessons.
             </p>
 
@@ -835,9 +878,9 @@
 
           <div class="pt-5 border-t border-slate-100 flex items-center justify-between gap-3">
             <button onclick="openSyllabusModal('translation')" class="text-xs font-bold text-emerald-800 hover:text-emerald-950 underline transition">
-              <i class="fa-regular fa-file-lines mr-1"></i> View Syllabus
+              <i class="fa-regular fa-file-lines mr-1"></i> <span data-i18n="course_btn_syllabus">View Syllabus</span>
             </button>
-            <button onclick="prefillTrialCourse('Quran Translation & Tafseer')" class="px-4 py-2 rounded-lg bg-emerald-700 text-white font-bold text-xs hover:bg-emerald-800 transition">
+            <button onclick="prefillTrialCourse('Quran Translation & Tafseer')" class="px-4 py-2 rounded-lg bg-emerald-700 text-white font-bold text-xs hover:bg-emerald-800 transition" data-i18n="course_btn_trial">
               Enroll Free Trial
             </button>
           </div>
@@ -856,8 +899,8 @@
             </div>
 
             <div class="font-arabic text-right text-emerald-800 text-lg font-bold">الدراسات الإسلامية والأدعية</div>
-            <h3 class="text-xl font-bold text-slate-900 mb-2">Islamic Studies, Namaz &amp; Duas</h3>
-            <p class="text-sm text-slate-600 mb-5 leading-relaxed">
+            <h3 class="text-xl font-bold text-slate-900 mb-2" data-i18n="course_5_title">Islamic Studies, Namaz &amp; Duas</h3>
+            <p class="text-sm text-slate-600 mb-5 leading-relaxed" data-i18n="course_5_desc">
               Step-by-step practical Salah (Namaz), 6 Kalimas, daily Masnoon Duas, Seerah of Prophet Muhammad (PBUH), and Islamic manners (Adaab).
             </p>
 
@@ -870,9 +913,9 @@
 
           <div class="pt-5 border-t border-slate-100 flex items-center justify-between gap-3">
             <button onclick="openSyllabusModal('islamic_studies')" class="text-xs font-bold text-emerald-800 hover:text-emerald-950 underline transition">
-              <i class="fa-regular fa-file-lines mr-1"></i> View Syllabus
+              <i class="fa-regular fa-file-lines mr-1"></i> <span data-i18n="course_btn_syllabus">View Syllabus</span>
             </button>
-            <button onclick="prefillTrialCourse('Islamic Studies & Daily Duas')" class="px-4 py-2 rounded-lg bg-emerald-700 text-white font-bold text-xs hover:bg-emerald-800 transition">
+            <button onclick="prefillTrialCourse('Islamic Studies & Daily Duas')" class="px-4 py-2 rounded-lg bg-emerald-700 text-white font-bold text-xs hover:bg-emerald-800 transition" data-i18n="course_btn_trial">
               Enroll Free Trial
             </button>
           </div>
@@ -891,8 +934,8 @@
             </div>
 
             <div class="font-arabic text-right text-emerald-800 text-lg font-bold">قواعد اللغة العربية للقرآن</div>
-            <h3 class="text-xl font-bold text-slate-900 mb-2">Quranic Arabic &amp; Grammar</h3>
-            <p class="text-sm text-slate-600 mb-5 leading-relaxed">
+            <h3 class="text-xl font-bold text-slate-900 mb-2" data-i18n="course_6_title">Quranic Arabic &amp; Grammar</h3>
+            <p class="text-sm text-slate-600 mb-5 leading-relaxed" data-i18n="course_6_desc">
               Learn Arabic morphology (Sarf) and syntax (Nahw) tailored specifically to unlock the grammatical beauty and meaning of the Quranic text.
             </p>
 
@@ -905,9 +948,9 @@
 
           <div class="pt-5 border-t border-slate-100 flex items-center justify-between gap-3">
             <button onclick="openSyllabusModal('arabic_lang')" class="text-xs font-bold text-emerald-800 hover:text-emerald-950 underline transition">
-              <i class="fa-regular fa-file-lines mr-1"></i> View Syllabus
+              <i class="fa-regular fa-file-lines mr-1"></i> <span data-i18n="course_btn_syllabus">View Syllabus</span>
             </button>
-            <button onclick="prefillTrialCourse('Quranic Arabic & Grammar')" class="px-4 py-2 rounded-lg bg-emerald-700 text-white font-bold text-xs hover:bg-emerald-800 transition">
+            <button onclick="prefillTrialCourse('Quranic Arabic & Grammar')" class="px-4 py-2 rounded-lg bg-emerald-700 text-white font-bold text-xs hover:bg-emerald-800 transition" data-i18n="course_btn_trial">
               Enroll Free Trial
             </button>
           </div>
@@ -923,13 +966,13 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       
       <div class="text-center max-w-3xl mx-auto mb-16">
-        <span class="inline-block px-3 py-1 rounded-md bg-emerald-100 text-emerald-800 font-bold text-xs uppercase tracking-wider mb-3">
+        <span class="inline-block px-3 py-1 rounded-md bg-emerald-100 text-emerald-800 font-bold text-xs uppercase tracking-wider mb-3" data-i18n="why_badge">
           Our Distinctions
         </span>
-        <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight leading-tight">
+        <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight leading-tight" data-i18n="why_heading">
           Why Parents Choose Hale Noor Online Academy
         </h2>
-        <p class="text-base text-slate-600 mt-4">
+        <p class="text-base text-slate-600 mt-4" data-i18n="why_sub">
           We combine authentic Islamic traditional teaching with modern digital pedagogy to make Quran learning joyful and effective for your children.
         </p>
       </div>
@@ -941,8 +984,8 @@
           <div class="w-14 h-14 rounded-2xl bg-emerald-100 text-emerald-800 flex items-center justify-center text-2xl mb-6">
             <i class="fa-solid fa-chalkboard-user"></i>
           </div>
-          <h3 class="text-lg font-bold text-slate-900 mb-3">1-on-1 Individual Attention</h3>
-          <p class="text-sm text-slate-600 leading-relaxed">
+          <h3 class="text-lg font-bold text-slate-900 mb-3" data-i18n="why_1_title">1-on-1 Individual Attention</h3>
+          <p class="text-sm text-slate-600 leading-relaxed" data-i18n="why_1_desc">
             Every session is private. The teacher's complete focus is 100% on your child's articulation, eliminating distractions and ensuring rapid learning.
           </p>
         </div>
@@ -952,8 +995,8 @@
           <div class="w-14 h-14 rounded-2xl bg-amber-100 text-amber-800 flex items-center justify-center text-2xl mb-6">
             <i class="fa-solid fa-venus"></i>
           </div>
-          <h3 class="text-lg font-bold text-slate-900 mb-3">Certified Female Tutors</h3>
-          <p class="text-sm text-slate-600 leading-relaxed">
+          <h3 class="text-lg font-bold text-slate-900 mb-3" data-i18n="why_2_title">Certified Female Tutors</h3>
+          <p class="text-sm text-slate-600 leading-relaxed" data-i18n="why_2_desc">
             We have dedicated, qualified Hafizas and Alimahs available for female students and younger children for maximum comfort, modesty, and peace of mind.
           </p>
         </div>
@@ -963,8 +1006,8 @@
           <div class="w-14 h-14 rounded-2xl bg-emerald-100 text-emerald-800 flex items-center justify-center text-2xl mb-6">
             <i class="fa-solid fa-clock-rotate-left"></i>
           </div>
-          <h3 class="text-lg font-bold text-slate-900 mb-3">24/7 Timezone Flexibility</h3>
-          <p class="text-sm text-slate-600 leading-relaxed">
+          <h3 class="text-lg font-bold text-slate-900 mb-3" data-i18n="why_3_title">24/7 Timezone Flexibility</h3>
+          <p class="text-sm text-slate-600 leading-relaxed" data-i18n="why_3_desc">
             Whether you are in New York, London, Toronto, Sydney, Dubai, or Karachi, select class timings that suit your child's after-school or weekend schedule.
           </p>
         </div>
@@ -974,8 +1017,8 @@
           <div class="w-14 h-14 rounded-2xl bg-emerald-100 text-emerald-800 flex items-center justify-center text-2xl mb-6">
             <i class="fa-solid fa-file-chart-column"></i>
           </div>
-          <h3 class="text-lg font-bold text-slate-900 mb-3">Monthly Progress Exams</h3>
-          <p class="text-sm text-slate-600 leading-relaxed">
+          <h3 class="text-lg font-bold text-slate-900 mb-3" data-i18n="why_4_title">Monthly Progress Exams</h3>
+          <p class="text-sm text-slate-600 leading-relaxed" data-i18n="why_4_desc">
             Stay updated with monthly parent-teacher reviews, detailed progress reports on Tajweed mastery, and certificates upon course completion.
           </p>
         </div>
@@ -985,8 +1028,8 @@
           <div class="w-14 h-14 rounded-2xl bg-amber-100 text-amber-800 flex items-center justify-center text-2xl mb-6">
             <i class="fa-solid fa-laptop-code"></i>
           </div>
-          <h3 class="text-lg font-bold text-slate-900 mb-3">Modern Interactive Tools</h3>
-          <p class="text-sm text-slate-600 leading-relaxed">
+          <h3 class="text-lg font-bold text-slate-900 mb-3" data-i18n="why_5_title">Modern Interactive Tools</h3>
+          <p class="text-sm text-slate-600 leading-relaxed" data-i18n="why_5_desc">
             Classes are conducted via Zoom or Google Meet with high-definition digital Mushaf screen sharing, audio recording for revision, and digital whiteboards.
           </p>
         </div>
@@ -996,8 +1039,8 @@
           <div class="w-14 h-14 rounded-2xl bg-emerald-100 text-emerald-800 flex items-center justify-center text-2xl mb-6">
             <i class="fa-solid fa-hand-holding-heart"></i>
           </div>
-          <h3 class="text-lg font-bold text-slate-900 mb-3">3 Days Free Trial &bull; Zero Risk</h3>
-          <p class="text-sm text-slate-600 leading-relaxed">
+          <h3 class="text-lg font-bold text-slate-900 mb-3" data-i18n="why_6_title">3 Days Free Trial &bull; Zero Risk</h3>
+          <p class="text-sm text-slate-600 leading-relaxed" data-i18n="why_6_desc">
             Experience 3 full days of 1-on-1 classes completely free without any credit card or advance fee. Enroll only when you are 100% satisfied.
           </p>
         </div>
@@ -1012,10 +1055,10 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
       
       <div class="text-center max-w-2xl mx-auto mb-14">
-        <span class="inline-block px-3 py-1 rounded-md bg-amber-400/20 text-amber-300 font-bold text-xs uppercase tracking-wider mb-2">
+        <span class="inline-block px-3 py-1 rounded-md bg-amber-400/20 text-amber-300 font-bold text-xs uppercase tracking-wider mb-2" data-i18n="how_badge">
           Simple Enrollment
         </span>
-        <h2 class="text-3xl font-extrabold text-white">How to Get Started in 4 Easy Steps</h2>
+        <h2 class="text-3xl font-extrabold text-white" data-i18n="how_heading">How to Get Started in 4 Easy Steps</h2>
       </div>
 
       <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
@@ -1025,8 +1068,8 @@
           <div class="w-12 h-12 rounded-full bg-amber-400 text-emerald-950 font-black text-lg flex items-center justify-center mx-auto mb-4 shadow-lg shadow-amber-400/20">
             1
           </div>
-          <h4 class="text-base font-bold text-white mb-2">Fill Trial Form</h4>
-          <p class="text-xs text-emerald-200/80 leading-relaxed">
+          <h4 class="text-base font-bold text-white mb-2" data-i18n="how_1_title">Fill Trial Form</h4>
+          <p class="text-xs text-emerald-200/80 leading-relaxed" data-i18n="how_1_desc">
             Fill the 1-minute free trial form below with student age and preferred class time.
           </p>
         </div>
@@ -1036,8 +1079,8 @@
           <div class="w-12 h-12 rounded-full bg-amber-400 text-emerald-950 font-black text-lg flex items-center justify-center mx-auto mb-4 shadow-lg shadow-amber-400/20">
             2
           </div>
-          <h4 class="text-base font-bold text-white mb-2">Confirm Schedule</h4>
-          <p class="text-xs text-emerald-200/80 leading-relaxed">
+          <h4 class="text-base font-bold text-white mb-2" data-i18n="how_2_title">Confirm Schedule</h4>
+          <p class="text-xs text-emerald-200/80 leading-relaxed" data-i18n="how_2_desc">
             Our coordinator connects with you on WhatsApp to confirm your preferred tutor &amp; slot.
           </p>
         </div>
@@ -1047,8 +1090,8 @@
           <div class="w-12 h-12 rounded-full bg-amber-400 text-emerald-950 font-black text-lg flex items-center justify-center mx-auto mb-4 shadow-lg shadow-amber-400/20">
             3
           </div>
-          <h4 class="text-base font-bold text-white mb-2">Take 3 Free Classes</h4>
-          <p class="text-xs text-emerald-200/80 leading-relaxed">
+          <h4 class="text-base font-bold text-white mb-2" data-i18n="how_3_title">Take 3 Free Classes</h4>
+          <p class="text-xs text-emerald-200/80 leading-relaxed" data-i18n="how_3_desc">
             Join the 1-on-1 live Zoom class. Meet the teacher and experience our caring teaching style.
           </p>
         </div>
@@ -1058,8 +1101,8 @@
           <div class="w-12 h-12 rounded-full bg-amber-400 text-emerald-950 font-black text-lg flex items-center justify-center mx-auto mb-4 shadow-lg shadow-amber-400/20">
             4
           </div>
-          <h4 class="text-base font-bold text-white mb-2">Continue Regular Plan</h4>
-          <p class="text-xs text-emerald-200/80 leading-relaxed">
+          <h4 class="text-base font-bold text-white mb-2" data-i18n="how_4_title">Continue Regular Plan</h4>
+          <p class="text-xs text-emerald-200/80 leading-relaxed" data-i18n="how_4_desc">
             If completely satisfied, choose your monthly plan and begin your child's blessed journey.
           </p>
         </div>
@@ -1076,13 +1119,13 @@
       <!-- Section Header with Currency Switcher -->
       <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
         <div>
-          <span class="inline-block px-3 py-1 rounded-md bg-emerald-100 text-emerald-800 font-bold text-xs uppercase tracking-wider mb-3">
+          <span class="inline-block px-3 py-1 rounded-md bg-emerald-100 text-emerald-800 font-bold text-xs uppercase tracking-wider mb-3" data-i18n="pricing_badge">
             Affordable Fee Structure
           </span>
-          <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight leading-tight">
+          <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight leading-tight" data-i18n="pricing_heading">
             Transparent Monthly Tuition Plans
           </h2>
-          <p class="text-sm text-slate-600 mt-2 max-w-xl">
+          <p class="text-sm text-slate-600 mt-2 max-w-xl" data-i18n="pricing_sub">
             Choose the frequency that best fits your family's routine. Family &amp; Sibling discount of <strong>15% OFF</strong> automatically available!
           </p>
         </div>
@@ -1090,7 +1133,7 @@
         <!-- Currency Picker -->
         <div class="bg-white p-3 rounded-2xl shadow-sm border border-slate-200 flex items-center gap-3">
           <span class="text-xs font-bold text-slate-700 flex items-center gap-1.5">
-            <i class="fa-solid fa-coins text-amber-500"></i> Select Currency:
+            <i class="fa-solid fa-coins text-amber-500"></i> <span data-i18n="currency_picker_lbl">Select Currency:</span>
           </span>
           <select class="currency-selector bg-emerald-50 text-emerald-950 font-bold text-sm py-2 px-3 rounded-xl border border-emerald-200 focus:outline-none focus:ring-2 focus:ring-emerald-600">
             <option value="USD">USD ($) United States</option>
@@ -1112,8 +1155,8 @@
         <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm hover:shadow-lg transition flex flex-col justify-between">
           <div>
             <span class="text-xs font-bold px-3 py-1 rounded-full bg-slate-100 text-slate-700">Light Pace</span>
-            <h3 class="text-xl font-bold text-slate-900 mt-3 mb-1">Basic Plan</h3>
-            <p class="text-xs text-slate-500 mb-4">Ideal for busy students or Quran revision</p>
+            <h3 class="text-xl font-bold text-slate-900 mt-3 mb-1" data-i18n="plan_1_title">Basic Plan</h3>
+            <p class="text-xs text-slate-500 mb-4" data-i18n="plan_1_sub">Ideal for busy students or Quran revision</p>
             
             <div class="flex items-baseline gap-1 my-4 pb-4 border-b border-slate-100">
               <span class="text-3xl font-extrabold text-emerald-900" data-plan-rate="basic">$35</span>
@@ -1129,7 +1172,7 @@
             </ul>
           </div>
 
-          <a href="#free-trial" class="w-full py-2.5 text-center rounded-xl bg-emerald-50 text-emerald-800 hover:bg-emerald-700 hover:text-white font-bold text-xs transition border border-emerald-200">
+          <a href="#free-trial" class="w-full py-2.5 text-center rounded-xl bg-emerald-50 text-emerald-800 hover:bg-emerald-700 hover:text-white font-bold text-xs transition border border-emerald-200" data-i18n="plan_btn_trial">
             Start Free Trial
           </a>
         </div>
@@ -1144,8 +1187,8 @@
             <div class="flex justify-between items-center mt-1">
               <span class="text-xs font-bold px-3 py-1 rounded-full bg-emerald-100 text-emerald-800">Best For Beginners</span>
             </div>
-            <h3 class="text-xl font-bold text-slate-900 mt-3 mb-1">Standard Plan</h3>
-            <p class="text-xs text-slate-500 mb-4">Recommended for Qaida &amp; Nazra learning</p>
+            <h3 class="text-xl font-bold text-slate-900 mt-3 mb-1" data-i18n="plan_2_title">Standard Plan</h3>
+            <p class="text-xs text-slate-500 mb-4" data-i18n="plan_2_sub">Recommended for Qaida &amp; Nazra learning</p>
             
             <div class="flex items-baseline gap-1 my-4 pb-4 border-b border-slate-100">
               <span class="text-3xl font-extrabold text-emerald-900" data-plan-rate="standard">$45</span>
@@ -1162,7 +1205,7 @@
             </ul>
           </div>
 
-          <a href="#free-trial" class="w-full py-2.5 text-center rounded-xl bg-emerald-800 text-white hover:bg-emerald-900 font-bold text-xs transition shadow-md shadow-emerald-800/30">
+          <a href="#free-trial" class="w-full py-2.5 text-center rounded-xl bg-emerald-800 text-white hover:bg-emerald-900 font-bold text-xs transition shadow-md shadow-emerald-800/30" data-i18n="plan_btn_rec">
             Book 3 Days Free Trial
           </a>
         </div>
@@ -1171,8 +1214,8 @@
         <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm hover:shadow-lg transition flex flex-col justify-between">
           <div>
             <span class="text-xs font-bold px-3 py-1 rounded-full bg-amber-100 text-amber-800">Steady Progress</span>
-            <h3 class="text-xl font-bold text-slate-900 mt-3 mb-1">Regular Plan</h3>
-            <p class="text-xs text-slate-500 mb-4">For fast reading fluency &amp; Tajweed mastery</p>
+            <h3 class="text-xl font-bold text-slate-900 mt-3 mb-1" data-i18n="plan_3_title">Regular Plan</h3>
+            <p class="text-xs text-slate-500 mb-4" data-i18n="plan_3_sub">For fast reading fluency &amp; Tajweed mastery</p>
             
             <div class="flex items-baseline gap-1 my-4 pb-4 border-b border-slate-100">
               <span class="text-3xl font-extrabold text-emerald-900" data-plan-rate="regular">$55</span>
@@ -1188,7 +1231,7 @@
             </ul>
           </div>
 
-          <a href="#free-trial" class="w-full py-2.5 text-center rounded-xl bg-emerald-50 text-emerald-800 hover:bg-emerald-700 hover:text-white font-bold text-xs transition border border-emerald-200">
+          <a href="#free-trial" class="w-full py-2.5 text-center rounded-xl bg-emerald-50 text-emerald-800 hover:bg-emerald-700 hover:text-white font-bold text-xs transition border border-emerald-200" data-i18n="plan_btn_trial">
             Start Free Trial
           </a>
         </div>
@@ -1197,8 +1240,8 @@
         <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm hover:shadow-lg transition flex flex-col justify-between">
           <div>
             <span class="text-xs font-bold px-3 py-1 rounded-full bg-purple-100 text-purple-800">Hifz / Intensive</span>
-            <h3 class="text-xl font-bold text-slate-900 mt-3 mb-1">Intensive Plan</h3>
-            <p class="text-xs text-slate-500 mb-4">Dedicated daily memorization &amp; revision</p>
+            <h3 class="text-xl font-bold text-slate-900 mt-3 mb-1" data-i18n="plan_4_title">Intensive Plan</h3>
+            <p class="text-xs text-slate-500 mb-4" data-i18n="plan_4_sub">Dedicated daily memorization &amp; revision</p>
             
             <div class="flex items-baseline gap-1 my-4 pb-4 border-b border-slate-100">
               <span class="text-3xl font-extrabold text-emerald-900" data-plan-rate="intensive">$70</span>
@@ -1214,7 +1257,7 @@
             </ul>
           </div>
 
-          <a href="#free-trial" class="w-full py-2.5 text-center rounded-xl bg-emerald-50 text-emerald-800 hover:bg-emerald-700 hover:text-white font-bold text-xs transition border border-emerald-200">
+          <a href="#free-trial" class="w-full py-2.5 text-center rounded-xl bg-emerald-50 text-emerald-800 hover:bg-emerald-700 hover:text-white font-bold text-xs transition border border-emerald-200" data-i18n="plan_btn_trial">
             Start Free Trial
           </a>
         </div>
@@ -1226,11 +1269,11 @@
         <div class="max-w-4xl mx-auto">
           
           <div class="text-center mb-8">
-            <span class="inline-block px-3 py-1 rounded-full bg-amber-400/20 text-amber-300 font-bold text-xs uppercase tracking-wider mb-2">
+            <span class="inline-block px-3 py-1 rounded-full bg-amber-400/20 text-amber-300 font-bold text-xs uppercase tracking-wider mb-2" data-i18n="calc_badge">
               <i class="fa-solid fa-calculator mr-1"></i> Instant Fee Calculator
             </span>
-            <h3 class="text-2xl sm:text-3xl font-extrabold text-white">Calculate Fee for Multiple Children or Custom Days</h3>
-            <p class="text-xs sm:text-sm text-emerald-200 mt-2">
+            <h3 class="text-2xl sm:text-3xl font-extrabold text-white" data-i18n="calc_heading">Calculate Fee for Multiple Children or Custom Days</h3>
+            <p class="text-xs sm:text-sm text-emerald-200 mt-2" data-i18n="calc_sub">
               Get an instant quote with automatic <strong>15% Sibling Discount</strong> for 2nd and subsequent children.
             </p>
           </div>
@@ -1239,7 +1282,7 @@
             
             <!-- Number of Students -->
             <div>
-              <label for="calc-students" class="block text-xs font-bold text-emerald-200 uppercase tracking-wider mb-2">
+              <label for="calc-students" class="block text-xs font-bold text-emerald-200 uppercase tracking-wider mb-2" data-i18n="calc_lbl_students">
                 Number of Students:
               </label>
               <select id="calc-students" class="w-full bg-emerald-900 text-white font-semibold text-sm py-3 px-4 rounded-xl border border-emerald-700 focus:outline-none focus:ring-2 focus:ring-amber-400">
@@ -1253,7 +1296,7 @@
 
             <!-- Frequency -->
             <div>
-              <label for="calc-frequency" class="block text-xs font-bold text-emerald-200 uppercase tracking-wider mb-2">
+              <label for="calc-frequency" class="block text-xs font-bold text-emerald-200 uppercase tracking-wider mb-2" data-i18n="calc_lbl_freq">
                 Classes Frequency:
               </label>
               <select id="calc-frequency" class="w-full bg-emerald-900 text-white font-semibold text-sm py-3 px-4 rounded-xl border border-emerald-700 focus:outline-none focus:ring-2 focus:ring-amber-400">
@@ -1267,7 +1310,7 @@
 
             <!-- Total Output -->
             <div class="text-center md:text-right bg-emerald-900/80 p-4 rounded-xl border border-emerald-700/60">
-              <span class="text-xs font-semibold text-emerald-300 block mb-1">Estimated Monthly Total:</span>
+              <span class="text-xs font-semibold text-emerald-300 block mb-1" data-i18n="calc_lbl_est">Estimated Monthly Total:</span>
               <div id="calc-total-display" class="text-3xl sm:text-4xl font-black text-amber-400">
                 $45
               </div>
@@ -1276,14 +1319,14 @@
 
           </div>
 
-          <div id="calc-discount-notice" class="hidden text-center text-xs font-bold text-amber-300 bg-amber-500/10 py-2 px-4 rounded-xl border border-amber-400/30 mb-6">
+          <div id="calc-discount-notice" class="hidden text-center text-xs font-bold text-amber-300 bg-amber-500/10 py-2 px-4 rounded-xl border border-amber-400/30 mb-6" data-i18n="calc_discount_pill">
             🎉 15% Family Sibling Discount applied!
           </div>
 
           <div class="text-center">
             <a href="#free-trial" class="inline-flex items-center gap-2 px-8 py-3.5 rounded-xl bg-amber-400 hover:bg-amber-300 text-emerald-950 font-extrabold text-sm shadow-lg shadow-amber-400/20 transition">
               <i class="fa-solid fa-check-circle"></i>
-              <span>Book Free Trial with this Schedule</span>
+              <span data-i18n="calc_btn_book">Book Free Trial with this Schedule</span>
             </a>
           </div>
 
@@ -1298,13 +1341,13 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       
       <div class="text-center max-w-3xl mx-auto mb-16">
-        <span class="inline-block px-3 py-1 rounded-md bg-emerald-100 text-emerald-800 font-bold text-xs uppercase tracking-wider mb-3">
+        <span class="inline-block px-3 py-1 rounded-md bg-emerald-100 text-emerald-800 font-bold text-xs uppercase tracking-wider mb-3" data-i18n="reviews_badge">
           Parent Reviews
         </span>
-        <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight leading-tight">
+        <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight leading-tight" data-i18n="reviews_heading">
           What Parents Around the World Say About Hale Noor
         </h2>
-        <p class="text-base text-slate-600 mt-4">
+        <p class="text-base text-slate-600 mt-4" data-i18n="reviews_sub">
           Alhamdulillah, we have helped hundreds of children and adult learners build a lifelong connection with the Holy Quran.
         </p>
       </div>
@@ -1396,11 +1439,11 @@
     <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
       
       <div class="text-center max-w-2xl mx-auto mb-12">
-        <span class="inline-block px-3 py-1 rounded-full bg-amber-400/20 text-amber-300 font-bold text-xs uppercase tracking-wider mb-2">
+        <span class="inline-block px-3 py-1 rounded-full bg-amber-400/20 text-amber-300 font-bold text-xs uppercase tracking-wider mb-2" data-i18n="trial_badge">
           100% Free &bull; No Obligation
         </span>
-        <h2 class="text-3xl sm:text-4xl font-extrabold text-white">Book Your 3-Day Free Trial Class</h2>
-        <p class="text-sm text-emerald-200 mt-2">
+        <h2 class="text-3xl sm:text-4xl font-extrabold text-white" data-i18n="trial_heading">Book Your 3-Day Free Trial Class</h2>
+        <p class="text-sm text-emerald-200 mt-2" data-i18n="trial_sub">
           Fill out the details below. Our admissions team will reach out to you via WhatsApp / Email to confirm your preferred teacher and time slot.
         </p>
       </div>
@@ -1413,7 +1456,7 @@
             
             <!-- Student Name -->
             <div>
-              <label for="student-name" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">
+              <label for="student-name" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2" data-i18n="form_lbl_name_full">
                 Student's Full Name <span class="text-red-500">*</span>
               </label>
               <input type="text" id="student-name" required placeholder="e.g. Ibrahim Khan / Ayesha" class="w-full bg-slate-50 text-slate-900 font-medium text-sm py-3 px-4 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-emerald-700">
@@ -1421,7 +1464,7 @@
 
             <!-- Parent / Guardian Name -->
             <div>
-              <label for="parent-name" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">
+              <label for="parent-name" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2" data-i18n="form_lbl_guardian">
                 Parent / Guardian Name
               </label>
               <input type="text" id="parent-name" placeholder="e.g. Muhammad Khan (Father)" class="w-full bg-slate-50 text-slate-900 font-medium text-sm py-3 px-4 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-emerald-700">
@@ -1429,7 +1472,7 @@
 
             <!-- Student Age -->
             <div>
-              <label for="student-age" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">
+              <label for="student-age" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2" data-i18n="form_lbl_age">
                 Student Age / Grade
               </label>
               <input type="text" id="student-age" placeholder="e.g. 7 years old or Adult" class="w-full bg-slate-50 text-slate-900 font-medium text-sm py-3 px-4 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-emerald-700">
@@ -1437,7 +1480,7 @@
 
             <!-- Course Interested -->
             <div>
-              <label for="student-course" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">
+              <label for="student-course" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2" data-i18n="form_lbl_course_full">
                 Select Desired Course <span class="text-red-500">*</span>
               </label>
               <select id="student-course" class="w-full bg-slate-50 text-slate-900 font-medium text-sm py-3 px-4 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-emerald-700">
@@ -1454,21 +1497,21 @@
 
           <!-- Tutor Gender Preference -->
           <div>
-            <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">
+            <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2" data-i18n="form_lbl_tutor_pref">
               Tutor Preference <span class="text-red-500">*</span>
             </label>
             <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
               <label class="flex items-center gap-3 p-3 rounded-xl border border-slate-200 cursor-pointer hover:bg-emerald-50 transition">
                 <input type="radio" name="tutor-gender" value="Female Tutor Preferred" checked class="text-emerald-700 focus:ring-emerald-600">
-                <span class="text-xs font-bold text-slate-800">🧕 Female Tutor (Sister)</span>
+                <span class="text-xs font-bold text-slate-800" data-i18n="tutor_opt_female">🧕 Female Tutor (Sister)</span>
               </label>
               <label class="flex items-center gap-3 p-3 rounded-xl border border-slate-200 cursor-pointer hover:bg-emerald-50 transition">
                 <input type="radio" name="tutor-gender" value="Male Tutor Preferred" class="text-emerald-700 focus:ring-emerald-600">
-                <span class="text-xs font-bold text-slate-800">👳 Male Tutor (Qari / Hafiz)</span>
+                <span class="text-xs font-bold text-slate-800" data-i18n="tutor_opt_male">🧔 Male Tutor (Qari / Hafiz)</span>
               </label>
               <label class="flex items-center gap-3 p-3 rounded-xl border border-slate-200 cursor-pointer hover:bg-emerald-50 transition">
                 <input type="radio" name="tutor-gender" value="Any Qualified Tutor" class="text-emerald-700 focus:ring-emerald-600">
-                <span class="text-xs font-bold text-slate-800">✨ Any Qualified Tutor</span>
+                <span class="text-xs font-bold text-slate-800" data-i18n="tutor_opt_any">✨ Any Qualified Tutor</span>
               </label>
             </div>
           </div>
@@ -1477,7 +1520,7 @@
             
             <!-- WhatsApp Number -->
             <div>
-              <label for="student-whatsapp" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">
+              <label for="student-whatsapp" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2" data-i18n="form_lbl_whatsapp">
                 WhatsApp Number (with Country Code) <span class="text-red-500">*</span>
               </label>
               <input type="tel" id="student-whatsapp" required placeholder="e.g. +1 234 567 8900" class="w-full bg-slate-50 text-slate-900 font-medium text-sm py-3 px-4 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-emerald-700">
@@ -1485,7 +1528,7 @@
 
             <!-- Email Address -->
             <div>
-              <label for="student-email" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">
+              <label for="student-email" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2" data-i18n="form_lbl_email">
                 Email Address
               </label>
               <input type="email" id="student-email" placeholder="e.g. parent@example.com" class="w-full bg-slate-50 text-slate-900 font-medium text-sm py-3 px-4 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-emerald-700">
@@ -1493,7 +1536,7 @@
 
             <!-- Country & City -->
             <div>
-              <label for="student-country" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">
+              <label for="student-country" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2" data-i18n="form_lbl_country_city">
                 Country &amp; City
               </label>
               <input type="text" id="student-country" placeholder="e.g. London, UK or Chicago, USA" class="w-full bg-slate-50 text-slate-900 font-medium text-sm py-3 px-4 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-emerald-700">
@@ -1505,7 +1548,7 @@
             
             <!-- Preferred Time -->
             <div>
-              <label for="preferred-time" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">
+              <label for="preferred-time" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2" data-i18n="form_lbl_time_slot">
                 Preferred Class Timing Slot
               </label>
               <select id="preferred-time" class="w-full bg-slate-50 text-slate-900 font-medium text-sm py-3 px-4 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-emerald-700">
@@ -1519,7 +1562,7 @@
 
             <!-- Special Notes -->
             <div>
-              <label for="student-notes" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">
+              <label for="student-notes" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2" data-i18n="form_lbl_notes">
                 Additional Notes / Student Background
               </label>
               <input type="text" id="student-notes" placeholder="e.g. Can read letters slowly, complete beginner, etc." class="w-full bg-slate-50 text-slate-900 font-medium text-sm py-3 px-4 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-emerald-700">
@@ -1530,9 +1573,9 @@
           <div class="pt-4 text-center">
             <button type="submit" class="w-full sm:w-auto px-10 py-4 rounded-xl bg-gradient-to-r from-emerald-800 to-emerald-900 hover:from-emerald-700 hover:to-emerald-800 text-white font-extrabold text-base shadow-xl transition transform hover:-translate-y-0.5 active:translate-y-0 flex items-center justify-center gap-3 mx-auto">
               <i class="fa-solid fa-paper-plane text-amber-400"></i>
-              <span>Submit &amp; Schedule 3 Days Free Trial</span>
+              <span data-i18n="form_btn_submit_main">Submit &amp; Schedule 3 Days Free Trial</span>
             </button>
-            <p class="text-xs text-slate-500 mt-3">
+            <p class="text-xs text-slate-500 mt-3" data-i18n="form_privacy_note">
               🔒 We respect your privacy. No spam, no credit card required, instant WhatsApp confirmation.
             </p>
           </div>
@@ -1548,13 +1591,13 @@
     <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
       
       <div class="text-center mb-14">
-        <span class="inline-block px-3 py-1 rounded-md bg-emerald-100 text-emerald-800 font-bold text-xs uppercase tracking-wider mb-3">
+        <span class="inline-block px-3 py-1 rounded-md bg-emerald-100 text-emerald-800 font-bold text-xs uppercase tracking-wider mb-3" data-i18n="faqs_badge">
           Got Questions?
         </span>
-        <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight leading-tight">
+        <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight leading-tight" data-i18n="faqs_heading">
           Frequently Asked Questions (FAQs)
         </h2>
-        <p class="text-sm text-slate-600 mt-2">
+        <p class="text-sm text-slate-600 mt-2" data-i18n="faqs_sub">
           Everything you need to know about our tutors, software, and learning process.
         </p>
       </div>
@@ -1648,7 +1691,7 @@
             </div>
           </div>
 
-          <p class="text-xs text-emerald-200/80 leading-relaxed">
+          <p class="text-xs text-emerald-200/80 leading-relaxed" data-i18n="footer_desc">
             Dedicated to spreading the authentic knowledge and recitation of the Holy Quran worldwide through qualified male and female tutors with Tajweed excellence.
           </p>
 
@@ -1670,7 +1713,7 @@
 
         <!-- Col 2: Quick Links -->
         <div class="lg:col-span-2 space-y-3">
-          <h4 class="text-xs font-bold text-amber-300 uppercase tracking-wider">Quick Navigation</h4>
+          <h4 class="text-xs font-bold text-amber-300 uppercase tracking-wider" data-i18n="footer_nav_title">Quick Navigation</h4>
           <ul class="space-y-2 text-xs text-emerald-200/80 font-medium">
             <li><a href="#home" class="hover:text-white transition">Home</a></li>
             <li><a href="about.html" class="hover:text-white transition">About Academy Page</a></li>
@@ -1685,7 +1728,7 @@
 
         <!-- Col 3: Courses Links -->
         <div class="lg:col-span-3 space-y-3">
-          <h4 class="text-xs font-bold text-amber-300 uppercase tracking-wider">Our Courses</h4>
+          <h4 class="text-xs font-bold text-amber-300 uppercase tracking-wider" data-i18n="footer_courses_title">Our Courses</h4>
           <ul class="space-y-2 text-xs text-emerald-200/80 font-medium">
             <li><a href="#courses" onclick="openSyllabusModal('qaida')" class="hover:text-white transition">Noorani Qaida for Kids</a></li>
             <li><a href="#courses" onclick="openSyllabusModal('nazra')" class="hover:text-white transition">Quran Reading with Tajweed</a></li>
@@ -1698,7 +1741,7 @@
 
         <!-- Col 4: Admissions & Contact Details -->
         <div class="lg:col-span-3 space-y-3">
-          <h4 class="text-xs font-bold text-amber-300 uppercase tracking-wider">Admissions Desk</h4>
+          <h4 class="text-xs font-bold text-amber-300 uppercase tracking-wider" data-i18n="footer_desk_title">Admissions Desk</h4>
           <div class="space-y-2.5 text-xs text-emerald-200/80">
             <p class="flex items-start gap-2">
               <i class="fa-solid fa-phone text-amber-400 mt-0.5"></i>
@@ -1740,12 +1783,12 @@
     <span class="font-bold text-sm hidden md:inline">Chat on WhatsApp</span>
   </a>
 
-  <!-- ================= FLOATING NIGHT VISION BUTTON ================= -->
-  <button type="button" class="floating-theme-toggle" aria-label="Toggle Night Vision / Dark Mode" title="Toggle Night Vision (Dark Mode)">
+  <!-- ================= FLOATING DAY / NIGHT MODE BUTTON ================= -->
+  <button type="button" class="floating-theme-toggle" aria-label="Toggle Day / Night Mode" title="Toggle Day / Night Mode">
     <span class="theme-icon-container">
       <i class="fa-solid fa-moon text-amber-500 text-sm"></i>
     </span>
-    <span class="theme-text">Night Vision</span>
+    <span class="floating-theme-text font-bold">Night Mode 🌙</span>
     <span class="night-vision-pulse"></span>
   </button>
 

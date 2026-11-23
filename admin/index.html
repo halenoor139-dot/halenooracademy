@@ -180,7 +180,7 @@
         </a>
         <a class="sidebar-nav-link" data-section="students">
           <i class="fa-solid fa-user-graduate"></i>
-          <span>Registered Students</span>
+          <span>Student Management</span>
         </a>
         <a class="sidebar-nav-link" data-section="enrollments">
           <i class="fa-solid fa-calendar-check"></i>
@@ -297,61 +297,79 @@
           <!-- Metric Statistics Cards (6 Dynamic Stat Cards) -->
           <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-4">
             
-            <div class="stat-card stat-emerald">
-              <span class="text-[11px] font-bold text-slate-500 uppercase tracking-wider">Total Students</span>
+            <div class="stat-card stat-emerald cursor-pointer hover:shadow-md hover:scale-[1.02] transition group" onclick="switchSection('students')" title="Open Student Management">
+              <div class="flex items-center justify-between">
+                <span class="text-[11px] font-bold text-slate-500 uppercase tracking-wider">Total Students</span>
+                <span class="text-[10px] font-extrabold text-emerald-700 bg-emerald-50 group-hover:bg-emerald-100 px-1.5 py-0.5 rounded transition">Manage &rarr;</span>
+              </div>
               <div class="flex items-center justify-between mt-2">
                 <h3 id="stat-total-students" class="text-2xl font-black text-slate-900">0</h3>
-                <span class="w-9 h-9 rounded-xl bg-emerald-50 text-emerald-700 flex items-center justify-center text-sm">
+                <span class="w-9 h-9 rounded-xl bg-emerald-50 text-emerald-700 group-hover:bg-emerald-600 group-hover:text-white flex items-center justify-center text-sm transition">
                   <i class="fa-solid fa-user-graduate"></i>
                 </span>
               </div>
             </div>
 
-            <div class="stat-card stat-gold">
-              <span class="text-[11px] font-bold text-slate-500 uppercase tracking-wider">Total Teachers</span>
+            <div class="stat-card stat-gold cursor-pointer hover:shadow-md hover:scale-[1.02] transition group" onclick="switchSection('teachers')" title="Open Teachers Management">
+              <div class="flex items-center justify-between">
+                <span class="text-[11px] font-bold text-slate-500 uppercase tracking-wider">Total Teachers</span>
+                <span class="text-[10px] font-extrabold text-amber-700 bg-amber-50 group-hover:bg-amber-100 px-1.5 py-0.5 rounded transition">Manage &rarr;</span>
+              </div>
               <div class="flex items-center justify-between mt-2">
                 <h3 id="stat-total-teachers" class="text-2xl font-black text-slate-900">0</h3>
-                <span class="w-9 h-9 rounded-xl bg-amber-50 text-amber-700 flex items-center justify-center text-sm">
+                <span class="w-9 h-9 rounded-xl bg-amber-50 text-amber-700 group-hover:bg-amber-600 group-hover:text-white flex items-center justify-center text-sm transition">
                   <i class="fa-solid fa-chalkboard-user"></i>
                 </span>
               </div>
             </div>
 
-            <div class="stat-card stat-blue">
-              <span class="text-[11px] font-bold text-slate-500 uppercase tracking-wider">Total Courses</span>
+            <div class="stat-card stat-blue cursor-pointer hover:shadow-md hover:scale-[1.02] transition group" onclick="switchSection('courses')" title="Open Courses Management">
+              <div class="flex items-center justify-between">
+                <span class="text-[11px] font-bold text-slate-500 uppercase tracking-wider">Total Courses</span>
+                <span class="text-[10px] font-extrabold text-blue-700 bg-blue-50 group-hover:bg-blue-100 px-1.5 py-0.5 rounded transition">Manage &rarr;</span>
+              </div>
               <div class="flex items-center justify-between mt-2">
                 <h3 id="stat-total-courses" class="text-2xl font-black text-slate-900">0</h3>
-                <span class="w-9 h-9 rounded-xl bg-blue-50 text-blue-700 flex items-center justify-center text-sm">
+                <span class="w-9 h-9 rounded-xl bg-blue-50 text-blue-700 group-hover:bg-blue-600 group-hover:text-white flex items-center justify-center text-sm transition">
                   <i class="fa-solid fa-book-quran"></i>
                 </span>
               </div>
             </div>
 
-            <div class="stat-card stat-purple">
-              <span class="text-[11px] font-bold text-slate-500 uppercase tracking-wider">Active Enrolled</span>
+            <div class="stat-card stat-purple cursor-pointer hover:shadow-md hover:scale-[1.02] transition group" onclick="switchSection('students')" title="View Active Students in Student Management">
+              <div class="flex items-center justify-between">
+                <span class="text-[11px] font-bold text-slate-500 uppercase tracking-wider">Active Enrolled</span>
+                <span class="text-[10px] font-extrabold text-purple-700 bg-purple-50 group-hover:bg-purple-100 px-1.5 py-0.5 rounded transition">View &rarr;</span>
+              </div>
               <div class="flex items-center justify-between mt-2">
                 <h3 id="stat-active-enrollments" class="text-2xl font-black text-purple-700">0</h3>
-                <span class="w-9 h-9 rounded-xl bg-purple-50 text-purple-700 flex items-center justify-center text-sm">
+                <span class="w-9 h-9 rounded-xl bg-purple-50 text-purple-700 group-hover:bg-purple-600 group-hover:text-white flex items-center justify-center text-sm transition">
                   <i class="fa-solid fa-circle-check"></i>
                 </span>
               </div>
             </div>
 
-            <div class="stat-card stat-rose">
-              <span class="text-[11px] font-bold text-slate-500 uppercase tracking-wider">Pending Leads</span>
+            <div class="stat-card stat-rose cursor-pointer hover:shadow-md hover:scale-[1.02] transition group" onclick="switchSection('enrollments')" title="Review Free Trial Leads">
+              <div class="flex items-center justify-between">
+                <span class="text-[11px] font-bold text-slate-500 uppercase tracking-wider">Pending Leads</span>
+                <span class="text-[10px] font-extrabold text-rose-700 bg-rose-50 group-hover:bg-rose-100 px-1.5 py-0.5 rounded transition">Review &rarr;</span>
+              </div>
               <div class="flex items-center justify-between mt-2">
                 <h3 id="stat-pending-enrollments" class="text-2xl font-black text-rose-600">0</h3>
-                <span class="w-9 h-9 rounded-xl bg-rose-50 text-rose-700 flex items-center justify-center text-sm">
+                <span class="w-9 h-9 rounded-xl bg-rose-50 text-rose-700 group-hover:bg-rose-600 group-hover:text-white flex items-center justify-center text-sm transition">
                   <i class="fa-solid fa-clock"></i>
                 </span>
               </div>
             </div>
 
-            <div class="stat-card stat-cyan">
-              <span class="text-[11px] font-bold text-slate-500 uppercase tracking-wider">Contact Inquiries</span>
+            <div class="stat-card stat-cyan cursor-pointer hover:shadow-md hover:scale-[1.02] transition group" onclick="switchSection('messages')" title="Open Contact Inquiries">
+              <div class="flex items-center justify-between">
+                <span class="text-[11px] font-bold text-slate-500 uppercase tracking-wider">Contact Inquiries</span>
+                <span class="text-[10px] font-extrabold text-cyan-800 bg-cyan-50 group-hover:bg-cyan-100 px-1.5 py-0.5 rounded transition">Inbox &rarr;</span>
+              </div>
               <div class="flex items-center justify-between mt-2">
                 <h3 id="stat-total-messages" class="text-lg font-black text-cyan-800">0</h3>
-                <span class="w-9 h-9 rounded-xl bg-cyan-50 text-cyan-700 flex items-center justify-center text-sm">
+                <span class="w-9 h-9 rounded-xl bg-cyan-50 text-cyan-700 group-hover:bg-cyan-600 group-hover:text-white flex items-center justify-center text-sm transition">
                   <i class="fa-solid fa-envelope"></i>
                 </span>
               </div>
@@ -366,11 +384,17 @@
               <p class="text-xs text-slate-500">Quickly add or review content with one click</p>
             </div>
             <div class="flex flex-wrap items-center gap-2.5">
-              <button onclick="switchSection('courses'); document.getElementById('btn-add-course').click();" class="px-3.5 py-2 rounded-xl bg-emerald-800 hover:bg-emerald-900 text-white font-bold text-xs flex items-center gap-1.5 transition">
+              <button onclick="switchSection('students')" class="px-3.5 py-2 rounded-xl bg-emerald-800 hover:bg-emerald-900 text-white font-bold text-xs flex items-center gap-1.5 transition shadow-sm">
+                <i class="fa-solid fa-user-graduate text-xs"></i> Student Management
+              </button>
+              <button onclick="switchSection('students'); document.getElementById('btn-add-student').click();" class="px-3.5 py-2 rounded-xl bg-teal-600 hover:bg-teal-700 text-white font-bold text-xs flex items-center gap-1.5 transition shadow-sm">
+                <i class="fa-solid fa-user-plus text-xs"></i> Enroll Student
+              </button>
+              <button onclick="switchSection('courses'); document.getElementById('btn-add-course').click();" class="px-3.5 py-2 rounded-xl bg-emerald-950 hover:bg-emerald-900 text-white font-bold text-xs flex items-center gap-1.5 transition">
                 <i class="fa-solid fa-plus text-xs"></i> Add Course
               </button>
               <button onclick="switchSection('teachers'); document.getElementById('btn-add-teacher').click();" class="px-3.5 py-2 rounded-xl bg-amber-500 hover:bg-amber-600 text-slate-950 font-extrabold text-xs flex items-center gap-1.5 transition">
-                <i class="fa-solid fa-user-plus text-xs"></i> Add Teacher
+                <i class="fa-solid fa-chalkboard-user text-xs"></i> Add Teacher
               </button>
               <button onclick="switchSection('enrollments')" class="px-3.5 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs flex items-center gap-1.5 transition">
                 <i class="fa-solid fa-list-check text-xs"></i> Review Free Trial Leads
@@ -378,6 +402,51 @@
               <button onclick="switchSection('sliders'); document.getElementById('btn-add-slider').click();" class="px-3.5 py-2 rounded-xl bg-slate-800 hover:bg-slate-900 text-white font-bold text-xs flex items-center gap-1.5 transition">
                 <i class="fa-solid fa-image text-xs"></i> Add Slider Banner
               </button>
+            </div>
+          </div>
+
+          <!-- Enrolled Students Quick Management Overview -->
+          <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-5 space-y-4">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+              <div>
+                <div class="flex items-center gap-2">
+                  <span class="w-8 h-8 rounded-xl bg-emerald-50 text-emerald-800 flex items-center justify-center text-sm">
+                    <i class="fa-solid fa-user-graduate"></i>
+                  </span>
+                  <h4 class="font-black text-slate-900 text-base">Student Management Overview</h4>
+                  <span id="overview-students-count" class="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-emerald-100 text-emerald-800 border border-emerald-200">
+                    0 Enrolled
+                  </span>
+                </div>
+                <p class="text-xs text-slate-500 mt-0.5">Active enrolled students &bull; Quick access and student directory</p>
+              </div>
+              <div class="flex items-center gap-2">
+                <button onclick="switchSection('students'); document.getElementById('btn-add-student').click();" class="px-3 py-1.5 rounded-xl bg-emerald-800 hover:bg-emerald-900 text-white font-bold text-xs flex items-center gap-1.5 transition shadow-sm">
+                  <i class="fa-solid fa-user-plus text-xs"></i> Enroll Student
+                </button>
+                <button onclick="switchSection('students')" class="px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs flex items-center gap-1 transition">
+                  <span>Open Full Student Management</span> &rarr;
+                </button>
+              </div>
+            </div>
+
+            <div class="table-responsive">
+              <table class="admin-table">
+                <thead>
+                  <tr>
+                    <th>Student &amp; Parent</th>
+                    <th>Enrolled Course</th>
+                    <th>Assigned Tutor</th>
+                    <th>WhatsApp Contact</th>
+                    <th>Country</th>
+                    <th>Status</th>
+                    <th class="text-right">Action</th>
+                  </tr>
+                </thead>
+                <tbody id="overview-recent-students">
+                  <tr><td colspan="7" class="text-center py-6 text-slate-400">Loading student records...</td></tr>
+                </tbody>
+              </table>
             </div>
           </div>
 
@@ -539,6 +608,28 @@
         <!-- ================= 4. STUDENTS PANE ================= -->
         <section id="section-students" class="admin-section-pane hidden space-y-4">
           
+          <!-- Student Management Header Banner -->
+          <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div class="flex items-center gap-3">
+              <span class="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-800 flex items-center justify-center text-lg">
+                <i class="fa-solid fa-user-graduate"></i>
+              </span>
+              <div>
+                <h3 class="text-lg font-black text-slate-900 leading-tight">Student Management</h3>
+                <p class="text-xs text-slate-500">Manage enrolled academy students, course progress, tutor assignments, and fee status</p>
+              </div>
+            </div>
+            <div class="flex items-center gap-2.5">
+              <button onclick="switchSection('overview')" class="px-3.5 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs flex items-center gap-1.5 transition">
+                <i class="fa-solid fa-arrow-left text-xs"></i> Dashboard Overview
+              </button>
+              <button id="btn-add-student" class="px-4 py-2 rounded-xl bg-emerald-800 hover:bg-emerald-900 text-white font-bold text-xs flex items-center justify-center gap-2 shadow transition">
+                <i class="fa-solid fa-user-plus"></i>
+                <span>Enroll New Student</span>
+              </button>
+            </div>
+          </div>
+
           <div class="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 bg-white p-4 rounded-2xl border border-slate-200">
             <div class="flex items-center gap-3">
               <span id="students-count-badge" class="px-3 py-1 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800 border border-emerald-200">
@@ -552,10 +643,6 @@
                 <option value="Paused">Paused / Leave</option>
               </select>
             </div>
-            <button id="btn-add-student" class="px-4 py-2 rounded-xl bg-emerald-800 hover:bg-emerald-900 text-white font-bold text-xs flex items-center justify-center gap-2 shadow transition">
-              <i class="fa-solid fa-user-plus"></i>
-              <span>Enroll New Student</span>
-            </button>
           </div>
 
           <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">

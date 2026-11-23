@@ -126,7 +126,7 @@ function switchSection(sectionId) {
     overview: "Dashboard Overview",
     courses: "Courses Management",
     teachers: "Teachers & Scholars",
-    students: "Registered Students",
+    students: "Student Management",
     enrollments: "Enrollments & Free Trial Leads",
     sliders: "Homepage Sliders & Banners",
     gallery: "Photo Gallery Management",
@@ -187,10 +187,67 @@ function renderOverview() {
     statMessages.textContent = `${stats.totalMessages} (${stats.unreadMessages} New)`;
   }
 
+  // Render recent registered students preview in overview
+  renderOverviewRecentStudents();
   // Render recent enrollments table preview in overview
   renderOverviewRecentEnrollments();
   // Render recent messages preview in overview
   renderOverviewRecentMessages();
+}
+
+function renderOverviewRecentStudents() {
+  const container = document.getElementById('overview-recent-students');
+  const countBadge = document.getElementById('overview-students-count');
+  if (countBadge && adminState.students) {
+    countBadge.textContent = `${adminState.students.length} Enrolled`;
+  }
+  if (!container) return;
+
+  const students = (adminState.students || []).slice(0, 5);
+  if (!students.length) {
+    container.innerHTML = `
+      <tr>
+        <td colspan="7" class="text-center py-6 text-slate-400">
+          No registered students found yet. 
+          <button onclick="switchSection('students'); document.getElementById('btn-add-student').click();" class="text-emerald-700 hover:underline font-bold ml-1">
+            + Enroll First Student
+          </button>
+        </td>
+      </tr>
+    `;
+    return;
+  }
+
+  container.innerHTML = students.map(s => {
+    let badge = 'badge-active';
+    if (s.status === 'Completed') badge = 'badge-completed';
+    else if (s.status === 'Suspended' || s.status === 'Paused') badge = 'badge-rejected';
+
+    const waLink = `https://wa.me/${(s.whatsappNumber || '').replace(/[^0-9]/g, '')}`;
+
+    return `
+      <tr>
+        <td>
+          <div class="font-bold text-slate-900">${s.studentName || 'Student'}</div>
+          <div class="text-[11px] text-slate-500">Parent: ${s.parentName || 'N/A'} (Age: ${s.age || 'N/A'})</div>
+        </td>
+        <td class="text-xs font-semibold text-slate-800">${s.enrolledCourse || 'Noorani Qaida'}</td>
+        <td class="text-xs font-semibold text-slate-700">${s.assignedTeacher || 'Unassigned'}</td>
+        <td>
+          <a href="${waLink}" target="_blank" class="text-emerald-700 hover:text-emerald-900 font-semibold text-xs flex items-center gap-1">
+            <i class="fa-brands fa-whatsapp text-emerald-500"></i> ${s.whatsappNumber || 'N/A'}
+          </a>
+        </td>
+        <td class="text-xs text-slate-600">${s.country || 'International'}</td>
+        <td><span class="badge-status ${badge}">${s.status || 'Active'}</span></td>
+        <td class="text-right">
+          <button onclick="editStudentModal('${s.id}')" class="text-xs bg-slate-100 hover:bg-emerald-50 hover:text-emerald-800 text-slate-700 font-bold px-2.5 py-1 rounded-lg transition inline-flex items-center gap-1" title="Edit Student">
+            <i class="fa-solid fa-pen-to-square text-[10px]"></i> Edit
+          </button>
+        </td>
+      </tr>
+    `;
+  }).join('');
 }
 
 function renderOverviewRecentEnrollments() {
@@ -767,6 +824,7 @@ window.switchSection = switchSection;
 window.openMobileSidebar = openMobileSidebar;
 window.closeMobileSidebar = closeMobileSidebar;
 window.renderOverview = renderOverview;
+window.renderOverviewRecentStudents = renderOverviewRecentStudents;
 window.renderCoursesTable = renderCoursesTable;
 window.renderTeachersTable = renderTeachersTable;
 window.renderStudentsTable = renderStudentsTable;

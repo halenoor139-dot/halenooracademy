@@ -66,6 +66,7 @@ function startRealtimeListeners() {
   dbOps.listenToStudents(students => {
     adminState.students = students;
     window.renderStudentsTable(students);
+    window.renderOverview();
     updateMetricsLive();
   });
 

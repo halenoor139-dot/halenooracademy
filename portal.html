@@ -1,0 +1,1113 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student & Teacher Portal | Hale Noor Quran Academy</title>
+  
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="assets/images/logo.png">
+  <link rel="apple-touch-icon" href="assets/images/logo.png">
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            emerald: {
+              50: '#ecfdf5',
+              100: '#d1fae5',
+              200: '#a7f3d0',
+              600: '#059669',
+              700: '#047857',
+              800: '#065f46',
+              900: '#064e3b',
+              950: '#022c22',
+            },
+            amber: {
+              300: '#fcd34d',
+              400: '#fbbf24',
+              500: '#f59e0b',
+              600: '#d97706',
+            }
+          },
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'system-ui', 'sans-serif'],
+            arabic: ['"Amiri"', 'serif'],
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Google Fonts & Font Awesome -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <style>
+    .glass-card {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(12px);
+    }
+    .custom-scroll::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    .custom-scroll::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+      border-radius: 9999px;
+    }
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-800 antialiased min-h-screen flex flex-col font-sans">
+
+  <!-- ================= TOAST NOTIFICATION CONTAINER ================= -->
+  <div id="portal-toast-container" class="fixed top-5 right-5 z-50 flex flex-col gap-2 pointer-events-none max-w-sm w-full"></div>
+
+  <!-- ================= LOADING SCREEN ================= -->
+  <div id="portal-loading" class="fixed inset-0 z-50 bg-emerald-950 flex flex-col items-center justify-center p-4">
+    <div class="relative w-20 h-20 mb-5">
+      <div class="absolute inset-0 rounded-full border-4 border-amber-400/30 animate-ping"></div>
+      <img src="assets/images/logo.png" alt="Hale Noor" class="w-20 h-20 rounded-full object-cover shadow-2xl border-2 border-amber-400 relative z-10">
+    </div>
+    <h2 class="text-xl font-black text-white tracking-wide">HALE NOOR QURAN ACADEMY</h2>
+    <p class="text-xs text-amber-300 font-arabic text-lg mt-1">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</p>
+    <p class="text-xs text-emerald-300 mt-2 font-medium">Connecting Student &amp; Teacher Portal...</p>
+  </div>
+
+  <!-- ================= 1. PORTAL LOGIN VIEW ================= -->
+  <div id="portal-login-view" class="hidden min-h-screen bg-slate-900 flex flex-col items-center justify-center p-4 relative overflow-hidden">
+    <!-- Geometric Background Glows -->
+    <div class="absolute -top-32 -right-32 w-96 h-96 bg-emerald-700/20 rounded-full blur-3xl pointer-events-none"></div>
+    <div class="absolute -bottom-32 -left-32 w-96 h-96 bg-amber-500/15 rounded-full blur-3xl pointer-events-none"></div>
+
+    <div class="max-w-md w-full bg-white rounded-3xl p-7 sm:p-9 shadow-2xl border border-slate-200/80 relative z-10">
+      
+      <!-- Brand & Header -->
+      <div class="text-center mb-6">
+        <a href="index.html" class="inline-block p-1 rounded-full bg-emerald-50 border-2 border-amber-400/80 shadow mb-3 hover:scale-105 transition">
+          <img src="assets/images/logo.png" alt="Hale Noor Quran Academy" class="w-16 h-16 rounded-full object-cover">
+        </a>
+        <h1 class="text-2xl font-black text-slate-900 tracking-tight">Academy Portal</h1>
+        <p class="text-xs text-emerald-800 font-bold uppercase tracking-wider mt-0.5">Hale Noor Online Quran Academy</p>
+        <p class="font-arabic text-sm text-slate-500 mt-1">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</p>
+      </div>
+
+      <!-- Role Switcher Tabs (Student vs Teacher) -->
+      <div class="grid grid-cols-2 p-1 bg-slate-100 rounded-2xl mb-6 text-xs font-bold">
+        <button type="button" id="tab-student" onclick="switchLoginRole('student')" class="py-2.5 rounded-xl bg-white text-emerald-900 shadow-sm flex items-center justify-center gap-2 transition">
+          <i class="fa-solid fa-user-graduate text-amber-500"></i>
+          <span>Student Portal</span>
+        </button>
+        <button type="button" id="tab-teacher" onclick="switchLoginRole('teacher')" class="py-2.5 rounded-xl text-slate-500 hover:text-slate-800 flex items-center justify-center gap-2 transition">
+          <i class="fa-solid fa-chalkboard-user"></i>
+          <span>Teacher Portal</span>
+        </button>
+      </div>
+
+      <!-- Login Form -->
+      <form id="portal-login-form" class="space-y-4">
+        <div>
+          <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5 flex items-center justify-between">
+            <span id="login-username-label">Student Username or Email</span>
+            <span class="text-[10px] text-slate-400 lowercase font-normal">(provided by admin)</span>
+          </label>
+          <div class="relative">
+            <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
+              <i id="login-user-icon" class="fa-solid fa-user-graduate text-sm"></i>
+            </div>
+            <input type="text" id="login-username" required placeholder="Enter username (e.g. fardan101)" class="w-full pl-10 pr-3.5 py-3 rounded-xl border border-slate-300 text-xs text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-700 focus:border-transparent transition">
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+            Portal Password
+          </label>
+          <div class="relative">
+            <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
+              <i class="fa-solid fa-lock text-sm"></i>
+            </div>
+            <input type="password" id="login-password" required placeholder="••••••••••••" class="w-full pl-10 pr-10 py-3 rounded-xl border border-slate-300 text-xs text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-700 focus:border-transparent transition">
+            <button type="button" onclick="togglePasswordVisibility('login-password', 'login-pass-icon')" class="absolute inset-y-0 right-0 pr-3.5 flex items-center text-slate-400 hover:text-slate-600">
+              <i id="login-pass-icon" class="fa-solid fa-eye text-xs"></i>
+            </button>
+          </div>
+        </div>
+
+        <button type="submit" id="portal-login-btn" class="w-full py-3.5 px-4 rounded-xl bg-emerald-800 hover:bg-emerald-900 text-white font-extrabold text-xs shadow-lg shadow-emerald-950/10 flex items-center justify-center gap-2 transition active:scale-[0.99] mt-2">
+          <i id="login-spinner" class="fa-solid fa-circle-notch animate-spin hidden text-amber-400"></i>
+          <span id="login-btn-text">Sign In to Student Portal</span>
+          <i class="fa-solid fa-arrow-right text-xs"></i>
+        </button>
+      </form>
+
+      <!-- Help & Direct Contact -->
+      <div class="mt-6 pt-5 border-t border-slate-100 text-center space-y-3">
+        <p class="text-xs text-slate-500">
+          Username ya Password nahi mila? Admin se WhatsApp par rabta karein:
+        </p>
+        <a href="https://wa.me/923208040672?text=Assalam-o-Alaikum!%20Mujhe%20apne%20Hale%20Noor%20Portal%20ka%20Username%20aur%20Password%20chahiye." target="_blank" class="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl bg-emerald-50 text-emerald-800 hover:bg-emerald-100 font-bold text-xs border border-emerald-200 transition">
+          <i class="fa-brands fa-whatsapp text-emerald-600 text-sm"></i>
+          <span>Ask Admin on WhatsApp</span>
+        </a>
+
+        <div class="flex items-center justify-center gap-4 text-xs pt-2">
+          <a href="index.html" class="text-slate-500 hover:text-slate-800 font-semibold transition flex items-center gap-1">
+            <i class="fa-solid fa-arrow-left text-[11px]"></i> Public Website
+          </a>
+          <span class="text-slate-300">&bull;</span>
+          <a href="admin.html" class="text-slate-500 hover:text-emerald-800 font-semibold transition flex items-center gap-1">
+            <i class="fa-solid fa-shield-halved text-[11px]"></i> Admin Dashboard
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ================= 2. STUDENT DASHBOARD / PROFILE VIEW ================= -->
+  <div id="student-dashboard-view" class="hidden min-h-screen flex flex-col bg-slate-100">
+    
+    <!-- Student Header Navbar -->
+    <header class="bg-emerald-950 text-white border-b border-emerald-900 sticky top-0 z-30 shadow-md">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <img src="assets/images/logo.png" alt="Hale Noor" class="w-10 h-10 rounded-full object-cover border-2 border-amber-400">
+          <div>
+            <div class="flex items-center gap-2">
+              <span class="font-black text-sm tracking-wide text-white">Hale Noor</span>
+              <span class="text-[10px] font-extrabold px-1.5 py-0.5 rounded bg-amber-400 text-emerald-950">STUDENT</span>
+            </div>
+            <p class="text-[11px] text-emerald-300">Quran Academy Portal</p>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-3">
+          <div class="hidden sm:flex items-center gap-2 text-right">
+            <div>
+              <div id="student-header-name" class="font-bold text-xs text-white">Student Name</div>
+              <div id="student-header-username" class="text-[11px] font-mono text-amber-300">@username</div>
+            </div>
+          </div>
+          <button onclick="logoutPortal()" class="px-3.5 py-1.5 rounded-xl bg-emerald-900 hover:bg-emerald-800 text-white border border-emerald-800 font-bold text-xs flex items-center gap-1.5 transition">
+            <i class="fa-solid fa-right-from-bracket text-amber-400"></i>
+            <span>Log Out</span>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Student Main Content Container -->
+    <main class="max-w-6xl mx-auto px-4 sm:px-6 py-6 sm:py-8 flex-grow w-full space-y-6">
+
+      <!-- Student Profile Hero Card -->
+      <div class="bg-gradient-to-br from-emerald-950 via-emerald-900 to-teal-950 text-white rounded-3xl p-6 sm:p-8 shadow-xl border border-amber-400/40 relative overflow-hidden">
+        <div class="absolute -right-10 -bottom-10 w-48 h-48 bg-amber-400/10 rounded-full blur-2xl pointer-events-none"></div>
+
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-6 relative z-10">
+          <div class="flex items-center gap-4 sm:gap-6">
+            <div class="w-20 h-20 rounded-2xl bg-emerald-800 text-amber-300 font-black text-3xl flex items-center justify-center border-2 border-amber-400 shadow-lg shrink-0">
+              <span id="student-avatar-initials">ST</span>
+            </div>
+            <div>
+              <div class="flex items-center gap-2 flex-wrap mb-1">
+                <h2 id="student-profile-name" class="text-2xl sm:text-3xl font-black text-white">Student Name</h2>
+                <span id="student-profile-status" class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-500 text-white shadow-sm">Active Enrolled</span>
+              </div>
+              <p class="font-arabic text-amber-300 text-sm">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ &bull; طالب القرآن الكريم</p>
+              <div class="flex items-center gap-3 text-xs text-emerald-200 mt-2 flex-wrap">
+                <span>Parent: <strong id="student-profile-parent" class="text-white">N/A</strong></span>
+                <span>&bull;</span>
+                <span>Age: <strong id="student-profile-age" class="text-white">N/A</strong></span>
+                <span>&bull;</span>
+                <span>Portal ID: <strong id="student-profile-username" class="text-amber-300 font-mono">@user</strong></span>
+              </div>
+            </div>
+          </div>
+
+          <div class="flex flex-wrap items-center gap-2.5">
+            <button onclick="openChangePasswordModal()" class="px-4 py-2.5 rounded-xl bg-white/10 hover:bg-white/20 text-white font-bold text-xs flex items-center gap-2 border border-white/20 transition">
+              <i class="fa-solid fa-key text-amber-400"></i>
+              <span>Change Password</span>
+            </button>
+            <button onclick="printStudentCard()" class="px-4 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-emerald-950 font-black text-xs flex items-center gap-2 shadow-md transition">
+              <i class="fa-solid fa-print"></i>
+              <span>Print Student Card</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Grid Cards: Academics, Schedule, Tutor & Tuition -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+
+        <!-- 1. Enrolled Course & Syllabus Card -->
+        <div class="bg-white rounded-3xl p-6 border border-slate-200 shadow-sm space-y-4 md:col-span-2">
+          <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+            <div class="flex items-center gap-2.5">
+              <div class="w-9 h-9 rounded-xl bg-emerald-50 text-emerald-800 flex items-center justify-center text-sm">
+                <i class="fa-solid fa-book-quran"></i>
+              </div>
+              <div>
+                <h3 class="font-black text-slate-900 text-base">Enrolled Quran Course</h3>
+                <p class="text-xs text-slate-500">Your current syllabus and academic track</p>
+              </div>
+            </div>
+            <span class="px-2.5 py-1 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800 border border-emerald-200">
+              In Progress
+            </span>
+          </div>
+
+          <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200/80 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div>
+              <span class="text-[11px] font-bold text-slate-400 uppercase tracking-wider block">Course Title</span>
+              <h4 id="student-course-title" class="text-lg font-black text-emerald-900 mt-0.5">Noorani Qaida with Tajweed</h4>
+              <p class="text-xs text-slate-600 mt-1">One-on-One Live Interactive Class with Dedicated Quran Scholar</p>
+            </div>
+            <div class="sm:text-right">
+              <span class="text-[11px] font-bold text-slate-400 uppercase tracking-wider block">Class Schedule</span>
+              <span id="student-class-timing" class="text-sm font-bold text-slate-800 font-mono">7:00 PM EST</span>
+              <div id="student-class-tz" class="text-xs text-slate-500">International Timezone</div>
+            </div>
+          </div>
+
+          <!-- Academic Notes from Teacher -->
+          <div>
+            <h4 class="text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5 flex items-center gap-1.5">
+              <i class="fa-solid fa-comment-dots text-amber-500"></i> Teacher's Remarks &amp; Lesson Notes
+            </h4>
+            <div id="student-notes-box" class="p-4 rounded-2xl bg-amber-50/60 border border-amber-200/80 text-xs text-slate-700 leading-relaxed">
+              Teacher has not updated specific notes yet. Keep reciting daily with Tajweed.
+            </div>
+          </div>
+
+          <!-- Live Classroom Join Action -->
+          <div class="pt-2 flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-4 bg-emerald-900 text-white rounded-2xl">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-xl bg-amber-400 text-emerald-950 flex items-center justify-center text-lg font-black shrink-0">
+                <i class="fa-solid fa-video"></i>
+              </div>
+              <div>
+                <div class="font-extrabold text-sm text-white">Join Live Class with Tutor</div>
+                <div class="text-xs text-emerald-200">Connect via WhatsApp / Zoom classroom link</div>
+              </div>
+            </div>
+            <a id="btn-join-class" href="#" target="_blank" class="px-5 py-2.5 rounded-xl bg-amber-400 hover:bg-amber-300 text-emerald-950 font-black text-xs flex items-center justify-center gap-2 shadow transition">
+              <i class="fa-solid fa-play"></i>
+              <span>Connect with Teacher</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- 2. Assigned Tutor & Fee Details Card -->
+        <div class="space-y-6">
+          
+          <!-- Assigned Teacher Card -->
+          <div class="bg-white rounded-3xl p-6 border border-slate-200 shadow-sm space-y-4">
+            <div class="flex items-center gap-2.5 pb-3 border-b border-slate-100">
+              <div class="w-9 h-9 rounded-xl bg-amber-50 text-amber-800 flex items-center justify-center text-sm">
+                <i class="fa-solid fa-chalkboard-user"></i>
+              </div>
+              <div>
+                <h3 class="font-black text-slate-900 text-base">Assigned Tutor</h3>
+                <p class="text-xs text-slate-500">Your dedicated academy scholar</p>
+              </div>
+            </div>
+
+            <div class="flex items-center gap-3.5">
+              <div class="w-12 h-12 rounded-full bg-emerald-900 text-amber-300 font-bold flex items-center justify-center text-lg border-2 border-amber-400 shrink-0">
+                <i class="fa-solid fa-user-tie"></i>
+              </div>
+              <div>
+                <h4 id="student-tutor-name" class="font-extrabold text-slate-900 text-sm">Ustadh / Scholar</h4>
+                <p class="text-xs text-emerald-800 font-semibold">Certified Quran &amp; Tajweed Tutor</p>
+                <div class="text-[11px] text-slate-400 mt-0.5">Hale Noor Online Quran Academy</div>
+              </div>
+            </div>
+
+            <a id="btn-tutor-whatsapp" href="#" target="_blank" class="w-full py-2.5 px-3 rounded-xl bg-emerald-50 hover:bg-emerald-100 text-emerald-800 font-bold text-xs flex items-center justify-center gap-2 border border-emerald-200 transition">
+              <i class="fa-brands fa-whatsapp text-emerald-600 text-sm"></i>
+              <span>Message Teacher on WhatsApp</span>
+            </a>
+          </div>
+
+          <!-- Tuition Fee & Billing Status -->
+          <div class="bg-white rounded-3xl p-6 border border-slate-200 shadow-sm space-y-3">
+            <div class="flex items-center justify-between pb-2 border-b border-slate-100">
+              <span class="text-xs font-bold text-slate-500 uppercase tracking-wider">Tuition Fee</span>
+              <span class="px-2 py-0.5 rounded-full text-[11px] font-bold bg-emerald-100 text-emerald-800 border border-emerald-200">Current</span>
+            </div>
+            <div class="flex items-baseline justify-between">
+              <div>
+                <span class="text-xs text-slate-400">Monthly Tuition:</span>
+                <div id="student-monthly-fee" class="text-2xl font-black text-slate-900 mt-0.5">$45 USD</div>
+              </div>
+              <div class="text-right">
+                <span class="text-[11px] text-slate-400 block">Country:</span>
+                <span id="student-country-badge" class="text-xs font-bold text-slate-700">International</span>
+              </div>
+            </div>
+            <div class="text-[11px] text-slate-400 pt-2 border-t border-slate-100">
+              For fee receipts or payment methods, please contact the academy accounts department.
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- Printable Student Card Layout -->
+      <div id="printable-student-card" class="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200 shadow-sm space-y-4">
+        <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+          <div class="flex items-center gap-2.5">
+            <i class="fa-solid fa-id-card text-emerald-800 text-lg"></i>
+            <h3 class="font-black text-slate-900 text-base">Student Academy Identity Card</h3>
+          </div>
+          <span class="text-xs font-mono text-slate-400">ID: <span id="card-student-id">HNQA-001</span></span>
+        </div>
+
+        <div class="p-5 rounded-2xl bg-gradient-to-r from-emerald-950 to-teal-900 text-white flex flex-col sm:flex-row sm:items-center justify-between gap-4 border border-amber-400/50">
+          <div class="flex items-center gap-4">
+            <img src="assets/images/logo.png" alt="Hale Noor" class="w-14 h-14 rounded-full object-cover border-2 border-amber-400">
+            <div>
+              <div class="text-amber-300 font-arabic text-xs">أكاديمية هالة نور للقرآن الكريم</div>
+              <div id="card-student-name" class="text-xl font-black text-white">Student Name</div>
+              <div id="card-student-course" class="text-xs text-emerald-200">Noorani Qaida with Tajweed</div>
+            </div>
+          </div>
+          <div class="text-xs space-y-1 sm:text-right border-t sm:border-t-0 sm:border-l border-emerald-800/80 pt-3 sm:pt-0 sm:pl-4">
+            <div>Parent: <strong id="card-student-parent" class="text-white">Parent</strong></div>
+            <div>Tutor: <strong id="card-student-tutor" class="text-amber-300">Scholar</strong></div>
+            <div>WhatsApp: <strong id="card-student-wa" class="text-white">+123456789</strong></div>
+          </div>
+        </div>
+      </div>
+
+    </main>
+
+  </div>
+
+  <!-- ================= 3. TEACHER DASHBOARD / PROFILE VIEW ================= -->
+  <div id="teacher-dashboard-view" class="hidden min-h-screen flex flex-col bg-slate-100">
+    
+    <!-- Teacher Header Navbar -->
+    <header class="bg-emerald-950 text-white border-b border-emerald-900 sticky top-0 z-30 shadow-md">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <img src="assets/images/logo.png" alt="Hale Noor" class="w-10 h-10 rounded-full object-cover border-2 border-amber-400">
+          <div>
+            <div class="flex items-center gap-2">
+              <span class="font-black text-sm tracking-wide text-white">Hale Noor</span>
+              <span class="text-[10px] font-extrabold px-1.5 py-0.5 rounded bg-amber-400 text-emerald-950">SCHOLAR / TEACHER</span>
+            </div>
+            <p class="text-[11px] text-emerald-300">Quran Academy Portal</p>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-3">
+          <div class="hidden sm:flex items-center gap-2 text-right">
+            <div>
+              <div id="teacher-header-name" class="font-bold text-xs text-white">Teacher Name</div>
+              <div id="teacher-header-username" class="text-[11px] font-mono text-amber-300">@username</div>
+            </div>
+          </div>
+          <button onclick="logoutPortal()" class="px-3.5 py-1.5 rounded-xl bg-emerald-900 hover:bg-emerald-800 text-white border border-emerald-800 font-bold text-xs flex items-center gap-1.5 transition">
+            <i class="fa-solid fa-right-from-bracket text-amber-400"></i>
+            <span>Log Out</span>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Teacher Main Content -->
+    <main class="max-w-6xl mx-auto px-4 sm:px-6 py-6 sm:py-8 flex-grow w-full space-y-6">
+
+      <!-- Teacher Scholar Hero Card -->
+      <div class="bg-gradient-to-br from-emerald-950 via-slate-900 to-teal-950 text-white rounded-3xl p-6 sm:p-8 shadow-xl border border-amber-400/40 relative overflow-hidden">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-6 relative z-10">
+          <div class="flex items-center gap-4 sm:gap-6">
+            <img id="teacher-profile-img" src="assets/images/logo.png" alt="Scholar" class="w-20 h-20 rounded-2xl object-cover border-2 border-amber-400 shadow-lg shrink-0">
+            <div>
+              <div class="flex items-center gap-2 flex-wrap mb-1">
+                <h2 id="teacher-profile-name" class="text-2xl sm:text-3xl font-black text-white">Scholar Name</h2>
+                <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-amber-400 text-emerald-950">Certified Faculty</span>
+              </div>
+              <p id="teacher-profile-arabic" class="font-arabic text-amber-300 text-lg leading-tight">القارئ الشيخ</p>
+              <div class="flex items-center gap-3 text-xs text-emerald-200 mt-2 flex-wrap">
+                <span>Experience: <strong id="teacher-profile-exp" class="text-white">5+ Years</strong></span>
+                <span>&bull;</span>
+                <span>Rating: <strong id="teacher-profile-rating" class="text-amber-300">5.0 ★</strong></span>
+                <span>&bull;</span>
+                <span>Portal ID: <strong id="teacher-profile-username" class="text-amber-300 font-mono">@teacher</strong></span>
+              </div>
+            </div>
+          </div>
+
+          <div class="flex flex-wrap items-center gap-2.5">
+            <button onclick="openChangePasswordModal()" class="px-4 py-2.5 rounded-xl bg-white/10 hover:bg-white/20 text-white font-bold text-xs flex items-center gap-2 border border-white/20 transition">
+              <i class="fa-solid fa-key text-amber-400"></i>
+              <span>Change Password</span>
+            </button>
+            <button onclick="openEditTeacherBioModal()" class="px-4 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-emerald-950 font-black text-xs flex items-center gap-2 shadow-md transition">
+              <i class="fa-solid fa-pen-to-square"></i>
+              <span>Update Profile Bio</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Qualifications & Specialization Card -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="bg-white rounded-3xl p-6 border border-slate-200 shadow-sm space-y-3">
+          <span class="text-xs font-bold text-slate-400 uppercase tracking-wider block">Degrees &amp; Certifications</span>
+          <div id="teacher-profile-qualification" class="text-sm font-black text-slate-900">
+            Sanad in Qira'at Hafs &amp; Alimiyyah Degree
+          </div>
+        </div>
+        <div class="bg-white rounded-3xl p-6 border border-slate-200 shadow-sm space-y-3">
+          <span class="text-xs font-bold text-slate-400 uppercase tracking-wider block">Specializations</span>
+          <div id="teacher-profile-specialization" class="text-sm font-black text-emerald-900">
+            Noorani Qaida, Tajweed Rules, Hifz Memorization
+          </div>
+        </div>
+        <div class="bg-white rounded-3xl p-6 border border-slate-200 shadow-sm space-y-3">
+          <span class="text-xs font-bold text-slate-400 uppercase tracking-wider block">Languages Spoken</span>
+          <div id="teacher-profile-languages" class="text-sm font-black text-slate-900">
+            English, Urdu, Arabic
+          </div>
+        </div>
+      </div>
+
+      <!-- Teacher Bio Section -->
+      <div class="bg-white rounded-3xl p-6 border border-slate-200 shadow-sm space-y-2">
+        <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider">Teacher Biography &amp; Pedagogy</h3>
+        <p id="teacher-profile-bio" class="text-xs sm:text-sm text-slate-700 leading-relaxed">
+          Dedicated Quran educator with comprehensive experience in online tutoring for kids and adults across USA, UK, Canada, and Australia.
+        </p>
+      </div>
+
+      <!-- My Assigned Students Directory -->
+      <div class="bg-white rounded-3xl p-6 border border-slate-200 shadow-sm space-y-4">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-slate-100">
+          <div class="flex items-center gap-2.5">
+            <div class="w-9 h-9 rounded-xl bg-emerald-50 text-emerald-800 flex items-center justify-center text-sm">
+              <i class="fa-solid fa-users-line"></i>
+            </div>
+            <div>
+              <h3 class="font-black text-slate-900 text-base">My Assigned Students</h3>
+              <p class="text-xs text-slate-500">Students enrolled under your mentorship</p>
+            </div>
+          </div>
+          <span id="teacher-assigned-count" class="px-3 py-1 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800 border border-emerald-200">
+            0 Students Assigned
+          </span>
+        </div>
+
+        <div class="table-responsive overflow-x-auto">
+          <table class="w-full text-left border-collapse text-xs">
+            <thead>
+              <tr class="border-b border-slate-200 text-slate-400 uppercase tracking-wider text-[11px]">
+                <th class="py-3 px-3">Student Name</th>
+                <th class="py-3 px-3">Enrolled Course</th>
+                <th class="py-3 px-3">Class Timing</th>
+                <th class="py-3 px-3">Country</th>
+                <th class="py-3 px-3">WhatsApp</th>
+                <th class="py-3 px-3 text-right">Action</th>
+              </tr>
+            </thead>
+            <tbody id="teacher-students-tbody">
+              <tr>
+                <td colspan="6" class="text-center py-8 text-slate-400">Loading student directory...</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </main>
+
+  </div>
+
+  <!-- ================= CHANGE PASSWORD MODAL ================= -->
+  <div id="change-password-modal" class="fixed inset-0 z-50 bg-slate-950/60 backdrop-blur-sm flex items-center justify-center p-4 hidden">
+    <div class="bg-white rounded-3xl max-w-md w-full p-6 sm:p-8 shadow-2xl border border-slate-200">
+      <div class="flex items-center justify-between pb-3 mb-4 border-b border-slate-100">
+        <h3 class="text-lg font-black text-slate-900">Change Portal Password</h3>
+        <button onclick="closeModal('change-password-modal')" class="text-slate-400 hover:text-slate-600 text-lg">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <form id="change-password-form" class="space-y-4">
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">New Password</label>
+          <input type="password" id="modal-new-password" required placeholder="••••••••••••" class="w-full p-3 rounded-xl border border-slate-300 text-xs focus:ring-2 focus:ring-emerald-700 focus:outline-none">
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">Confirm New Password</label>
+          <input type="password" id="modal-confirm-password" required placeholder="••••••••••••" class="w-full p-3 rounded-xl border border-slate-300 text-xs focus:ring-2 focus:ring-emerald-700 focus:outline-none">
+        </div>
+
+        <div class="pt-3 border-t border-slate-100 flex items-center justify-end gap-2">
+          <button type="button" onclick="closeModal('change-password-modal')" class="px-4 py-2 rounded-xl text-slate-500 font-bold text-xs hover:bg-slate-100 transition">
+            Cancel
+          </button>
+          <button type="submit" class="px-5 py-2.5 rounded-xl bg-emerald-800 hover:bg-emerald-900 text-white font-black text-xs shadow transition">
+            Update Password
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ================= TEACHER BIO EDIT MODAL ================= -->
+  <div id="teacher-bio-modal" class="fixed inset-0 z-50 bg-slate-950/60 backdrop-blur-sm flex items-center justify-center p-4 hidden">
+    <div class="bg-white rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl border border-slate-200">
+      <div class="flex items-center justify-between pb-3 mb-4 border-b border-slate-100">
+        <h3 class="text-lg font-black text-slate-900">Update Profile Bio</h3>
+        <button onclick="closeModal('teacher-bio-modal')" class="text-slate-400 hover:text-slate-600 text-lg">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <form id="teacher-bio-form" class="space-y-4">
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">Profile Bio &amp; Teaching Philosophy</label>
+          <textarea id="modal-teacher-bio-input" rows="4" class="w-full p-3 rounded-xl border border-slate-300 text-xs focus:ring-2 focus:ring-emerald-700 focus:outline-none"></textarea>
+        </div>
+
+        <div class="pt-3 border-t border-slate-100 flex items-center justify-end gap-2">
+          <button type="button" onclick="closeModal('teacher-bio-modal')" class="px-4 py-2 rounded-xl text-slate-500 font-bold text-xs hover:bg-slate-100 transition">
+            Cancel
+          </button>
+          <button type="submit" class="px-5 py-2.5 rounded-xl bg-emerald-800 hover:bg-emerald-900 text-white font-black text-xs shadow transition">
+            Save Bio
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Firebase Compat SDK -->
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+
+  <!-- Portal Application Script -->
+  <script>
+    const FIREBASE_CONFIG = {
+      apiKey: "AIzaSyAstTv0oIK0t1K5AqiszwCgk_Gp35FUv60",
+      authDomain: "halenoor-quran-academy-382f9.firebaseapp.com",
+      projectId: "halenoor-quran-academy-382f9",
+      storageBucket: "halenoor-quran-academy-382f9.firebasestorage.app",
+      messagingSenderId: "979848909887",
+      appId: "1:979848909887:web:70b0e65b0787683efbd48a"
+    };
+
+    let portalApp = null;
+    let portalDb = null;
+    let portalAuth = null;
+
+    try {
+      if (typeof firebase !== 'undefined') {
+        portalApp = firebase.initializeApp(FIREBASE_CONFIG, 'PortalApp_' + Date.now());
+        portalDb = portalApp.firestore();
+        portalAuth = portalApp.auth();
+      }
+    } catch (e) {
+      console.warn("Portal Firebase init fallback:", e);
+      if (typeof firebase !== 'undefined' && firebase.apps.length) {
+        portalDb = firebase.firestore();
+        portalAuth = firebase.auth();
+      }
+    }
+
+    // Portal State
+    let currentRole = 'student'; // 'student' or 'teacher'
+    let currentStudent = null;
+    let currentTeacher = null;
+
+    // Toast Notifications Helper
+    function showToast(msg, type = 'info') {
+      const container = document.getElementById('portal-toast-container');
+      if (!container) return;
+      const t = document.createElement('div');
+      t.className = `p-3.5 rounded-2xl shadow-xl text-xs font-bold pointer-events-auto transition-all flex items-center gap-2 ${
+        type === 'success' ? 'bg-emerald-900 text-white border border-emerald-700' :
+        type === 'error' ? 'bg-red-900 text-white border border-red-700' : 'bg-slate-900 text-white'
+      }`;
+      let icon = type === 'success' ? 'fa-circle-check text-amber-400' : type === 'error' ? 'fa-circle-exclamation text-red-300' : 'fa-circle-info text-blue-300';
+      t.innerHTML = `<i class="fa-solid ${icon}"></i> <span>${msg}</span>`;
+      container.appendChild(t);
+      setTimeout(() => {
+        t.style.opacity = '0';
+        setTimeout(() => t.remove(), 300);
+      }, 4000);
+    }
+
+    function openModal(id) {
+      const m = document.getElementById(id);
+      if (m) m.classList.remove('hidden');
+    }
+
+    function closeModal(id) {
+      const m = document.getElementById(id);
+      if (m) m.classList.add('hidden');
+    }
+
+    function togglePasswordVisibility(inputId, iconId) {
+      const input = document.getElementById(inputId);
+      const icon = document.getElementById(iconId);
+      if (!input) return;
+      if (input.type === 'password') {
+        input.type = 'text';
+        if (icon) icon.className = 'fa-solid fa-eye-slash text-xs text-emerald-700';
+      } else {
+        input.type = 'password';
+        if (icon) icon.className = 'fa-solid fa-eye text-xs text-slate-400';
+      }
+    }
+
+    // Switch Role Tabs in Login View
+    function switchLoginRole(role) {
+      currentRole = role;
+      const tabStudent = document.getElementById('tab-student');
+      const tabTeacher = document.getElementById('tab-teacher');
+      const userLabel = document.getElementById('login-username-label');
+      const userIcon = document.getElementById('login-user-icon');
+      const btnText = document.getElementById('login-btn-text');
+
+      if (role === 'student') {
+        tabStudent.className = 'py-2.5 rounded-xl bg-white text-emerald-900 shadow-sm flex items-center justify-center gap-2 transition';
+        tabTeacher.className = 'py-2.5 rounded-xl text-slate-500 hover:text-slate-800 flex items-center justify-center gap-2 transition';
+        userLabel.textContent = 'Student Username or Email';
+        userIcon.className = 'fa-solid fa-user-graduate text-sm';
+        btnText.textContent = 'Sign In to Student Portal';
+      } else {
+        tabTeacher.className = 'py-2.5 rounded-xl bg-white text-emerald-900 shadow-sm flex items-center justify-center gap-2 transition';
+        tabStudent.className = 'py-2.5 rounded-xl text-slate-500 hover:text-slate-800 flex items-center justify-center gap-2 transition';
+        userLabel.textContent = 'Teacher Username or Email';
+        userIcon.className = 'fa-solid fa-chalkboard-user text-sm';
+        btnText.textContent = 'Sign In to Teacher Portal';
+      }
+    }
+
+    // Initialize Portal
+    window.addEventListener('DOMContentLoaded', async () => {
+      const urlParams = new URLSearchParams(window.location.search);
+      const studentParam = urlParams.get('student');
+      const teacherParam = urlParams.get('teacher');
+
+      // Check URL parameters for direct preview
+      if (studentParam) {
+        await loadStudentById(studentParam);
+        return;
+      }
+      if (teacherParam) {
+        await loadTeacherById(teacherParam);
+        return;
+      }
+
+      // Check Session Storage for active session
+      const savedStudent = sessionStorage.getItem('halenoor_student_user');
+      const savedTeacher = sessionStorage.getItem('halenoor_teacher_user');
+
+      if (savedStudent) {
+        try {
+          const s = JSON.parse(savedStudent);
+          await loadStudentById(s.id);
+          return;
+        } catch (e) {}
+      }
+
+      if (savedTeacher) {
+        try {
+          const t = JSON.parse(savedTeacher);
+          await loadTeacherById(t.id);
+          return;
+        } catch (e) {}
+      }
+
+      // Otherwise show login view
+      showView('portal-login-view');
+    });
+
+    function showView(viewId) {
+      document.getElementById('portal-loading')?.classList.add('hidden');
+      document.getElementById('portal-login-view')?.classList.add('hidden');
+      document.getElementById('student-dashboard-view')?.classList.add('hidden');
+      document.getElementById('teacher-dashboard-view')?.classList.add('hidden');
+
+      const target = document.getElementById(viewId);
+      if (target) target.classList.remove('hidden');
+    }
+
+    // Login Form Submit
+    document.getElementById('portal-login-form')?.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const userVal = document.getElementById('login-username').value.trim();
+      const passVal = document.getElementById('login-password').value.trim();
+      const spinner = document.getElementById('login-spinner');
+      const btn = document.getElementById('portal-login-btn');
+
+      if (!userVal || !passVal) {
+        showToast('Please enter both username and password.', 'error');
+        return;
+      }
+
+      try {
+        if (spinner) spinner.classList.remove('hidden');
+        if (btn) btn.disabled = true;
+
+        if (currentRole === 'student') {
+          await authenticateStudent(userVal, passVal);
+        } else {
+          await authenticateTeacher(userVal, passVal);
+        }
+      } catch (err) {
+        console.error('Login error:', err);
+        showToast(err.message || 'Login failed. Please check your credentials.', 'error');
+      } finally {
+        if (spinner) spinner.classList.add('hidden');
+        if (btn) btn.disabled = false;
+      }
+    });
+
+    // Authenticate Student
+    async function authenticateStudent(usernameOrEmail, password) {
+      if (!portalDb) throw new Error("Database not connected. Please check your internet connection.");
+
+      // Normalize search
+      const term = usernameOrEmail.toLowerCase();
+
+      const snap = await portalDb.collection('students').get();
+      let matched = null;
+
+      snap.forEach(doc => {
+        const d = { id: doc.id, ...doc.data() };
+        const u = (d.username || '').toLowerCase();
+        const em = (d.email || '').toLowerCase();
+        const nm = (d.studentName || '').toLowerCase().replace(/[^a-z0-9]/g, '');
+
+        if (u === term || em === term || nm === term || d.id === term) {
+          // Check password
+          if (d.password && d.password === password) {
+            matched = d;
+          } else if (!d.password && password === 'Quran@2026') {
+            // Default demo password if not explicitly set
+            matched = d;
+          }
+        }
+      });
+
+      if (!matched) {
+        throw new Error("Invalid student username or password. Agar pehli baar hain, toh admin se password lein.");
+      }
+
+      currentStudent = matched;
+      sessionStorage.setItem('halenoor_student_user', JSON.stringify(matched));
+      renderStudentDashboard(matched);
+      showToast(`Welcome back, ${matched.studentName}!`, 'success');
+    }
+
+    // Authenticate Teacher
+    async function authenticateTeacher(usernameOrEmail, password) {
+      if (!portalDb) throw new Error("Database not connected.");
+
+      const term = usernameOrEmail.toLowerCase();
+      const snap = await portalDb.collection('teachers').get();
+      let matched = null;
+
+      snap.forEach(doc => {
+        const d = { id: doc.id, ...doc.data() };
+        const u = (d.username || '').toLowerCase();
+        const em = (d.email || '').toLowerCase();
+        const nm = (d.name || '').toLowerCase().replace(/[^a-z0-9]/g, '');
+
+        if (u === term || em === term || nm === term || ('t.' + nm) === term || d.id === term) {
+          if (d.password && d.password === password) {
+            matched = d;
+          } else if (!d.password && password === 'Teacher@2026') {
+            matched = d;
+          }
+        }
+      });
+
+      if (!matched) {
+        throw new Error("Invalid teacher credentials. Please verify your username and password.");
+      }
+
+      currentTeacher = matched;
+      sessionStorage.setItem('halenoor_teacher_user', JSON.stringify(matched));
+      await renderTeacherDashboard(matched);
+      showToast(`Welcome back, ${matched.name}!`, 'success');
+    }
+
+    // Load Student by Document ID
+    async function loadStudentById(id) {
+      try {
+        if (!portalDb) return showView('portal-login-view');
+        const doc = await portalDb.collection('students').doc(id).get();
+        if (doc.exists) {
+          const s = { id: doc.id, ...doc.data() };
+          currentStudent = s;
+          sessionStorage.setItem('halenoor_student_user', JSON.stringify(s));
+          renderStudentDashboard(s);
+        } else {
+          showToast("Student profile not found.", "error");
+          showView('portal-login-view');
+        }
+      } catch (err) {
+        console.error("Error loading student:", err);
+        showView('portal-login-view');
+      }
+    }
+
+    // Load Teacher by Document ID
+    async function loadTeacherById(id) {
+      try {
+        if (!portalDb) return showView('portal-login-view');
+        const doc = await portalDb.collection('teachers').doc(id).get();
+        if (doc.exists) {
+          const t = { id: doc.id, ...doc.data() };
+          currentTeacher = t;
+          sessionStorage.setItem('halenoor_teacher_user', JSON.stringify(t));
+          await renderTeacherDashboard(t);
+        } else {
+          showToast("Teacher profile not found.", "error");
+          showView('portal-login-view');
+        }
+      } catch (err) {
+        console.error("Error loading teacher:", err);
+        showView('portal-login-view');
+      }
+    }
+
+    // Render Student View
+    function renderStudentDashboard(s) {
+      const username = s.username || s.studentName.toLowerCase().replace(/[^a-z0-9]/g, '');
+      const initials = (s.studentName || 'ST').substring(0, 2).toUpperCase();
+
+      document.getElementById('student-header-name').textContent = s.studentName;
+      document.getElementById('student-header-username').textContent = '@' + username;
+      document.getElementById('student-avatar-initials').textContent = initials;
+      document.getElementById('student-profile-name').textContent = s.studentName;
+      document.getElementById('student-profile-parent').textContent = s.parentName || 'N/A';
+      document.getElementById('student-profile-age').textContent = s.age ? `${s.age} Years` : 'N/A';
+      document.getElementById('student-profile-username').textContent = '@' + username;
+      document.getElementById('student-profile-status').textContent = s.status || 'Active Enrolled';
+
+      document.getElementById('student-course-title').textContent = s.enrolledCourse || 'Noorani Qaida with Tajweed';
+      document.getElementById('student-class-timing').textContent = s.classTiming || 'Flexible Timings';
+      document.getElementById('student-class-tz').textContent = s.timezone ? `Timezone: ${s.timezone}` : (s.country || 'International');
+
+      const notesBox = document.getElementById('student-notes-box');
+      if (notesBox) {
+        notesBox.textContent = s.notes || "Alhamdulillah, recitation is progressing well. Keep revising the given lesson daily.";
+      }
+
+      document.getElementById('student-tutor-name').textContent = s.assignedTeacher || 'Dedicated Academy Scholar';
+      document.getElementById('student-monthly-fee').textContent = `${s.currency || 'USD'} ${s.monthlyFee || 45} / mo`;
+      document.getElementById('student-country-badge').textContent = s.country || 'International';
+
+      // WhatsApp & Live Class Links
+      const waClean = (s.whatsappNumber || '923208040672').replace(/[^0-9]/g, '');
+      const tutorBtn = document.getElementById('btn-tutor-whatsapp');
+      if (tutorBtn) {
+        tutorBtn.href = `https://wa.me/923208040672?text=Assalam-o-Alaikum!%20I%20am%20${encodeURIComponent(s.studentName)},%20enrolled%20in%20${encodeURIComponent(s.enrolledCourse || 'Quran Course')}.`;
+      }
+      const joinBtn = document.getElementById('btn-join-class');
+      if (joinBtn) {
+        joinBtn.href = `https://wa.me/923208040672?text=Assalam-o-Alaikum!%20Ready%20for%20my%20live%20class%20(${encodeURIComponent(s.studentName)}).`;
+      }
+
+      // Printable Card values
+      document.getElementById('card-student-id').textContent = 'HNQA-' + s.id.substring(0, 6).toUpperCase();
+      document.getElementById('card-student-name').textContent = s.studentName;
+      document.getElementById('card-student-course').textContent = s.enrolledCourse || 'Noorani Qaida with Tajweed';
+      document.getElementById('card-student-parent').textContent = s.parentName || 'N/A';
+      document.getElementById('card-student-tutor').textContent = s.assignedTeacher || 'Ustadh';
+      document.getElementById('card-student-wa').textContent = s.whatsappNumber || 'N/A';
+
+      showView('student-dashboard-view');
+    }
+
+    // Render Teacher View
+    async function renderTeacherDashboard(t) {
+      const username = t.username || ('t.' + t.name.toLowerCase().replace(/[^a-z0-9]/g, ''));
+
+      document.getElementById('teacher-header-name').textContent = t.name;
+      document.getElementById('teacher-header-username').textContent = '@' + username;
+      document.getElementById('teacher-profile-name').textContent = t.name;
+      document.getElementById('teacher-profile-arabic').textContent = t.arabicTitle || 'القارئ الشيخ';
+      document.getElementById('teacher-profile-exp').textContent = t.experience || '5+ Years';
+      document.getElementById('teacher-profile-rating').textContent = `${t.rating || '5.0'} ★`;
+      document.getElementById('teacher-profile-username').textContent = '@' + username;
+      document.getElementById('teacher-profile-qualification').textContent = t.qualification || 'Certified Islamic Scholar';
+      document.getElementById('teacher-profile-specialization').textContent = t.specialization || 'Tajweed & Noorani Qaida';
+      document.getElementById('teacher-profile-languages').textContent = t.languages || 'English, Urdu, Arabic';
+      document.getElementById('teacher-profile-bio').textContent = t.bio || 'Experienced Quran tutor dedicated to teaching with patience and proper Tajweed.';
+
+      if (t.imageUrl) {
+        document.getElementById('teacher-profile-img').src = t.imageUrl;
+      }
+
+      // Fetch and list students assigned to this teacher
+      await loadTeacherStudents(t);
+
+      showView('teacher-dashboard-view');
+    }
+
+    // Load Assigned Students for Teacher
+    async function loadTeacherStudents(t) {
+      const tbody = document.getElementById('teacher-students-tbody');
+      const countEl = document.getElementById('teacher-assigned-count');
+      if (!tbody) return;
+
+      try {
+        const snap = await portalDb.collection('students').get();
+        const students = [];
+        const teacherFirstName = (t.name || '').toLowerCase().split(' ')[0];
+
+        snap.forEach(doc => {
+          const s = { id: doc.id, ...doc.data() };
+          const tutorAssigned = (s.assignedTeacher || '').toLowerCase();
+          if (tutorAssigned.includes(teacherFirstName) || tutorAssigned.includes((t.name || '').toLowerCase())) {
+            students.push(s);
+          }
+        });
+
+        if (countEl) countEl.textContent = `${students.length} Students Assigned`;
+
+        if (!students.length) {
+          tbody.innerHTML = `
+            <tr>
+              <td colspan="6" class="text-center py-8 text-slate-400">
+                <i class="fa-solid fa-users text-2xl mb-2 text-slate-300 block"></i>
+                No students currently assigned under your name. When admin assigns students to you, they will appear here.
+              </td>
+            </tr>
+          `;
+          return;
+        }
+
+        tbody.innerHTML = students.map(s => {
+          const waClean = (s.whatsappNumber || '').replace(/[^0-9]/g, '');
+          const waLink = `https://wa.me/${waClean}?text=Assalam-o-Alaikum!%20This%20is%20${encodeURIComponent(t.name)}%20from%20Hale%20Noor%20Quran%20Academy.`;
+
+          return `
+            <tr class="border-b border-slate-100 hover:bg-slate-50 transition">
+              <td class="py-3 px-3">
+                <div class="font-bold text-slate-900">${s.studentName}</div>
+                <div class="text-[11px] text-slate-400">Parent: ${s.parentName || 'N/A'} (Age: ${s.age || 'N/A'})</div>
+              </td>
+              <td class="py-3 px-3 font-semibold text-emerald-900">${s.enrolledCourse || 'Noorani Qaida'}</td>
+              <td class="py-3 px-3 font-mono text-slate-700">${s.classTiming || 'Flexible'}</td>
+              <td class="py-3 px-3">${s.country || 'International'}</td>
+              <td class="py-3 px-3">
+                <a href="${waLink}" target="_blank" class="text-emerald-700 hover:underline font-bold flex items-center gap-1">
+                  <i class="fa-brands fa-whatsapp text-emerald-500"></i> ${s.whatsappNumber || 'N/A'}
+                </a>
+              </td>
+              <td class="py-3 px-3 text-right">
+                <a href="${waLink}" target="_blank" class="px-2.5 py-1 rounded-lg bg-emerald-800 text-white font-bold text-[11px] hover:bg-emerald-900 transition">
+                  Contact
+                </a>
+              </td>
+            </tr>
+          `;
+        }).join('');
+      } catch (err) {
+        console.error("Error loading assigned students:", err);
+      }
+    }
+
+    // Logout
+    function logoutPortal() {
+      sessionStorage.removeItem('halenoor_student_user');
+      sessionStorage.removeItem('halenoor_teacher_user');
+      currentStudent = null;
+      currentTeacher = null;
+      showToast("Logged out successfully.", "info");
+      showView('portal-login-view');
+    }
+
+    // Change Password Handlers
+    function openChangePasswordModal() {
+      document.getElementById('change-password-form')?.reset();
+      openModal('change-password-modal');
+    }
+
+    document.getElementById('change-password-form')?.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const p1 = document.getElementById('modal-new-password').value.trim();
+      const p2 = document.getElementById('modal-confirm-password').value.trim();
+
+      if (p1.length < 6) {
+        showToast("Password must be at least 6 characters.", "error");
+        return;
+      }
+      if (p1 !== p2) {
+        showToast("Passwords do not match.", "error");
+        return;
+      }
+
+      try {
+        if (currentStudent) {
+          await portalDb.collection('students').doc(currentStudent.id).update({
+            password: p1
+          });
+          currentStudent.password = p1;
+          sessionStorage.setItem('halenoor_student_user', JSON.stringify(currentStudent));
+          showToast("Student password updated successfully!", "success");
+        } else if (currentTeacher) {
+          await portalDb.collection('teachers').doc(currentTeacher.id).update({
+            password: p1
+          });
+          currentTeacher.password = p1;
+          sessionStorage.setItem('halenoor_teacher_user', JSON.stringify(currentTeacher));
+          showToast("Teacher password updated successfully!", "success");
+        }
+        closeModal('change-password-modal');
+      } catch (err) {
+        showToast(err.message || "Failed to update password.", "error");
+      }
+    });
+
+    // Edit Teacher Bio Handlers
+    function openEditTeacherBioModal() {
+      if (!currentTeacher) return;
+      document.getElementById('modal-teacher-bio-input').value = currentTeacher.bio || '';
+      openModal('teacher-bio-modal');
+    }
+
+    document.getElementById('teacher-bio-form')?.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const bio = document.getElementById('modal-teacher-bio-input').value.trim();
+      try {
+        if (currentTeacher) {
+          await portalDb.collection('teachers').doc(currentTeacher.id).update({ bio });
+          currentTeacher.bio = bio;
+          document.getElementById('teacher-profile-bio').textContent = bio;
+          sessionStorage.setItem('halenoor_teacher_user', JSON.stringify(currentTeacher));
+          showToast("Profile bio updated!", "success");
+        }
+        closeModal('teacher-bio-modal');
+      } catch (err) {
+        showToast(err.message || "Failed to update bio.", "error");
+      }
+    });
+
+    // Print Student ID Card
+    function printStudentCard() {
+      window.print();
+    }
+  </script>
+
+</body>
+</html>

@@ -182,6 +182,10 @@
           <i class="fa-solid fa-user-graduate"></i>
           <span>Student Management</span>
         </a>
+        <a class="sidebar-nav-link" data-section="roles">
+          <i class="fa-solid fa-users-gear"></i>
+          <span>Admin Users &amp; Roles</span>
+        </a>
         <a class="sidebar-nav-link" data-section="enrollments">
           <i class="fa-solid fa-calendar-check"></i>
           <span>Free Trial Leads</span>
@@ -384,6 +388,9 @@
               <p class="text-xs text-slate-500">Quickly add or review content with one click</p>
             </div>
             <div class="flex flex-wrap items-center gap-2.5">
+              <button onclick="switchSection('roles')" class="px-3.5 py-2 rounded-xl bg-slate-900 hover:bg-slate-950 text-amber-300 font-bold text-xs flex items-center gap-1.5 transition shadow-sm border border-amber-400/30">
+                <i class="fa-solid fa-users-gear text-amber-400"></i> Admin Users &amp; Roles
+              </button>
               <button onclick="switchSection('students')" class="px-3.5 py-2 rounded-xl bg-emerald-800 hover:bg-emerald-900 text-white font-bold text-xs flex items-center gap-1.5 transition shadow-sm">
                 <i class="fa-solid fa-user-graduate text-xs"></i> Student Management
               </button>
@@ -663,6 +670,151 @@
                   <tr><td colspan="7" class="text-center py-8 text-slate-400">Loading students from Firebase...</td></tr>
                 </tbody>
               </table>
+            </div>
+          </div>
+
+        </section>
+
+        <!-- ================= 4B. ADMIN USERS & ROLES PANE ================= -->
+        <section id="section-roles" class="admin-section-pane hidden space-y-4">
+          
+          <!-- Header Banner -->
+          <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div class="flex items-center gap-3">
+              <span class="w-10 h-10 rounded-xl bg-amber-50 text-amber-800 flex items-center justify-center text-lg">
+                <i class="fa-solid fa-users-gear"></i>
+              </span>
+              <div>
+                <h3 class="text-lg font-black text-slate-900 leading-tight">Admin Users &amp; Role Management</h3>
+                <p class="text-xs text-slate-500">Manage portal administrators, staff privileges, role permissions, and access credentials</p>
+              </div>
+            </div>
+            <div class="flex items-center gap-2.5">
+              <button onclick="switchSection('overview')" class="px-3.5 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs flex items-center gap-1.5 transition">
+                <i class="fa-solid fa-arrow-left text-xs"></i> Dashboard Overview
+              </button>
+              <button id="btn-add-admin" class="px-4 py-2 rounded-xl bg-emerald-800 hover:bg-emerald-900 text-white font-bold text-xs flex items-center justify-center gap-2 shadow transition">
+                <i class="fa-solid fa-user-plus"></i>
+                <span>Add Admin User</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Quick Metrics Row -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm flex items-center justify-between">
+              <div>
+                <p class="text-xs text-slate-500 font-semibold uppercase">Total Admins</p>
+                <h4 id="stat-total-admins" class="text-2xl font-black text-slate-900 mt-0.5">0</h4>
+              </div>
+              <div class="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-700 flex items-center justify-center text-lg">
+                <i class="fa-solid fa-users"></i>
+              </div>
+            </div>
+            <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm flex items-center justify-between">
+              <div>
+                <p class="text-xs text-slate-500 font-semibold uppercase">Super Admins</p>
+                <h4 id="stat-super-admins" class="text-2xl font-black text-amber-600 mt-0.5">0</h4>
+              </div>
+              <div class="w-10 h-10 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center text-lg">
+                <i class="fa-solid fa-crown"></i>
+              </div>
+            </div>
+            <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm flex items-center justify-between">
+              <div>
+                <p class="text-xs text-slate-500 font-semibold uppercase">Staff &amp; Coordinators</p>
+                <h4 id="stat-staff-admins" class="text-2xl font-black text-blue-600 mt-0.5">0</h4>
+              </div>
+              <div class="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center text-lg">
+                <i class="fa-solid fa-user-tie"></i>
+              </div>
+            </div>
+            <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm flex items-center justify-between">
+              <div>
+                <p class="text-xs text-slate-500 font-semibold uppercase">Security Level</p>
+                <h4 class="text-sm font-black text-emerald-800 mt-1 flex items-center gap-1.5">
+                  <i class="fa-solid fa-shield-halved text-emerald-600"></i> Role Guarded
+                </h4>
+              </div>
+              <div class="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-700 flex items-center justify-center text-lg">
+                <i class="fa-solid fa-lock"></i>
+              </div>
+            </div>
+          </div>
+
+          <!-- Search & Filter Controls -->
+          <div class="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 bg-white p-4 rounded-2xl border border-slate-200">
+            <div class="flex items-center gap-3">
+              <span id="admins-count-badge" class="px-3 py-1 rounded-full text-xs font-bold bg-amber-100 text-amber-900 border border-amber-200">
+                0 Admins
+              </span>
+              <input type="text" id="search-admins" placeholder="Search by name, email, or role..." class="p-2 pl-3 rounded-xl border border-slate-300 text-xs w-full sm:w-64 focus:ring-2 focus:ring-emerald-600 focus:outline-none">
+              <select id="filter-admin-role" class="p-2 rounded-xl border border-slate-300 text-xs font-semibold focus:ring-2 focus:ring-emerald-600 focus:outline-none">
+                <option value="all">All Roles</option>
+                <option value="Super Admin">Super Admin</option>
+                <option value="Administrator">Administrator</option>
+                <option value="Coordinator">Academic Coordinator</option>
+                <option value="Staff">Staff / Moderator</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Admins Table -->
+          <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+            <div class="table-responsive">
+              <table class="admin-table">
+                <thead>
+                  <tr>
+                    <th>Admin User</th>
+                    <th>Assigned Role</th>
+                    <th>Access Privileges</th>
+                    <th>Status</th>
+                    <th>Contact / Notes</th>
+                    <th class="text-right">Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="admins-table-body">
+                  <tr><td colspan="6" class="text-center py-8 text-slate-400">Loading admin accounts from Firebase...</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Roles & Permissions Matrix Guide Card -->
+          <div class="bg-gradient-to-br from-slate-900 to-emerald-950 text-white rounded-2xl p-6 border border-emerald-800 shadow-md">
+            <div class="flex items-center gap-2.5 mb-4">
+              <i class="fa-solid fa-sitemap text-amber-400 text-lg"></i>
+              <h4 class="text-base font-black text-white">Academy Role &amp; Permission Structure</h4>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4 text-xs">
+              <div class="p-3.5 rounded-xl bg-white/5 border border-white/10">
+                <div class="flex items-center gap-2 mb-1.5 text-amber-400 font-bold">
+                  <i class="fa-solid fa-crown"></i>
+                  <span>Super Admin</span>
+                </div>
+                <p class="text-slate-300">Master authority over academy data, database seeder, security rules, settings, financial tuition, and adding/removing other admins.</p>
+              </div>
+              <div class="p-3.5 rounded-xl bg-white/5 border border-white/10">
+                <div class="flex items-center gap-2 mb-1.5 text-emerald-400 font-bold">
+                  <i class="fa-solid fa-user-shield"></i>
+                  <span>Administrator</span>
+                </div>
+                <p class="text-slate-300">Operational control over courses, student enrollments, faculty profiles, free trial leads, and public website banners/reviews.</p>
+              </div>
+              <div class="p-3.5 rounded-xl bg-white/5 border border-white/10">
+                <div class="flex items-center gap-2 mb-1.5 text-blue-400 font-bold">
+                  <i class="fa-solid fa-graduation-cap"></i>
+                  <span>Academic Coordinator</span>
+                </div>
+                <p class="text-slate-300">Oversees student syllabus progress, assigning tutors to students, scheduling class timings, and resetting portal credentials.</p>
+              </div>
+              <div class="p-3.5 rounded-xl bg-white/5 border border-white/10">
+                <div class="flex items-center gap-2 mb-1.5 text-slate-300 font-bold">
+                  <i class="fa-solid fa-pen-ruler"></i>
+                  <span>Content Staff</span>
+                </div>
+                <p class="text-slate-300">Manages homepage sliders, photo gallery, publishing approved parent testimonials, and reading contact inquiries.</p>
+              </div>
             </div>
           </div>
 
@@ -1176,6 +1328,33 @@
           </div>
         </div>
 
+        <!-- Teacher Portal Login Credentials -->
+        <div class="p-3.5 bg-slate-50 rounded-xl border border-slate-200 space-y-2">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-bold text-slate-800 flex items-center gap-1.5">
+              <i class="fa-solid fa-key text-amber-500"></i> Teacher Portal Login Credentials
+            </span>
+            <button type="button" onclick="generateTeacherPasswordAuto()" class="text-[11px] text-emerald-700 hover:underline font-bold flex items-center gap-1">
+              <i class="fa-solid fa-wand-magic-sparkles text-amber-500"></i> Auto-Generate Credentials
+            </button>
+          </div>
+          <div class="grid sm:grid-cols-2 gap-3">
+            <div>
+              <label class="block text-[11px] font-bold text-slate-600 mb-1">Username / ID</label>
+              <input type="text" id="teacher-username-input" placeholder="e.g. t.abdullah" class="w-full p-2 rounded-lg border border-slate-300 text-xs font-mono focus:ring-2 focus:ring-emerald-600 focus:outline-none">
+            </div>
+            <div>
+              <label class="block text-[11px] font-bold text-slate-600 mb-1">Portal Password</label>
+              <div class="relative">
+                <input type="text" id="teacher-password-input" placeholder="e.g. Teacher@2026" class="w-full p-2 pr-8 rounded-lg border border-slate-300 text-xs font-mono focus:ring-2 focus:ring-emerald-600 focus:outline-none">
+                <button type="button" onclick="copyInputVal('teacher-password-input')" class="absolute right-2.5 top-2 text-slate-400 hover:text-slate-600 text-xs" title="Copy">
+                  <i class="fa-solid fa-copy"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
         <div class="pt-2">
           <label class="flex items-center gap-2 text-xs font-bold text-slate-700 cursor-pointer">
             <input type="checkbox" id="teacher-active" checked class="w-4 h-4 rounded text-emerald-700">
@@ -1283,6 +1462,33 @@
               <option value="EUR">EUR (€)</option>
               <option value="PKR">PKR (Rs)</option>
             </select>
+          </div>
+        </div>
+
+        <!-- Student Portal Login Credentials -->
+        <div class="p-3.5 bg-slate-50 rounded-xl border border-slate-200 space-y-2">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-bold text-slate-800 flex items-center gap-1.5">
+              <i class="fa-solid fa-key text-amber-500"></i> Student Portal Login Credentials
+            </span>
+            <button type="button" onclick="generateStudentPasswordAuto()" class="text-[11px] text-emerald-700 hover:underline font-bold flex items-center gap-1">
+              <i class="fa-solid fa-wand-magic-sparkles text-amber-500"></i> Auto-Generate Credentials
+            </button>
+          </div>
+          <div class="grid sm:grid-cols-2 gap-3">
+            <div>
+              <label class="block text-[11px] font-bold text-slate-600 mb-1">Portal Username / ID</label>
+              <input type="text" id="student-username-input" placeholder="e.g. fardan101" class="w-full p-2 rounded-lg border border-slate-300 text-xs font-mono focus:ring-2 focus:ring-emerald-600 focus:outline-none">
+            </div>
+            <div>
+              <label class="block text-[11px] font-bold text-slate-600 mb-1">Portal Password</label>
+              <div class="relative">
+                <input type="text" id="student-password-input" placeholder="e.g. Quran@2026" class="w-full p-2 pr-8 rounded-lg border border-slate-300 text-xs font-mono focus:ring-2 focus:ring-emerald-600 focus:outline-none">
+                <button type="button" onclick="copyInputVal('student-password-input')" class="absolute right-2.5 top-2 text-slate-400 hover:text-slate-600 text-xs" title="Copy">
+                  <i class="fa-solid fa-copy"></i>
+                </button>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -1691,6 +1897,234 @@
           Confirm
         </button>
       </div>
+    </div>
+  </div>
+
+  <!-- ================= 14. ADMIN USER FORM MODAL ================= -->
+  <div id="admin-user-form-modal" class="modal-overlay hidden">
+    <div class="modal-content-box max-w-lg p-6 sm:p-8">
+      <div class="flex items-center justify-between pb-4 mb-4 border-b border-slate-100">
+        <h3 id="admin-user-modal-title" class="text-xl font-black text-slate-900">Add New Admin User</h3>
+        <button onclick="closeModal('admin-user-form-modal')" class="text-slate-400 hover:text-slate-600 text-lg">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <form id="admin-user-edit-form" class="space-y-4">
+        <input type="hidden" id="admin-user-form-id">
+
+        <div class="grid sm:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">Full Name</label>
+            <input type="text" id="admin-user-name" required placeholder="e.g. Maulana Tariq" class="w-full p-2.5 rounded-xl border border-slate-300 text-xs focus:ring-2 focus:ring-emerald-600 focus:outline-none">
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">Email Address (Login)</label>
+            <input type="email" id="admin-user-email" required placeholder="admin@halenoor.com" class="w-full p-2.5 rounded-xl border border-slate-300 text-xs focus:ring-2 focus:ring-emerald-600 focus:outline-none">
+          </div>
+        </div>
+
+        <div class="grid sm:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">Assigned Role</label>
+            <select id="admin-user-role" class="w-full p-2.5 rounded-xl border border-slate-300 text-xs font-semibold focus:ring-2 focus:ring-emerald-600 focus:outline-none">
+              <option value="Super Admin">Super Admin (Full Master Privileges)</option>
+              <option value="Administrator" selected>Administrator (Academic &amp; Content Modules)</option>
+              <option value="Academic Coordinator">Academic Coordinator (Teachers &amp; Students)</option>
+              <option value="Content Manager / Staff">Content Staff (Sliders, Reviews &amp; Messages)</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">Account Status</label>
+            <select id="admin-user-status" class="w-full p-2.5 rounded-xl border border-slate-300 text-xs focus:ring-2 focus:ring-emerald-600 focus:outline-none">
+              <option value="Active" selected>Active</option>
+              <option value="Inactive">Suspended / Inactive</option>
+            </select>
+          </div>
+        </div>
+
+        <div>
+          <div class="flex items-center justify-between mb-1">
+            <label class="block text-xs font-bold text-slate-700">Account Password</label>
+            <button type="button" onclick="generateAdminRandomPassword()" class="text-[11px] text-emerald-700 hover:underline font-bold flex items-center gap-1">
+              <i class="fa-solid fa-wand-magic-sparkles text-amber-500"></i> Generate Strong Password
+            </button>
+          </div>
+          <div class="relative">
+            <input type="text" id="admin-user-password" placeholder="Leave blank when editing to keep unchanged" class="w-full p-2.5 pr-10 rounded-xl border border-slate-300 text-xs font-mono focus:ring-2 focus:ring-emerald-600 focus:outline-none">
+            <button type="button" onclick="copyAdminPasswordInput()" class="absolute right-2.5 top-2.5 text-slate-400 hover:text-slate-600 text-xs" title="Copy Password">
+              <i class="fa-solid fa-copy"></i>
+            </button>
+          </div>
+          <p class="text-[11px] text-slate-400 mt-1">This password allows this admin to log into this Admin Panel.</p>
+        </div>
+
+        <div class="grid sm:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">Phone / WhatsApp</label>
+            <input type="text" id="admin-user-phone" placeholder="+92 300 1234567" class="w-full p-2.5 rounded-xl border border-slate-300 text-xs focus:ring-2 focus:ring-emerald-600 focus:outline-none">
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">Designation / Notes</label>
+            <input type="text" id="admin-user-notes" placeholder="e.g. Senior Academic Head" class="w-full p-2.5 rounded-xl border border-slate-300 text-xs focus:ring-2 focus:ring-emerald-600 focus:outline-none">
+          </div>
+        </div>
+
+        <div class="pt-4 border-t border-slate-100 flex items-center justify-end gap-2">
+          <button type="button" onclick="closeModal('admin-user-form-modal')" class="px-4 py-2 rounded-xl text-slate-500 font-bold text-xs hover:bg-slate-100 transition">
+            Cancel
+          </button>
+          <button type="submit" class="px-6 py-2.5 rounded-xl bg-emerald-800 hover:bg-emerald-900 text-white font-black text-xs shadow transition">
+            Save Admin Account
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ================= 15. STUDENT CREDENTIALS RESET MODAL ================= -->
+  <div id="student-credentials-modal" class="modal-overlay hidden">
+    <div class="modal-content-box max-w-md p-6 sm:p-8">
+      <div class="flex items-center justify-between pb-3 mb-4 border-b border-slate-100">
+        <div class="flex items-center gap-2">
+          <span class="w-8 h-8 rounded-lg bg-amber-100 text-amber-800 flex items-center justify-center text-sm font-bold">
+            <i class="fa-solid fa-key"></i>
+          </span>
+          <div>
+            <h3 class="text-lg font-black text-slate-900">Student Portal Login</h3>
+            <p class="text-xs text-slate-500">Set or reset student portal credentials</p>
+          </div>
+        </div>
+        <button onclick="closeModal('student-credentials-modal')" class="text-slate-400 hover:text-slate-600 text-lg">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <div class="p-3 bg-emerald-50 rounded-xl border border-emerald-200 mb-4 text-xs">
+        <div class="font-bold text-emerald-950" id="cred-student-name">Student Name</div>
+        <div class="text-emerald-700 text-[11px]" id="cred-student-course">Course Name</div>
+      </div>
+
+      <form id="student-credentials-form" class="space-y-4">
+        <input type="hidden" id="cred-student-id">
+
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">Student Portal Username</label>
+          <input type="text" id="cred-student-username" required class="w-full p-2.5 rounded-xl border border-slate-300 text-xs font-mono font-bold text-slate-800 focus:ring-2 focus:ring-emerald-600 focus:outline-none">
+        </div>
+
+        <div>
+          <div class="flex items-center justify-between mb-1">
+            <label class="block text-xs font-bold text-slate-700">Set New Password</label>
+            <button type="button" onclick="document.getElementById('cred-student-password').value = 'Quran@' + Math.floor(1000 + Math.random()*9000); showToast('Generated new password', 'info');" class="text-[11px] text-emerald-700 font-bold hover:underline flex items-center gap-1">
+              <i class="fa-solid fa-wand-magic-sparkles text-amber-500"></i> Generate
+            </button>
+          </div>
+          <div class="relative">
+            <input type="text" id="cred-student-password" required class="w-full p-2.5 pr-9 rounded-xl border border-slate-300 text-xs font-mono font-bold text-slate-800 focus:ring-2 focus:ring-emerald-600 focus:outline-none">
+            <button type="button" onclick="copyInputVal('cred-student-password')" class="absolute right-2.5 top-2.5 text-slate-400 hover:text-slate-600 text-xs" title="Copy">
+              <i class="fa-solid fa-copy"></i>
+            </button>
+          </div>
+        </div>
+
+        <p class="text-[11px] text-slate-500">Students will use these credentials to log in at <span class="font-mono text-emerald-800 font-bold">/portal.html</span> to view their enrolled courses, tutor and schedule.</p>
+
+        <div class="pt-3 border-t border-slate-100 flex items-center justify-end gap-2">
+          <button type="button" onclick="closeModal('student-credentials-modal')" class="px-4 py-2 rounded-xl text-slate-500 font-bold text-xs hover:bg-slate-100 transition">
+            Cancel
+          </button>
+          <button type="submit" class="px-5 py-2.5 rounded-xl bg-emerald-800 hover:bg-emerald-900 text-white font-black text-xs shadow transition">
+            Save Credentials
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ================= 16. TEACHER CREDENTIALS RESET MODAL ================= -->
+  <div id="teacher-credentials-modal" class="modal-overlay hidden">
+    <div class="modal-content-box max-w-md p-6 sm:p-8">
+      <div class="flex items-center justify-between pb-3 mb-4 border-b border-slate-100">
+        <div class="flex items-center gap-2">
+          <span class="w-8 h-8 rounded-lg bg-amber-100 text-amber-800 flex items-center justify-center text-sm font-bold">
+            <i class="fa-solid fa-key"></i>
+          </span>
+          <div>
+            <h3 class="text-lg font-black text-slate-900">Teacher Portal Login</h3>
+            <p class="text-xs text-slate-500">Set or reset teacher portal credentials</p>
+          </div>
+        </div>
+        <button onclick="closeModal('teacher-credentials-modal')" class="text-slate-400 hover:text-slate-600 text-lg">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <div class="p-3 bg-emerald-50 rounded-xl border border-emerald-200 mb-4 text-xs">
+        <div class="font-bold text-emerald-950" id="cred-teacher-name">Teacher Name</div>
+        <div class="text-emerald-700 text-[11px]" id="cred-teacher-title">Teacher Title</div>
+      </div>
+
+      <form id="teacher-credentials-form" class="space-y-4">
+        <input type="hidden" id="cred-teacher-id">
+
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">Teacher Portal Username</label>
+          <input type="text" id="cred-teacher-username" required class="w-full p-2.5 rounded-xl border border-slate-300 text-xs font-mono font-bold text-slate-800 focus:ring-2 focus:ring-emerald-600 focus:outline-none">
+        </div>
+
+        <div>
+          <div class="flex items-center justify-between mb-1">
+            <label class="block text-xs font-bold text-slate-700">Set New Password</label>
+            <button type="button" onclick="document.getElementById('cred-teacher-password').value = 'Teacher@' + Math.floor(1000 + Math.random()*9000); showToast('Generated new password', 'info');" class="text-[11px] text-emerald-700 font-bold hover:underline flex items-center gap-1">
+              <i class="fa-solid fa-wand-magic-sparkles text-amber-500"></i> Generate
+            </button>
+          </div>
+          <div class="relative">
+            <input type="text" id="cred-teacher-password" required class="w-full p-2.5 pr-9 rounded-xl border border-slate-300 text-xs font-mono font-bold text-slate-800 focus:ring-2 focus:ring-emerald-600 focus:outline-none">
+            <button type="button" onclick="copyInputVal('cred-teacher-password')" class="absolute right-2.5 top-2.5 text-slate-400 hover:text-slate-600 text-xs" title="Copy">
+              <i class="fa-solid fa-copy"></i>
+            </button>
+          </div>
+        </div>
+
+        <p class="text-[11px] text-slate-500">Teachers use these credentials to log in at <span class="font-mono text-emerald-800 font-bold">/portal.html</span> to view their assigned students list and schedule.</p>
+
+        <div class="pt-3 border-t border-slate-100 flex items-center justify-end gap-2">
+          <button type="button" onclick="closeModal('teacher-credentials-modal')" class="px-4 py-2 rounded-xl text-slate-500 font-bold text-xs hover:bg-slate-100 transition">
+            Cancel
+          </button>
+          <button type="submit" class="px-5 py-2.5 rounded-xl bg-emerald-800 hover:bg-emerald-900 text-white font-black text-xs shadow transition">
+            Save Credentials
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ================= 17. STUDENT PROFILE PREVIEW MODAL ================= -->
+  <div id="student-profile-preview-modal" class="modal-overlay hidden">
+    <div class="modal-content-box max-w-lg p-6 sm:p-8">
+      <div class="flex items-center justify-between pb-3 mb-4 border-b border-slate-100">
+        <h3 class="text-xl font-black text-slate-900">Student Profile &amp; Portal View</h3>
+        <button onclick="closeModal('student-profile-preview-modal')" class="text-slate-400 hover:text-slate-600 text-lg">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+      <div id="student-profile-preview-body"></div>
+    </div>
+  </div>
+
+  <!-- ================= 18. TEACHER PROFILE PREVIEW MODAL ================= -->
+  <div id="teacher-profile-preview-modal" class="modal-overlay hidden">
+    <div class="modal-content-box max-w-lg p-6 sm:p-8">
+      <div class="flex items-center justify-between pb-3 mb-4 border-b border-slate-100">
+        <h3 class="text-xl font-black text-slate-900">Teacher Profile &amp; Portal View</h3>
+        <button onclick="closeModal('teacher-profile-preview-modal')" class="text-slate-400 hover:text-slate-600 text-lg">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+      <div id="teacher-profile-preview-body"></div>
     </div>
   </div>
 

@@ -27,6 +27,8 @@ document.addEventListener('DOMContentLoaded', () => {
   setupCourseEventListeners();
   setupTeacherEventListeners();
   setupStudentEventListeners();
+  setupAdminUserEventListeners();
+  setupCredentialsModalsEvents();
   setupEnrollmentEventListeners();
   setupSliderEventListeners();
   setupGalleryEventListeners();
@@ -101,6 +103,15 @@ function startRealtimeListeners() {
     adminState.messages = messages;
     window.renderMessagesTable(messages);
     window.renderOverview();
+    updateMetricsLive();
+  });
+
+  // 9. Admin Users & Roles
+  dbOps.listenToAdmins(admins => {
+    adminState.admins = admins;
+    if (typeof window.renderAdminsTable === 'function') {
+      window.renderAdminsTable(admins);
+    }
     updateMetricsLive();
   });
 }
@@ -364,6 +375,10 @@ function setupTeacherEventListeners() {
       form.reset();
       document.getElementById('teacher-form-id').value = '';
       document.getElementById('teacher-modal-title').textContent = "Add New Teacher";
+      const uEl = document.getElementById('teacher-username-input');
+      const pEl = document.getElementById('teacher-password-input');
+      if (uEl) uEl.value = 'teacher' + Math.floor(100 + Math.random() * 900);
+      if (pEl) pEl.value = 'Teacher@' + Math.floor(1000 + Math.random() * 9000);
       openModal('teacher-form-modal');
     });
   }
@@ -385,6 +400,8 @@ function setupTeacherEventListeners() {
       const bio = document.getElementById('teacher-bio').value.trim();
       const rating = Number(document.getElementById('teacher-rating').value) || 5.0;
       const active = document.getElementById('teacher-active').checked;
+      const username = document.getElementById('teacher-username-input')?.value.trim();
+      const password = document.getElementById('teacher-password-input')?.value.trim();
 
       let imageUrl = document.getElementById('teacher-image-url').value.trim();
       const imageFile = document.getElementById('teacher-image-file').files[0];
@@ -408,8 +425,12 @@ function setupTeacherEventListeners() {
         bio,
         rating,
         active,
+        username: username || ('t.' + name.toLowerCase().replace(/[^a-z0-9]/g, '')),
         imageUrl: imageUrl || "assets/images/logo.png"
       };
+      if (password) {
+        teacherData.password = password;
+      }
 
       try {
         if (id) {
@@ -444,6 +465,11 @@ function editTeacherModal(id) {
   document.getElementById('teacher-rating').value = t.rating || 5.0;
   document.getElementById('teacher-image-url').value = t.imageUrl || '';
   document.getElementById('teacher-active').checked = t.active !== undefined ? t.active : true;
+
+  const uEl = document.getElementById('teacher-username-input');
+  const pEl = document.getElementById('teacher-password-input');
+  if (uEl) uEl.value = t.username || ('t.' + t.name.toLowerCase().replace(/[^a-z0-9]/g, ''));
+  if (pEl) pEl.value = t.password || '';
 
   openModal('teacher-form-modal');
 }
@@ -493,6 +519,10 @@ function setupStudentEventListeners() {
       form.reset();
       document.getElementById('student-form-id').value = '';
       document.getElementById('student-modal-title').textContent = "Enroll New Student";
+      const uEl = document.getElementById('student-username-input');
+      const pEl = document.getElementById('student-password-input');
+      if (uEl) uEl.value = 'student' + Math.floor(100 + Math.random() * 900);
+      if (pEl) pEl.value = 'Quran@' + Math.floor(1000 + Math.random() * 9000);
       openModal('student-form-modal');
     });
   }
@@ -518,6 +548,8 @@ function setupStudentEventListeners() {
       const currency = document.getElementById('student-currency-input').value || 'USD';
       const status = document.getElementById('student-status-input').value;
       const notes = document.getElementById('student-notes-input').value.trim();
+      const username = document.getElementById('student-username-input')?.value.trim();
+      const password = document.getElementById('student-password-input')?.value.trim();
 
       const studentData = {
         studentName,
@@ -533,8 +565,12 @@ function setupStudentEventListeners() {
         monthlyFee,
         currency,
         status,
-        notes
+        notes,
+        username: username || studentName.toLowerCase().replace(/[^a-z0-9]/g, '')
       };
+      if (password) {
+        studentData.password = password;
+      }
 
       try {
         if (id) {
@@ -573,6 +609,11 @@ function editStudentModal(id) {
   document.getElementById('student-status-input').value = s.status || 'Active';
   document.getElementById('student-notes-input').value = s.notes || '';
 
+  const uEl = document.getElementById('student-username-input');
+  const pEl = document.getElementById('student-password-input');
+  if (uEl) uEl.value = s.username || s.studentName.toLowerCase().replace(/[^a-z0-9]/g, '');
+  if (pEl) pEl.value = s.password || '';
+
   openModal('student-form-modal');
 }
 
@@ -606,6 +647,168 @@ function filterStudents() {
   });
 
   window.renderStudentsTable(filtered);
+}
+
+// -------------------------------------------------------------
+// 3B. ADMIN USERS & ROLES MODULE LOGIC
+// -------------------------------------------------------------
+function setupAdminUserEventListeners() {
+  const addBtn = document.getElementById('btn-add-admin');
+  const form = document.getElementById('admin-user-edit-form');
+  const searchInput = document.getElementById('search-admins');
+  const roleFilter = document.getElementById('filter-admin-role');
+
+  if (addBtn) {
+    addBtn.addEventListener('click', () => {
+      form.reset();
+      document.getElementById('admin-user-form-id').value = '';
+      document.getElementById('admin-user-modal-title').textContent = "Add New Admin User";
+      document.getElementById('admin-user-password').value = "Hale@" + Math.floor(1000 + Math.random() * 9000);
+      openModal('admin-user-form-modal');
+    });
+  }
+
+  if (searchInput) searchInput.addEventListener('input', filterAdmins);
+  if (roleFilter) roleFilter.addEventListener('change', filterAdmins);
+
+  if (form) {
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const id = document.getElementById('admin-user-form-id').value;
+      const displayName = document.getElementById('admin-user-name').value.trim();
+      const email = document.getElementById('admin-user-email').value.trim().toLowerCase();
+      const role = document.getElementById('admin-user-role').value;
+      const status = document.getElementById('admin-user-status').value;
+      const password = document.getElementById('admin-user-password').value.trim();
+      const phone = document.getElementById('admin-user-phone').value.trim();
+      const notes = document.getElementById('admin-user-notes').value.trim();
+
+      const adminData = {
+        displayName,
+        email,
+        role,
+        status,
+        phone,
+        notes
+      };
+      if (password) {
+        adminData.password = password;
+      }
+
+      try {
+        if (id) {
+          await window.adminDbOperations.updateAdminUser(id, adminData);
+          showToast("Admin user updated successfully!", "success");
+        } else {
+          await window.adminDbOperations.addAdminUser(adminData);
+          showToast(`Admin account created for ${email}!`, "success");
+        }
+        closeModal('admin-user-form-modal');
+      } catch (err) {
+        showToast(err.message || "Failed to save admin user.", "error");
+      }
+    });
+  }
+}
+
+function editAdminModal(id) {
+  const a = adminState.admins.find(item => item.id === id);
+  if (!a) return;
+
+  document.getElementById('admin-user-form-id').value = a.id;
+  document.getElementById('admin-user-modal-title').textContent = `Edit Admin: ${a.displayName || a.email}`;
+  document.getElementById('admin-user-name').value = a.displayName || '';
+  document.getElementById('admin-user-email').value = a.email || '';
+  document.getElementById('admin-user-role').value = a.role || 'Administrator';
+  document.getElementById('admin-user-status').value = a.status || 'Active';
+  document.getElementById('admin-user-password').value = '';
+  document.getElementById('admin-user-phone').value = a.phone || '';
+  document.getElementById('admin-user-notes').value = a.notes || '';
+
+  openModal('admin-user-form-modal');
+}
+
+function deleteAdminConfirm(id, email) {
+  confirmAction({
+    title: "Revoke Admin Access",
+    message: `Are you sure you want to remove administrator access for "${email}"? This user will no longer be able to log into the academy dashboard.`,
+    confirmText: "Yes, Remove Admin",
+    confirmClass: "bg-red-600 hover:bg-red-700",
+    onConfirm: async () => {
+      try {
+        await window.adminDbOperations.deleteAdminUser(id, email);
+        showToast("Admin user removed successfully.", "success");
+      } catch (err) {
+        showToast(err.message || "Failed to remove admin.", "error");
+      }
+    }
+  });
+}
+
+function filterAdmins() {
+  const query = (document.getElementById('search-admins')?.value || '').toLowerCase();
+  const role = document.getElementById('filter-admin-role')?.value || 'all';
+
+  const filtered = adminState.admins.filter(a => {
+    const matchesQuery = (a.displayName || '').toLowerCase().includes(query) ||
+                         (a.email || '').toLowerCase().includes(query) ||
+                         (a.phone || '').toLowerCase().includes(query);
+    const matchesRole = role === 'all' || (a.role || '').toLowerCase().includes(role.toLowerCase());
+    return matchesQuery && matchesRole;
+  });
+
+  window.renderAdminsTable(filtered);
+}
+
+// -------------------------------------------------------------
+// 3C. CREDENTIALS MODALS EVENT LISTENERS
+// -------------------------------------------------------------
+function setupCredentialsModalsEvents() {
+  const studentCredForm = document.getElementById('student-credentials-form');
+  if (studentCredForm) {
+    studentCredForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const id = document.getElementById('cred-student-id').value;
+      const username = document.getElementById('cred-student-username').value.trim();
+      const password = document.getElementById('cred-student-password').value.trim();
+
+      if (!username || !password) {
+        showToast("Please provide both username and password.", "error");
+        return;
+      }
+
+      try {
+        await window.adminDbOperations.updateStudentCredentials(id, { username, password });
+        showToast("Student portal password updated!", "success");
+        closeModal('student-credentials-modal');
+      } catch (err) {
+        showToast(err.message || "Failed to update credentials.", "error");
+      }
+    });
+  }
+
+  const teacherCredForm = document.getElementById('teacher-credentials-form');
+  if (teacherCredForm) {
+    teacherCredForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const id = document.getElementById('cred-teacher-id').value;
+      const username = document.getElementById('cred-teacher-username').value.trim();
+      const password = document.getElementById('cred-teacher-password').value.trim();
+
+      if (!username || !password) {
+        showToast("Please provide both username and password.", "error");
+        return;
+      }
+
+      try {
+        await window.adminDbOperations.updateTeacherCredentials(id, { username, password });
+        showToast("Teacher portal password updated!", "success");
+        closeModal('teacher-credentials-modal');
+      } catch (err) {
+        showToast(err.message || "Failed to update credentials.", "error");
+      }
+    });
+  }
 }
 
 // -------------------------------------------------------------
@@ -1261,6 +1464,8 @@ window.editTeacherModal = editTeacherModal;
 window.deleteTeacherConfirm = deleteTeacherConfirm;
 window.editStudentModal = editStudentModal;
 window.deleteStudentConfirm = deleteStudentConfirm;
+window.editAdminModal = editAdminModal;
+window.deleteAdminConfirm = deleteAdminConfirm;
 window.viewEnrollmentDetail = viewEnrollmentDetail;
 window.openScheduleTrialModal = openScheduleTrialModal;
 window.openConvertStudentModal = openConvertStudentModal;

@@ -57,9 +57,10 @@ service cloud.firestore {
       allow write: if isAuthenticated();
     }
 
-    // 8. Registered Students (Private academic records - Admin only)
+    // 8. Registered Students (Academic records & Portal profile access)
     match /students/{studentId} {
-      allow read, write: if isAuthenticated();
+      allow read: if true;
+      allow write: if isAuthenticated();
     }
 
     // 9. Free Trial Leads & Registrations

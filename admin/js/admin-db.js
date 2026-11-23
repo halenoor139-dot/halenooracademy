@@ -943,10 +943,127 @@ async function seedInitialAcademyData() {
   return true;
 }
 
+// -------------------------------------------------------------
+// 10. ADMIN USERS & ROLES
+// -------------------------------------------------------------
+function listenToAdmins(callback) {
+  if (!window.adminDb) return () => {};
+  if (activeListeners.admins) activeListeners.admins();
+
+  const unsubscribe = window.adminDb.collection(COLLECTIONS.ADMINS)
+    .onSnapshot(snapshot => {
+      const admins = [];
+      snapshot.forEach(doc => admins.push({ id: doc.id, ...doc.data() }));
+      callback(admins);
+    }, err => {
+      console.warn("Admins listener fallback:", err);
+      window.adminDb.collection(COLLECTIONS.ADMINS).get().then(snap => {
+        const admins = [];
+        snap.forEach(doc => admins.push({ id: doc.id, ...doc.data() }));
+        callback(admins);
+      }).catch(e => console.error("Admins get error:", e));
+    });
+
+  activeListeners.admins = unsubscribe;
+  return unsubscribe;
+}
+
+async function addAdminUser(adminData) {
+  if (!window.adminDb) throw new Error("Database not connected");
+
+  let authUid = null;
+  // If a password was provided, attempt to register in Firebase Auth via secondary app without disconnecting current session
+  if (adminData.password && typeof firebase !== 'undefined' && typeof FIREBASE_CONFIG !== 'undefined') {
+    try {
+      const secAppName = 'SecAuthApp_' + Date.now();
+      const secApp = firebase.initializeApp(FIREBASE_CONFIG, secAppName);
+      const userCred = await secApp.auth().createUserWithEmailAndPassword(adminData.email.trim(), adminData.password);
+      authUid = userCred.user.uid;
+      if (adminData.displayName) {
+        await userCred.user.updateProfile({ displayName: adminData.displayName });
+      }
+      await secApp.delete();
+    } catch (authErr) {
+      console.warn("Secondary Firebase Auth notice:", authErr);
+      if (authErr.code !== 'auth/email-already-in-use') {
+        throw new Error(authErr.message || "Failed to create Firebase Auth user.");
+      }
+    }
+  }
+
+  const profileData = {
+    displayName: adminData.displayName || adminData.email.split('@')[0],
+    email: adminData.email.trim().toLowerCase(),
+    role: adminData.role || "Administrator",
+    phone: adminData.phone || "",
+    status: adminData.status || "Active",
+    notes: adminData.notes || "",
+    createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+    updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+  };
+
+  if (authUid) {
+    await window.adminDb.collection(COLLECTIONS.ADMINS).doc(authUid).set(profileData, { merge: true });
+  } else {
+    await window.adminDb.collection(COLLECTIONS.ADMINS).add(profileData);
+  }
+
+  await logAdminActivity("Add Admin", `Created admin user: ${adminData.email} (${adminData.role})`);
+  return true;
+}
+
+async function updateAdminUser(id, adminData) {
+  if (!window.adminDb) throw new Error("Database not connected");
+  await window.adminDb.collection(COLLECTIONS.ADMINS).doc(id).update({
+    ...adminData,
+    updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+  });
+  await logAdminActivity("Update Admin", `Updated admin account: ${adminData.email || id}`);
+}
+
+async function deleteAdminUser(id, email) {
+  if (!window.adminDb) throw new Error("Database not connected");
+  await window.adminDb.collection(COLLECTIONS.ADMINS).doc(id).delete();
+  await logAdminActivity("Delete Admin", `Removed admin user: ${email || id}`);
+}
+
+// -------------------------------------------------------------
+// CREDENTIALS SET/RESET OPERATIONS (STUDENTS & TEACHERS)
+// -------------------------------------------------------------
+async function updateStudentCredentials(id, { username, password }) {
+  if (!window.adminDb) throw new Error("Database not connected");
+  const updates = {
+    username: (username || '').trim(),
+    password: (password || '').trim(),
+    credentialsUpdatedAt: firebase.firestore.FieldValue.serverTimestamp()
+  };
+  await window.adminDb.collection(COLLECTIONS.STUDENTS).doc(id).update(updates);
+  await logAdminActivity("Student Credentials", `Updated login credentials for student ID: ${id}`);
+}
+
+async function updateTeacherCredentials(id, { username, password }) {
+  if (!window.adminDb) throw new Error("Database not connected");
+  const updates = {
+    username: (username || '').trim(),
+    password: (password || '').trim(),
+    credentialsUpdatedAt: firebase.firestore.FieldValue.serverTimestamp()
+  };
+  await window.adminDb.collection(COLLECTIONS.TEACHERS).doc(id).update(updates);
+  await logAdminActivity("Teacher Credentials", `Updated login credentials for teacher ID: ${id}`);
+}
+
 // Export functions to window
 window.adminDbOperations = {
   fetchDashboardStats,
   logAdminActivity,
+  // Admin Users & Roles
+  listenToAdmins,
+  addAdminUser,
+  updateAdminUser,
+  deleteAdminUser,
+  // Credentials
+  updateStudentCredentials,
+  updateTeacherCredentials,
   // Courses
   listenToCourses,
   addCourse,

@@ -8,6 +8,7 @@ let currentSection = 'overview';
 // In-Memory Cached State
 const adminState = {
   stats: null,
+  admins: [],
   courses: [],
   teachers: [],
   students: [],
@@ -127,6 +128,7 @@ function switchSection(sectionId) {
     courses: "Courses Management",
     teachers: "Teachers & Scholars",
     students: "Student Management",
+    roles: "Admin Users & Roles Management",
     enrollments: "Enrollments & Free Trial Leads",
     sliders: "Homepage Sliders & Banners",
     gallery: "Photo Gallery Management",
@@ -410,6 +412,9 @@ function renderTeachersTable(teachers = adminState.teachers) {
   }
 
   tbody.innerHTML = teachers.map(t => {
+    const username = t.username || t.name.toLowerCase().replace(/[^a-z0-9]/g, '');
+    const hasPassword = !!t.password;
+
     return `
       <tr>
         <td>
@@ -418,6 +423,14 @@ function renderTeachersTable(teachers = adminState.teachers) {
             <div>
               <div class="font-bold text-slate-900">${t.name}</div>
               <div class="font-arabic text-xs text-emerald-800 font-bold">${t.arabicTitle || ''}</div>
+              <div class="flex items-center gap-1.5 mt-1 flex-wrap">
+                <span class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded bg-blue-50 text-blue-700 font-mono text-[10px] font-bold" title="Portal Username">
+                  <i class="fa-solid fa-user-lock text-[9px]"></i> ${username}
+                </span>
+                <span class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded ${hasPassword ? 'bg-emerald-50 text-emerald-800' : 'bg-amber-50 text-amber-800'} font-mono text-[10px] font-bold" title="Portal Password Status">
+                  <i class="fa-solid fa-key text-[9px]"></i> ${hasPassword ? 'Password Set' : 'No Password'}
+                </span>
+              </div>
             </div>
           </div>
         </td>
@@ -436,7 +449,13 @@ function renderTeachersTable(teachers = adminState.teachers) {
           </span>
         </td>
         <td class="text-right">
-          <div class="flex items-center justify-end gap-1.5">
+          <div class="flex items-center justify-end gap-1">
+            <button onclick="openTeacherCredentialsModal('${t.id}')" class="p-2 rounded-lg bg-amber-50 hover:bg-amber-100 text-amber-700 transition" title="Set / Reset Portal Password">
+              <i class="fa-solid fa-key"></i>
+            </button>
+            <button onclick="previewTeacherProfile('${t.id}')" class="p-2 rounded-lg bg-blue-50 hover:bg-blue-100 text-blue-700 transition" title="View Teacher Profile">
+              <i class="fa-solid fa-id-badge"></i>
+            </button>
             <button onclick="editTeacherModal('${t.id}')" class="p-2 rounded-lg hover:bg-slate-100 text-slate-600 hover:text-emerald-700 transition" title="Edit Teacher">
               <i class="fa-solid fa-pen-to-square"></i>
             </button>
@@ -478,12 +497,22 @@ function renderStudentsTable(students = adminState.students) {
     else if (s.status === 'Suspended' || s.status === 'Paused') badge = 'badge-rejected';
 
     const waLink = `https://wa.me/${(s.whatsappNumber || '').replace(/[^0-9]/g, '')}`;
+    const username = s.username || s.studentName.toLowerCase().replace(/[^a-z0-9]/g, '');
+    const hasPassword = !!s.password;
 
     return `
       <tr>
         <td>
           <div class="font-bold text-slate-900">${s.studentName}</div>
           <div class="text-xs text-slate-500">Parent: ${s.parentName || 'N/A'} (Age: ${s.age || 'N/A'})</div>
+          <div class="flex items-center gap-1.5 mt-1 flex-wrap">
+            <span class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded bg-blue-50 text-blue-700 font-mono text-[10px] font-bold" title="Portal Username">
+              <i class="fa-solid fa-user-lock text-[9px]"></i> ${username}
+            </span>
+            <span class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded ${hasPassword ? 'bg-emerald-50 text-emerald-800' : 'bg-amber-50 text-amber-800'} font-mono text-[10px] font-bold" title="Portal Password Status">
+              <i class="fa-solid fa-key text-[9px]"></i> ${hasPassword ? 'Password Set' : 'No Password'}
+            </span>
+          </div>
         </td>
         <td>${s.enrolledCourse || 'Noorani Qaida'}</td>
         <td class="text-xs font-semibold text-slate-700">${s.assignedTeacher || 'Unassigned'}</td>
@@ -495,7 +524,16 @@ function renderStudentsTable(students = adminState.students) {
         <td class="text-xs">${s.country || 'International'}</td>
         <td><span class="badge-status ${badge}">${s.status || 'Active'}</span></td>
         <td class="text-right">
-          <div class="flex items-center justify-end gap-1.5">
+          <div class="flex items-center justify-end gap-1">
+            <button onclick="openStudentCredentialsModal('${s.id}')" class="p-2 rounded-lg bg-amber-50 hover:bg-amber-100 text-amber-700 transition" title="Set / Reset Portal Password">
+              <i class="fa-solid fa-key"></i>
+            </button>
+            <button onclick="previewStudentProfile('${s.id}')" class="p-2 rounded-lg bg-blue-50 hover:bg-blue-100 text-blue-700 transition" title="View Student Profile">
+              <i class="fa-solid fa-id-badge"></i>
+            </button>
+            <button onclick="shareStudentCredentialsWhatsApp('${s.id}')" class="p-2 rounded-lg bg-emerald-50 hover:bg-emerald-100 text-emerald-700 transition" title="Send Login via WhatsApp">
+              <i class="fa-brands fa-whatsapp"></i>
+            </button>
             <button onclick="editStudentModal('${s.id}')" class="p-2 rounded-lg hover:bg-slate-100 text-slate-600 hover:text-emerald-700 transition" title="Edit Student">
               <i class="fa-solid fa-pen-to-square"></i>
             </button>
@@ -814,6 +852,432 @@ function renderMessagesTable(messages = adminState.messages) {
   }).join('');
 }
 
+// -------------------------------------------------------------
+// 9. Admin Users & Roles Render
+// -------------------------------------------------------------
+function renderAdminsTable(admins = adminState.admins) {
+  const tbody = document.getElementById('admins-table-body');
+  const countBadge = document.getElementById('admins-count-badge');
+  const statTotal = document.getElementById('stat-total-admins');
+  const statSuper = document.getElementById('stat-super-admins');
+  const statStaff = document.getElementById('stat-staff-admins');
+
+  if (countBadge) countBadge.textContent = `${admins.length} Admins`;
+  if (statTotal) statTotal.textContent = admins.length;
+  if (statSuper) {
+    const superCount = admins.filter(a => (a.role || '').toLowerCase().includes('super')).length;
+    statSuper.textContent = superCount;
+  }
+  if (statStaff) {
+    const staffCount = admins.filter(a => !(a.role || '').toLowerCase().includes('super')).length;
+    statStaff.textContent = staffCount;
+  }
+
+  if (!tbody) return;
+
+  if (!admins.length) {
+    tbody.innerHTML = `
+      <tr>
+        <td colspan="6" class="text-center py-12">
+          <div class="w-16 h-16 rounded-full bg-slate-100 text-slate-400 flex items-center justify-center text-2xl mx-auto mb-3">
+            <i class="fa-solid fa-users-gear"></i>
+          </div>
+          <p class="font-bold text-slate-700">No admin users found.</p>
+          <p class="text-xs text-slate-500 mt-1">Click "Add Admin User" above to create an administrator account.</p>
+        </td>
+      </tr>
+    `;
+    return;
+  }
+
+  tbody.innerHTML = admins.map(a => {
+    const role = a.role || 'Administrator';
+    let roleBadge = 'bg-emerald-100 text-emerald-800 border-emerald-200';
+    let roleIcon = 'fa-user-shield';
+    let perms = 'Students, Teachers, Leads & Content';
+
+    if (role.toLowerCase().includes('super')) {
+      roleBadge = 'bg-amber-100 text-amber-900 border-amber-300 font-black';
+      roleIcon = 'fa-crown text-amber-600';
+      perms = 'Full Master Access & Security Control';
+    } else if (role.toLowerCase().includes('coordinator')) {
+      roleBadge = 'bg-blue-100 text-blue-800 border-blue-200';
+      roleIcon = 'fa-graduation-cap text-blue-600';
+      perms = 'Student & Teacher Scheduling & Progress';
+    } else if (role.toLowerCase().includes('staff') || role.toLowerCase().includes('moderator')) {
+      roleBadge = 'bg-slate-100 text-slate-700 border-slate-300';
+      roleIcon = 'fa-pen-ruler text-slate-500';
+      perms = 'Website Reviews, Sliders & Inquiries';
+    }
+
+    const initials = (a.displayName || a.email || 'Admin').substring(0, 2).toUpperCase();
+    const isCurrent = currentAdminUser && (a.id === currentAdminUser.uid || a.email === currentAdminUser.email);
+
+    return `
+      <tr class="${isCurrent ? 'bg-amber-50/40' : ''}">
+        <td>
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-full bg-emerald-900 text-amber-300 flex items-center justify-center font-bold text-sm shadow-sm shrink-0 border border-amber-400/50">
+              ${initials}
+            </div>
+            <div>
+              <div class="font-bold text-slate-900 flex items-center gap-1.5">
+                ${a.displayName || a.email.split('@')[0]}
+                ${isCurrent ? '<span class="text-[10px] px-1.5 py-0.2 bg-emerald-800 text-white font-extrabold rounded">YOU</span>' : ''}
+              </div>
+              <div class="text-xs text-slate-500 flex items-center gap-1">
+                <i class="fa-solid fa-envelope text-[10px]"></i> ${a.email}
+              </div>
+            </div>
+          </div>
+        </td>
+        <td>
+          <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold border ${roleBadge}">
+            <i class="fa-solid ${roleIcon}"></i> ${role}
+          </span>
+        </td>
+        <td>
+          <span class="text-xs text-slate-600 font-medium">${perms}</span>
+        </td>
+        <td>
+          <span class="badge-status ${a.status === 'Inactive' ? 'badge-inactive' : 'badge-active'}">
+            ${a.status || 'Active'}
+          </span>
+        </td>
+        <td class="text-xs text-slate-500">
+          ${a.phone ? `<div><i class="fa-brands fa-whatsapp text-emerald-600"></i> ${a.phone}</div>` : ''}
+          ${a.notes ? `<div class="text-[11px] text-slate-400 truncate max-w-[150px]">${a.notes}</div>` : '<span class="text-slate-400">-</span>'}
+        </td>
+        <td class="text-right">
+          <div class="flex items-center justify-end gap-1.5">
+            <button onclick="editAdminModal('${a.id}')" class="p-2 rounded-lg hover:bg-slate-100 text-slate-600 hover:text-emerald-700 transition" title="Edit Admin Role & Info">
+              <i class="fa-solid fa-pen-to-square"></i>
+            </button>
+            ${!isCurrent ? `
+              <button onclick="deleteAdminConfirm('${a.id}', '${a.email}')" class="p-2 rounded-lg hover:bg-red-50 text-slate-400 hover:text-red-600 transition" title="Remove Admin Access">
+                <i class="fa-solid fa-trash-can"></i>
+              </button>
+            ` : ''}
+          </div>
+        </td>
+      </tr>
+    `;
+  }).join('');
+}
+
+// -------------------------------------------------------------
+// CREDENTIALS & PROFILE HELPERS (STUDENT, TEACHER & ADMIN)
+// -------------------------------------------------------------
+function generateRandomPassword(length = 8) {
+  const chars = "abcdefghjkmnpqrstuvwxyzABCDEFGHJKMNPQRSTUVWXYZ23456789!@#$";
+  let pass = "";
+  for (let i = 0; i < length; i++) {
+    pass += chars.charAt(Math.floor(Math.random() * chars.length));
+  }
+  return pass;
+}
+
+function copyInputVal(id) {
+  const el = document.getElementById(id);
+  if (!el || !el.value) return;
+  navigator.clipboard.writeText(el.value).then(() => {
+    showToast("Copied to clipboard: " + el.value, "success");
+  }).catch(() => {
+    showToast("Copy manually: " + el.value, "info");
+  });
+}
+
+function copyAdminPasswordInput() {
+  copyInputVal('admin-user-password');
+}
+
+function generateAdminRandomPassword() {
+  const pwd = "Hale@" + Math.floor(1000 + Math.random() * 9000);
+  const el = document.getElementById('admin-user-password');
+  if (el) {
+    el.value = pwd;
+    showToast("Generated new password: " + pwd, "info");
+  }
+}
+
+function generateStudentPasswordAuto() {
+  const nameEl = document.getElementById('student-name-input');
+  const userEl = document.getElementById('student-username-input');
+  const passEl = document.getElementById('student-password-input');
+  
+  if (nameEl && userEl && !userEl.value) {
+    const raw = (nameEl.value || 'student').toLowerCase().replace(/[^a-z0-9]/g, '');
+    userEl.value = raw + Math.floor(10 + Math.random() * 90);
+  }
+  if (passEl) {
+    passEl.value = "Quran@" + Math.floor(1000 + Math.random() * 9000);
+    showToast("Auto-generated student credentials!", "info");
+  }
+}
+
+function generateTeacherPasswordAuto() {
+  const nameEl = document.getElementById('teacher-name');
+  const userEl = document.getElementById('teacher-username-input');
+  const passEl = document.getElementById('teacher-password-input');
+
+  if (nameEl && userEl && !userEl.value) {
+    const raw = (nameEl.value || 'teacher').toLowerCase().replace(/[^a-z0-9]/g, '');
+    userEl.value = 't.' + raw;
+  }
+  if (passEl) {
+    passEl.value = "Teacher@" + Math.floor(1000 + Math.random() * 9000);
+    showToast("Auto-generated teacher credentials!", "info");
+  }
+}
+
+// Student Credentials Quick Modal
+function openStudentCredentialsModal(id) {
+  const s = adminState.students.find(item => item.id === id);
+  if (!s) return;
+
+  const defaultUser = s.username || s.studentName.toLowerCase().replace(/[^a-z0-9]/g, '') + Math.floor(10 + Math.random() * 90);
+  const currentPass = s.password || '';
+
+  document.getElementById('cred-student-id').value = s.id;
+  document.getElementById('cred-student-name').textContent = s.studentName;
+  document.getElementById('cred-student-course').textContent = s.enrolledCourse || 'Noorani Qaida';
+  document.getElementById('cred-student-username').value = defaultUser;
+  document.getElementById('cred-student-password').value = currentPass || ("Quran@" + Math.floor(1000 + Math.random() * 9000));
+  
+  openModal('student-credentials-modal');
+}
+
+// Teacher Credentials Quick Modal
+function openTeacherCredentialsModal(id) {
+  const t = adminState.teachers.find(item => item.id === id);
+  if (!t) return;
+
+  const defaultUser = t.username || ('t.' + t.name.toLowerCase().replace(/[^a-z0-9]/g, ''));
+  const currentPass = t.password || '';
+
+  document.getElementById('cred-teacher-id').value = t.id;
+  document.getElementById('cred-teacher-name').textContent = t.name;
+  document.getElementById('cred-teacher-title').textContent = t.arabicTitle || t.qualification || 'Certified Scholar';
+  document.getElementById('cred-teacher-username').value = defaultUser;
+  document.getElementById('cred-teacher-password').value = currentPass || ("Teacher@" + Math.floor(1000 + Math.random() * 9000));
+  
+  openModal('teacher-credentials-modal');
+}
+
+// Preview Student Profile Modal
+function previewStudentProfile(id) {
+  const s = adminState.students.find(item => item.id === id);
+  if (!s) return;
+
+  const container = document.getElementById('student-profile-preview-body');
+  if (!container) return;
+
+  const username = s.username || s.studentName.toLowerCase().replace(/[^a-z0-9]/g, '');
+  const pass = s.password || 'Not set';
+  const wa = s.whatsappNumber || 'N/A';
+  const waLink = `https://wa.me/${wa.replace(/[^0-9]/g, '')}`;
+
+  container.innerHTML = `
+    <div class="space-y-4">
+      <div class="flex items-center gap-4 bg-emerald-950 text-white p-4 rounded-2xl border border-amber-400/40">
+        <div class="w-16 h-16 rounded-full bg-emerald-800 text-amber-300 font-black text-2xl flex items-center justify-center border-2 border-amber-400 shrink-0">
+          ${s.studentName.substring(0, 2).toUpperCase()}
+        </div>
+        <div class="flex-grow">
+          <div class="flex items-center gap-2">
+            <h4 class="text-lg font-black text-white">${s.studentName}</h4>
+            <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-400 text-emerald-950 uppercase">Student</span>
+          </div>
+          <p class="text-xs text-emerald-200">Enrolled: <span class="font-bold text-amber-300">${s.enrolledCourse || 'Noorani Qaida'}</span></p>
+          <p class="text-xs text-slate-300">Tutor: <span class="font-semibold text-white">${s.assignedTeacher || 'Unassigned'}</span></p>
+        </div>
+      </div>
+
+      <div class="grid sm:grid-cols-2 gap-3 text-xs">
+        <div class="p-3 rounded-xl bg-slate-50 border border-slate-200">
+          <span class="text-slate-400 block text-[10px] font-bold uppercase">Portal Username</span>
+          <span class="font-bold text-slate-900 font-mono text-sm">${username}</span>
+        </div>
+        <div class="p-3 rounded-xl bg-slate-50 border border-slate-200">
+          <span class="text-slate-400 block text-[10px] font-bold uppercase">Portal Password</span>
+          <span class="font-bold text-emerald-800 font-mono text-sm">${pass}</span>
+        </div>
+        <div class="p-3 rounded-xl bg-slate-50 border border-slate-200">
+          <span class="text-slate-400 block text-[10px] font-bold uppercase">Parent / Guardian</span>
+          <span class="font-bold text-slate-900">${s.parentName || 'N/A'} (Age: ${s.age || 'N/A'})</span>
+        </div>
+        <div class="p-3 rounded-xl bg-slate-50 border border-slate-200">
+          <span class="text-slate-400 block text-[10px] font-bold uppercase">WhatsApp / Contact</span>
+          <a href="${waLink}" target="_blank" class="font-bold text-emerald-700 hover:underline flex items-center gap-1">
+            <i class="fa-brands fa-whatsapp text-emerald-500"></i> ${wa}
+          </a>
+        </div>
+        <div class="p-3 rounded-xl bg-slate-50 border border-slate-200">
+          <span class="text-slate-400 block text-[10px] font-bold uppercase">Class Timing</span>
+          <span class="font-bold text-slate-900">${s.classTiming || 'Flexible'} (${s.timezone || 'Local'})</span>
+        </div>
+        <div class="p-3 rounded-xl bg-slate-50 border border-slate-200">
+          <span class="text-slate-400 block text-[10px] font-bold uppercase">Tuition Fee</span>
+          <span class="font-bold text-slate-900">${s.currency || 'USD'} ${s.monthlyFee || 45} / month</span>
+        </div>
+      </div>
+
+      ${s.notes ? `
+        <div class="p-3 rounded-xl bg-amber-50 border border-amber-200 text-xs">
+          <span class="font-bold text-amber-900 block mb-0.5">Teacher / Academic Notes:</span>
+          <p class="text-slate-700">${s.notes}</p>
+        </div>
+      ` : ''}
+
+      <div class="pt-3 border-t border-slate-100 flex items-center justify-between gap-2">
+        <button onclick="shareStudentCredentialsWhatsApp('${s.id}')" class="px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs flex items-center gap-1.5 transition">
+          <i class="fa-brands fa-whatsapp"></i> Send Login via WhatsApp
+        </button>
+        <a href="portal.html?student=${s.id}" target="_blank" class="px-4 py-2 rounded-xl bg-emerald-900 hover:bg-emerald-950 text-amber-300 font-bold text-xs flex items-center gap-1.5 transition">
+          <i class="fa-solid fa-arrow-up-right-from-square"></i> Open Student Portal View
+        </a>
+      </div>
+    </div>
+  `;
+
+  openModal('student-profile-preview-modal');
+}
+
+// Preview Teacher Profile Modal
+function previewTeacherProfile(id) {
+  const t = adminState.teachers.find(item => item.id === id);
+  if (!t) return;
+
+  const container = document.getElementById('teacher-profile-preview-body');
+  if (!container) return;
+
+  const username = t.username || ('t.' + t.name.toLowerCase().replace(/[^a-z0-9]/g, ''));
+  const pass = t.password || 'Not set';
+
+  // Find students assigned to this teacher
+  const assigned = (adminState.students || []).filter(s => 
+    s.assignedTeacher && s.assignedTeacher.toLowerCase().includes(t.name.toLowerCase().split(' ')[0])
+  );
+
+  container.innerHTML = `
+    <div class="space-y-4">
+      <div class="flex items-center gap-4 bg-emerald-950 text-white p-4 rounded-2xl border border-amber-400/40">
+        <img src="${t.imageUrl || 'assets/images/logo.png'}" alt="${t.name}" class="w-16 h-16 rounded-full object-cover border-2 border-amber-400 shrink-0">
+        <div class="flex-grow">
+          <div class="flex items-center gap-2">
+            <h4 class="text-lg font-black text-white">${t.name}</h4>
+            <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-400 text-emerald-950 uppercase">Scholar</span>
+          </div>
+          <p class="font-arabic text-amber-300 text-sm">${t.arabicTitle || ''}</p>
+          <p class="text-xs text-emerald-200">Experience: <span class="font-semibold text-white">${t.experience || '5+ Years'}</span> &bull; Rating: <span class="font-bold text-amber-300">★ ${t.rating || '5.0'}</span></p>
+        </div>
+      </div>
+
+      <div class="grid sm:grid-cols-2 gap-3 text-xs">
+        <div class="p-3 rounded-xl bg-slate-50 border border-slate-200">
+          <span class="text-slate-400 block text-[10px] font-bold uppercase">Portal Username</span>
+          <span class="font-bold text-slate-900 font-mono text-sm">${username}</span>
+        </div>
+        <div class="p-3 rounded-xl bg-slate-50 border border-slate-200">
+          <span class="text-slate-400 block text-[10px] font-bold uppercase">Portal Password</span>
+          <span class="font-bold text-emerald-800 font-mono text-sm">${pass}</span>
+        </div>
+        <div class="p-3 rounded-xl bg-slate-50 border border-slate-200 sm:col-span-2">
+          <span class="text-slate-400 block text-[10px] font-bold uppercase">Degrees &amp; Certifications</span>
+          <span class="font-bold text-slate-900">${t.qualification || 'Certified Islamic Scholar'}</span>
+        </div>
+        <div class="p-3 rounded-xl bg-slate-50 border border-slate-200 sm:col-span-2">
+          <span class="text-slate-400 block text-[10px] font-bold uppercase">Specializations &amp; Languages</span>
+          <span class="font-bold text-slate-900">${t.specialization || 'Tajweed, Noorani Qaida'} &bull; ${t.languages || 'English, Urdu, Arabic'}</span>
+        </div>
+      </div>
+
+      <div class="p-3 rounded-xl bg-emerald-50/70 border border-emerald-200 text-xs">
+        <span class="font-bold text-emerald-950 block mb-1">Assigned Students (${assigned.length}):</span>
+        ${assigned.length ? `
+          <ul class="space-y-1 text-slate-700">
+            ${assigned.map(st => `
+              <li class="flex items-center justify-between border-b border-emerald-100 pb-1">
+                <span class="font-bold">${st.studentName} (${st.enrolledCourse || 'Course'})</span>
+                <span class="text-emerald-800 font-mono text-[11px]">${st.classTiming || 'Flexible'}</span>
+              </li>
+            `).join('')}
+          </ul>
+        ` : '<p class="text-slate-500 italic">No students currently assigned to this teacher.</p>'}
+      </div>
+
+      <div class="pt-3 border-t border-slate-100 flex items-center justify-between gap-2">
+        <button onclick="shareTeacherCredentialsWhatsApp('${t.id}')" class="px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs flex items-center gap-1.5 transition">
+          <i class="fa-brands fa-whatsapp"></i> Send Login via WhatsApp
+        </button>
+        <a href="portal.html?teacher=${t.id}" target="_blank" class="px-4 py-2 rounded-xl bg-emerald-900 hover:bg-emerald-950 text-amber-300 font-bold text-xs flex items-center gap-1.5 transition">
+          <i class="fa-solid fa-arrow-up-right-from-square"></i> Open Teacher Portal View
+        </a>
+      </div>
+    </div>
+  `;
+
+  openModal('teacher-profile-preview-modal');
+}
+
+// WhatsApp Share for Student
+function shareStudentCredentialsWhatsApp(id) {
+  const s = adminState.students.find(item => item.id === id);
+  if (!s) return;
+
+  const username = s.username || s.studentName.toLowerCase().replace(/[^a-z0-9]/g, '');
+  const pass = s.password || 'Quran@2026';
+  const cleanPhone = (s.whatsappNumber || '').replace(/[^0-9]/g, '');
+
+  const portalUrl = window.location.origin ? (window.location.origin + '/portal.html') : 'https://halenooracademy.vercel.app/portal.html';
+
+  const msg = `بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ
+Assalam-o-Alaikum!
+
+Welcome to *Hale Noor Online Quran Academy*.
+Aapke bache (*${s.studentName}*) ka Student Portal login account tayyar hai:
+
+🔗 *Portal Website:* ${portalUrl}
+👤 *Username:* ${username}
+🔑 *Password:* ${pass}
+📚 *Course:* ${s.enrolledCourse || 'Noorani Qaida with Tajweed'}
+👨‍🏫 *Assigned Tutor:* ${s.assignedTeacher || 'Assigned Tutor'}
+⏰ *Class Timing:* ${s.classTiming || 'To be confirmed'}
+
+Aap is link se login karke class timing, syllabus progress aur fees status dekh sakte hain.
+JazakAllah Khair!`;
+
+  const waUrl = cleanPhone 
+    ? `https://wa.me/${cleanPhone}?text=${encodeURIComponent(msg)}`
+    : `https://wa.me/?text=${encodeURIComponent(msg)}`;
+
+  window.open(waUrl, '_blank');
+}
+
+// WhatsApp Share for Teacher
+function shareTeacherCredentialsWhatsApp(id) {
+  const t = adminState.teachers.find(item => item.id === id);
+  if (!t) return;
+
+  const username = t.username || ('t.' + t.name.toLowerCase().replace(/[^a-z0-9]/g, ''));
+  const pass = t.password || 'Teacher@2026';
+  const portalUrl = window.location.origin ? (window.location.origin + '/portal.html') : 'https://halenooracademy.vercel.app/portal.html';
+
+  const msg = `بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ
+Assalam-o-Alaikum Respected *${t.name}*!
+
+Aapka *Hale Noor Quran Academy* Teacher Portal login credentials ye hain:
+
+🔗 *Teacher Portal:* ${portalUrl}
+👤 *Username:* ${username}
+🔑 *Password:* ${pass}
+
+Aap login karke apne assigned students ki list, unke timings aur syllabus schedule dekh sakte hain.
+JazakAllah Khair!`;
+
+  window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`, '_blank');
+}
+
 // Export functions to window
 window.adminState = adminState;
 window.showToast = showToast;
@@ -828,8 +1292,23 @@ window.renderOverviewRecentStudents = renderOverviewRecentStudents;
 window.renderCoursesTable = renderCoursesTable;
 window.renderTeachersTable = renderTeachersTable;
 window.renderStudentsTable = renderStudentsTable;
+window.renderAdminsTable = renderAdminsTable;
 window.renderEnrollmentsTable = renderEnrollmentsTable;
 window.renderSlidersTable = renderSlidersTable;
 window.renderGalleryGrid = renderGalleryGrid;
 window.renderTestimonialsTable = renderTestimonialsTable;
 window.renderMessagesTable = renderMessagesTable;
+
+// Credentials & Modals
+window.copyInputVal = copyInputVal;
+window.copyAdminPasswordInput = copyAdminPasswordInput;
+window.generateRandomPassword = generateRandomPassword;
+window.generateStudentPasswordAuto = generateStudentPasswordAuto;
+window.generateTeacherPasswordAuto = generateTeacherPasswordAuto;
+window.generateAdminRandomPassword = generateAdminRandomPassword;
+window.openStudentCredentialsModal = openStudentCredentialsModal;
+window.openTeacherCredentialsModal = openTeacherCredentialsModal;
+window.previewStudentProfile = previewStudentProfile;
+window.previewTeacherProfile = previewTeacherProfile;
+window.shareStudentCredentialsWhatsApp = shareStudentCredentialsWhatsApp;
+window.shareTeacherCredentialsWhatsApp = shareTeacherCredentialsWhatsApp;

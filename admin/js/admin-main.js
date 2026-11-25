@@ -400,6 +400,8 @@ function setupTeacherEventListeners() {
       const bio = document.getElementById('teacher-bio').value.trim();
       const rating = Number(document.getElementById('teacher-rating').value) || 5.0;
       const active = document.getElementById('teacher-active').checked;
+      const whatsappNumber = document.getElementById('teacher-whatsapp-input')?.value.trim() || '';
+      const email = document.getElementById('teacher-email-input')?.value.trim() || '';
       const username = document.getElementById('teacher-username-input')?.value.trim();
       const password = document.getElementById('teacher-password-input')?.value.trim();
 
@@ -425,6 +427,8 @@ function setupTeacherEventListeners() {
         bio,
         rating,
         active,
+        whatsappNumber,
+        email,
         username: username || ('t.' + name.toLowerCase().replace(/[^a-z0-9]/g, '')),
         imageUrl: imageUrl || "assets/images/logo.png"
       };
@@ -466,8 +470,12 @@ function editTeacherModal(id) {
   document.getElementById('teacher-image-url').value = t.imageUrl || '';
   document.getElementById('teacher-active').checked = t.active !== undefined ? t.active : true;
 
+  const wEl = document.getElementById('teacher-whatsapp-input');
+  const eEl = document.getElementById('teacher-email-input');
   const uEl = document.getElementById('teacher-username-input');
   const pEl = document.getElementById('teacher-password-input');
+  if (wEl) wEl.value = t.whatsappNumber || '';
+  if (eEl) eEl.value = t.email || '';
   if (uEl) uEl.value = t.username || ('t.' + t.name.toLowerCase().replace(/[^a-z0-9]/g, ''));
   if (pEl) pEl.value = t.password || '';
 
@@ -539,11 +547,11 @@ function setupStudentEventListeners() {
       const age = document.getElementById('student-age-input').value.trim();
       const enrolledCourse = document.getElementById('student-course-input').value;
       const assignedTeacher = document.getElementById('student-teacher-input').value.trim();
-      const whatsappNumber = document.getElementById('student-whatsapp-input').value.trim();
-      const email = document.getElementById('student-email-input').value.trim();
-      const country = document.getElementById('student-country-input').value.trim();
-      const timezone = document.getElementById('student-timezone-input').value.trim();
-      const classTiming = document.getElementById('student-timing-input').value.trim();
+      const whatsappNumber = document.getElementById('student-whatsapp-input')?.value.trim() || '';
+      const email = document.getElementById('student-email-input')?.value.trim() || '';
+      const country = document.getElementById('student-country-input')?.value.trim() || '';
+      const timezone = document.getElementById('student-timezone-input')?.value.trim() || '';
+      const classTiming = document.getElementById('student-timing-input')?.value.trim() || '';
       const monthlyFee = Number(document.getElementById('student-fee-input').value) || 45;
       const currency = document.getElementById('student-currency-input').value || 'USD';
       const status = document.getElementById('student-status-input').value;
@@ -599,10 +607,10 @@ function editStudentModal(id) {
   document.getElementById('student-age-input').value = s.age || '';
   document.getElementById('student-course-input').value = s.enrolledCourse || 'Noorani Qaida with Tajweed';
   document.getElementById('student-teacher-input').value = s.assignedTeacher || '';
-  document.getElementById('student-whatsapp-input').value = s.whatsappNumber || '';
-  document.getElementById('student-email-input').value = s.email || '';
-  document.getElementById('student-country-input').value = s.country || '';
-  document.getElementById('student-timezone-input').value = s.timezone || '';
+  if (document.getElementById('student-whatsapp-input')) document.getElementById('student-whatsapp-input').value = s.whatsappNumber || '';
+  if (document.getElementById('student-email-input')) document.getElementById('student-email-input').value = s.email || '';
+  if (document.getElementById('student-country-input')) document.getElementById('student-country-input').value = s.country || '';
+  if (document.getElementById('student-timezone-input')) document.getElementById('student-timezone-input').value = s.timezone || '';
   document.getElementById('student-timing-input').value = s.classTiming || '';
   document.getElementById('student-fee-input').value = s.monthlyFee || 45;
   document.getElementById('student-currency-input').value = s.currency || 'USD';

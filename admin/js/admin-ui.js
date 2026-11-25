@@ -1133,7 +1133,7 @@ function previewStudentProfile(id) {
         <button onclick="shareStudentCredentialsWhatsApp('${s.id}')" class="px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs flex items-center gap-1.5 transition">
           <i class="fa-brands fa-whatsapp"></i> Send Login via WhatsApp
         </button>
-        <a href="portal.html?student=${s.id}" target="_blank" class="px-4 py-2 rounded-xl bg-emerald-900 hover:bg-emerald-950 text-amber-300 font-bold text-xs flex items-center gap-1.5 transition">
+        <a href="/portal.html?student=${s.id}" target="_blank" class="px-4 py-2 rounded-xl bg-emerald-900 hover:bg-emerald-950 text-amber-300 font-bold text-xs flex items-center gap-1.5 transition">
           <i class="fa-solid fa-arrow-up-right-from-square"></i> Open Student Portal View
         </a>
       </div>
@@ -1210,7 +1210,7 @@ function previewTeacherProfile(id) {
         <button onclick="shareTeacherCredentialsWhatsApp('${t.id}')" class="px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs flex items-center gap-1.5 transition">
           <i class="fa-brands fa-whatsapp"></i> Send Login via WhatsApp
         </button>
-        <a href="portal.html?teacher=${t.id}" target="_blank" class="px-4 py-2 rounded-xl bg-emerald-900 hover:bg-emerald-950 text-amber-300 font-bold text-xs flex items-center gap-1.5 transition">
+        <a href="/portal.html?teacher=${t.id}" target="_blank" class="px-4 py-2 rounded-xl bg-emerald-900 hover:bg-emerald-950 text-amber-300 font-bold text-xs flex items-center gap-1.5 transition">
           <i class="fa-solid fa-arrow-up-right-from-square"></i> Open Teacher Portal View
         </a>
       </div>

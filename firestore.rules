@@ -33,10 +33,11 @@ service cloud.firestore {
       allow write: if isAuthenticated();
     }
 
-    // 4. Teachers & Faculty (Publicly readable, editable only by admin)
+    // 4. Teachers & Faculty (Publicly readable; portal profile/credentials updateable; delete admin-only)
     match /teachers/{teacherId} {
       allow read: if true;
-      allow write: if isAuthenticated();
+      allow create, update: if true;
+      allow delete: if isAuthenticated();
     }
 
     // 5. Website Slider Banners (Publicly readable, editable only by admin)
@@ -57,10 +58,11 @@ service cloud.firestore {
       allow write: if isAuthenticated();
     }
 
-    // 8. Registered Students (Academic records & Portal profile access)
+    // 8. Registered Students (Portal profile/credentials creation & updates allowed; delete admin-only)
     match /students/{studentId} {
       allow read: if true;
-      allow write: if isAuthenticated();
+      allow create, update: if true;
+      allow delete: if isAuthenticated();
     }
 
     // 9. Free Trial Leads & Registrations

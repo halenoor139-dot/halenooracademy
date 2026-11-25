@@ -302,7 +302,11 @@ async function scheduleTrialClass(id, scheduleData) {
 async function convertLeadToStudent(leadId, leadData, extraStudentData = {}) {
   if (!window.adminDb) throw new Error("Database not connected");
   
-  // 1. Create student document
+  // 1. Create student document with auto-generated portal login credentials
+  const baseName = (leadData.studentName || leadData.name || "student").toLowerCase().replace(/[^a-z0-9]/g, '') || 'student';
+  const generatedUsername = extraStudentData.username || (baseName + Math.floor(10 + Math.random() * 90));
+  const generatedPassword = extraStudentData.password || ('Quran@' + Math.floor(1000 + Math.random() * 9000));
+
   const studentDoc = {
     studentName: leadData.studentName || leadData.name || "Student",
     parentName: leadData.parentName || "",
@@ -318,6 +322,8 @@ async function convertLeadToStudent(leadId, leadData, extraStudentData = {}) {
     monthlyFee: extraStudentData.monthlyFee || 45,
     currency: extraStudentData.currency || "USD",
     status: "Active",
+    username: generatedUsername,
+    password: generatedPassword,
     notes: `Converted from Free Trial Lead (ID: ${leadId}). Notes: ${leadData.notes || 'None'}`,
     enrolledAt: firebase.firestore.FieldValue.serverTimestamp()
   };

@@ -61,6 +61,10 @@
       background: #cbd5e1;
       border-radius: 9999px;
     }
+    @media print {
+      header, .no-print { display: none !important; }
+      body { background: #fff !important; }
+    }
   </style>
 </head>
 <body class="bg-slate-50 text-slate-800 antialiased min-h-screen flex flex-col font-sans">
@@ -79,26 +83,26 @@
     <p class="text-xs text-emerald-300 mt-2 font-medium">Connecting Student &amp; Teacher Portal...</p>
   </div>
 
-  <!-- ================= 1. PORTAL LOGIN VIEW ================= -->
-  <div id="portal-login-view" class="hidden min-h-screen bg-slate-900 flex flex-col items-center justify-center p-4 relative overflow-hidden">
+  <!-- ================= 1. PORTAL LOGIN / SETUP VIEW ================= -->
+  <div id="portal-login-view" class="hidden min-h-screen bg-slate-900 flex flex-col items-center justify-center p-4 py-8 relative overflow-hidden">
     <!-- Geometric Background Glows -->
     <div class="absolute -top-32 -right-32 w-96 h-96 bg-emerald-700/20 rounded-full blur-3xl pointer-events-none"></div>
     <div class="absolute -bottom-32 -left-32 w-96 h-96 bg-amber-500/15 rounded-full blur-3xl pointer-events-none"></div>
 
-    <div class="max-w-md w-full bg-white rounded-3xl p-7 sm:p-9 shadow-2xl border border-slate-200/80 relative z-10">
+    <div class="max-w-lg w-full bg-white rounded-3xl p-6 sm:p-8 shadow-2xl border border-slate-200/80 relative z-10">
       
       <!-- Brand & Header -->
-      <div class="text-center mb-6">
-        <a href="index.html" class="inline-block p-1 rounded-full bg-emerald-50 border-2 border-amber-400/80 shadow mb-3 hover:scale-105 transition">
-          <img src="assets/images/logo.png" alt="Hale Noor Quran Academy" class="w-16 h-16 rounded-full object-cover">
+      <div class="text-center mb-5">
+        <a href="index.html" class="inline-block p-1 rounded-full bg-emerald-50 border-2 border-amber-400/80 shadow mb-2.5 hover:scale-105 transition">
+          <img src="assets/images/logo.png" alt="Hale Noor Quran Academy" class="w-14 h-14 rounded-full object-cover">
         </a>
         <h1 class="text-2xl font-black text-slate-900 tracking-tight">Academy Portal</h1>
         <p class="text-xs text-emerald-800 font-bold uppercase tracking-wider mt-0.5">Hale Noor Online Quran Academy</p>
-        <p class="font-arabic text-sm text-slate-500 mt-1">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</p>
+        <p class="font-arabic text-sm text-slate-500 mt-0.5">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</p>
       </div>
 
       <!-- Role Switcher Tabs (Student vs Teacher) -->
-      <div class="grid grid-cols-2 p-1 bg-slate-100 rounded-2xl mb-6 text-xs font-bold">
+      <div class="grid grid-cols-2 p-1 bg-slate-100 rounded-2xl mb-3 text-xs font-bold">
         <button type="button" id="tab-student" onclick="switchLoginRole('student')" class="py-2.5 rounded-xl bg-white text-emerald-900 shadow-sm flex items-center justify-center gap-2 transition">
           <i class="fa-solid fa-user-graduate text-amber-500"></i>
           <span>Student Portal</span>
@@ -109,12 +113,28 @@
         </button>
       </div>
 
-      <!-- Login Form -->
+      <!-- Action Mode Tabs (Sign In | Set / Reset Username & Password | Create Profile) -->
+      <div class="grid grid-cols-3 p-1 bg-emerald-50 border border-emerald-200/70 rounded-2xl mb-5 text-[11px] font-bold gap-1">
+        <button type="button" id="mode-tab-login" onclick="switchPortalMode('login')" class="py-2 px-2 rounded-xl bg-emerald-800 text-white shadow-sm flex items-center justify-center gap-1.5 transition">
+          <i class="fa-solid fa-right-to-bracket"></i>
+          <span>Sign In</span>
+        </button>
+        <button type="button" id="mode-tab-reset" onclick="switchPortalMode('reset')" class="py-2 px-2 rounded-xl text-emerald-900 hover:bg-emerald-100 flex items-center justify-center gap-1.5 transition">
+          <i class="fa-solid fa-key"></i>
+          <span>Set / Reset Login</span>
+        </button>
+        <button type="button" id="mode-tab-register" onclick="switchPortalMode('register')" class="py-2 px-2 rounded-xl text-emerald-900 hover:bg-emerald-100 flex items-center justify-center gap-1.5 transition">
+          <i class="fa-solid fa-user-plus"></i>
+          <span>Create Profile</span>
+        </button>
+      </div>
+
+      <!-- MODE 1: SIGN IN FORM -->
       <form id="portal-login-form" class="space-y-4">
         <div>
           <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5 flex items-center justify-between">
             <span id="login-username-label">Student Username or Email</span>
-            <span class="text-[10px] text-slate-400 lowercase font-normal">(provided by admin)</span>
+            <span class="text-[10px] text-slate-400 lowercase font-normal">(or full name)</span>
           </label>
           <div class="relative">
             <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
@@ -125,8 +145,11 @@
         </div>
 
         <div>
-          <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
-            Portal Password
+          <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5 flex items-center justify-between">
+            <span>Portal Password</span>
+            <button type="button" onclick="switchPortalMode('reset')" class="text-[11px] text-emerald-700 hover:underline font-bold normal-case">
+              Set / Reset Username &amp; Password?
+            </button>
           </label>
           <div class="relative">
             <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
@@ -146,22 +169,264 @@
         </button>
       </form>
 
-      <!-- Help & Direct Contact -->
-      <div class="mt-6 pt-5 border-t border-slate-100 text-center space-y-3">
-        <p class="text-xs text-slate-500">
-          Username ya Password nahi mila? Admin se WhatsApp par rabta karein:
+      <!-- MODE 2: SET / RESET USERNAME & PASSWORD PANEL -->
+      <form id="portal-reset-form" class="hidden space-y-3.5">
+        <div class="p-3 rounded-xl bg-amber-50 border border-amber-200 text-xs text-amber-950">
+          <div class="font-extrabold flex items-center gap-1.5">
+            <i class="fa-solid fa-key text-amber-600"></i>
+            <span id="reset-panel-heading">Set / Reset Student Username &amp; Password</span>
+          </div>
+          <p class="text-[11px] text-amber-900/80 mt-0.5">
+            Apna naam, WhatsApp number, email ya username search karein aur apna naya username aur password set/reset karein.
+          </p>
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">Find Account (Name, Username, WhatsApp, or Email) *</label>
+          <div class="flex gap-2">
+            <input type="text" id="reset-search-input" required placeholder="e.g. Fardan, +92300..., or email" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-xs focus:outline-none focus:ring-2 focus:ring-emerald-700">
+            <button type="button" onclick="findAccountForReset()" class="px-4 py-2.5 rounded-xl bg-emerald-800 hover:bg-emerald-900 text-white font-bold text-xs shrink-0 transition">
+              Find
+            </button>
+          </div>
+        </div>
+
+        <!-- Matched Account Select / Preview -->
+        <div id="reset-match-box" class="hidden p-3 rounded-xl bg-emerald-50 border border-emerald-200 space-y-2 text-xs">
+          <div id="reset-multiple-wrap" class="hidden">
+            <label class="block text-[11px] font-bold text-emerald-900 mb-1">Select Matching Profile:</label>
+            <select id="reset-account-select" onchange="onSelectResetAccount()" class="w-full p-2 rounded-lg border border-emerald-300 bg-white text-xs font-semibold"></select>
+          </div>
+          <div class="flex items-center justify-between gap-2">
+            <div>
+              <div id="reset-found-name" class="font-extrabold text-emerald-950 text-sm">Account Name</div>
+              <div id="reset-found-meta" class="text-[11px] text-emerald-700">Course / Qualification</div>
+            </div>
+            <span id="reset-found-status" class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-white border border-emerald-300 text-emerald-800">Found</span>
+          </div>
+        </div>
+
+        <!-- Verification (only required if password is already set) -->
+        <div id="reset-verify-group" class="hidden">
+          <label class="block text-xs font-bold text-slate-700 mb-1">Verify Account (Enter Registered WhatsApp, Email, or Current Password) *</label>
+          <input type="text" id="reset-verify-input" placeholder="Registered WhatsApp / Email / Old Password" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-xs focus:outline-none focus:ring-2 focus:ring-emerald-700">
+        </div>
+
+        <div>
+          <div class="flex items-center justify-between mb-1">
+            <label class="block text-xs font-bold text-slate-700">Set New Username *</label>
+            <button type="button" onclick="suggestResetUsername()" class="text-[11px] text-emerald-700 font-bold hover:underline flex items-center gap-1">
+              <i class="fa-solid fa-wand-magic-sparkles text-amber-500"></i> Auto-Suggest
+            </button>
+          </div>
+          <input type="text" id="reset-new-username" required placeholder="e.g. ahmad101 or t.abdullah" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-xs font-mono font-bold text-slate-800 focus:outline-none focus:ring-2 focus:ring-emerald-700">
+        </div>
+
+        <div class="grid sm:grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">New Password (min 6 chars) *</label>
+            <div class="relative">
+              <input type="password" id="reset-new-password" required placeholder="••••••" class="w-full pl-3.5 pr-9 py-2.5 rounded-xl border border-slate-300 text-xs font-mono focus:outline-none focus:ring-2 focus:ring-emerald-700">
+              <button type="button" onclick="togglePasswordVisibility('reset-new-password', 'reset-pass-icon-1')" class="absolute inset-y-0 right-0 pr-3 flex items-center text-slate-400 hover:text-slate-600">
+                <i id="reset-pass-icon-1" class="fa-solid fa-eye text-xs"></i>
+              </button>
+            </div>
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">Confirm Password *</label>
+            <div class="relative">
+              <input type="password" id="reset-confirm-password" required placeholder="••••••" class="w-full pl-3.5 pr-9 py-2.5 rounded-xl border border-slate-300 text-xs font-mono focus:outline-none focus:ring-2 focus:ring-emerald-700">
+              <button type="button" onclick="togglePasswordVisibility('reset-confirm-password', 'reset-pass-icon-2')" class="absolute inset-y-0 right-0 pr-3 flex items-center text-slate-400 hover:text-slate-600">
+                <i id="reset-pass-icon-2" class="fa-solid fa-eye text-xs"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <button type="submit" id="portal-reset-btn" class="w-full py-3.5 px-4 rounded-xl bg-amber-500 hover:bg-amber-400 text-emerald-950 font-black text-xs shadow-lg flex items-center justify-center gap-2 transition">
+          <i id="reset-spinner" class="fa-solid fa-circle-notch animate-spin hidden"></i>
+          <span>Save Username &amp; Password &amp; Open Profile</span>
+        </button>
+
+        <p class="text-[11px] text-center text-slate-500">
+          Profile abhi tak nahi bani? <button type="button" onclick="switchPortalMode('register')" class="text-emerald-800 font-bold hover:underline">Create Profile Here</button>
         </p>
-        <a href="https://wa.me/923208040672?text=Assalam-o-Alaikum!%20Mujhe%20apne%20Hale%20Noor%20Portal%20ka%20Username%20aur%20Password%20chahiye." target="_blank" class="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl bg-emerald-50 text-emerald-800 hover:bg-emerald-100 font-bold text-xs border border-emerald-200 transition">
+      </form>
+
+      <!-- MODE 3: CREATE STUDENT / TEACHER PROFILE FORM -->
+      <form id="portal-register-form" class="hidden space-y-3 max-h-[62vh] overflow-y-auto pr-1 custom-scroll">
+        <div class="p-3 rounded-xl bg-emerald-50 border border-emerald-200 text-xs text-emerald-950">
+          <div class="font-extrabold flex items-center gap-1.5">
+            <i class="fa-solid fa-id-card text-emerald-700"></i>
+            <span id="register-panel-heading">Create Student Profile &amp; Set Login</span>
+          </div>
+          <p class="text-[11px] text-emerald-800 mt-0.5">
+            Apni complete profile aur username/password banayein taake baad mein login karke profile dekh sakein.
+          </p>
+        </div>
+
+        <!-- Student Fields -->
+        <div id="register-student-fields" class="space-y-3">
+          <div class="grid sm:grid-cols-3 gap-2.5">
+            <div class="sm:col-span-2">
+              <label class="block text-[11px] font-bold text-slate-700 mb-1">Student Full Name *</label>
+              <input type="text" id="reg-student-name" placeholder="e.g. Muhammad Fardan" class="w-full p-2.5 rounded-xl border border-slate-300 text-xs focus:ring-2 focus:ring-emerald-700 focus:outline-none">
+            </div>
+            <div>
+              <label class="block text-[11px] font-bold text-slate-700 mb-1">Age</label>
+              <input type="text" id="reg-student-age" placeholder="e.g. 9" class="w-full p-2.5 rounded-xl border border-slate-300 text-xs focus:ring-2 focus:ring-emerald-700 focus:outline-none">
+            </div>
+          </div>
+
+          <div class="grid sm:grid-cols-2 gap-2.5">
+            <div>
+              <label class="block text-[11px] font-bold text-slate-700 mb-1">Parent / Guardian Name</label>
+              <input type="text" id="reg-student-parent" placeholder="Parent Name" class="w-full p-2.5 rounded-xl border border-slate-300 text-xs focus:ring-2 focus:ring-emerald-700 focus:outline-none">
+            </div>
+            <div>
+              <label class="block text-[11px] font-bold text-slate-700 mb-1">WhatsApp Number *</label>
+              <input type="text" id="reg-student-whatsapp" placeholder="+92 300 1234567" class="w-full p-2.5 rounded-xl border border-slate-300 text-xs focus:ring-2 focus:ring-emerald-700 focus:outline-none">
+            </div>
+          </div>
+
+          <div class="grid sm:grid-cols-2 gap-2.5">
+            <div>
+              <label class="block text-[11px] font-bold text-slate-700 mb-1">Email Address</label>
+              <input type="email" id="reg-student-email" placeholder="student@email.com" class="w-full p-2.5 rounded-xl border border-slate-300 text-xs focus:ring-2 focus:ring-emerald-700 focus:outline-none">
+            </div>
+            <div>
+              <label class="block text-[11px] font-bold text-slate-700 mb-1">Country</label>
+              <input type="text" id="reg-student-country" placeholder="Pakistan / UK / USA" class="w-full p-2.5 rounded-xl border border-slate-300 text-xs focus:ring-2 focus:ring-emerald-700 focus:outline-none">
+            </div>
+          </div>
+
+          <div class="grid sm:grid-cols-2 gap-2.5">
+            <div>
+              <label class="block text-[11px] font-bold text-slate-700 mb-1">Course</label>
+              <select id="reg-student-course" class="w-full p-2.5 rounded-xl border border-slate-300 text-xs bg-white focus:ring-2 focus:ring-emerald-700 focus:outline-none">
+                <option value="Noorani Qaida with Tajweed">Noorani Qaida with Tajweed</option>
+                <option value="Quran Reading with Tajweed (Nazra)">Quran Reading with Tajweed (Nazra)</option>
+                <option value="Hifz-ul-Quran (Quran Memorization)">Hifz-ul-Quran (Quran Memorization)</option>
+                <option value="Quran Translation & Tafseer">Quran Translation &amp; Tafseer</option>
+                <option value="Islamic Studies & Daily Duas">Islamic Studies &amp; Daily Duas</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-[11px] font-bold text-slate-700 mb-1">Preferred Class Timing</label>
+              <input type="text" id="reg-student-timing" placeholder="e.g. 7:00 PM PKT / Evening" class="w-full p-2.5 rounded-xl border border-slate-300 text-xs focus:ring-2 focus:ring-emerald-700 focus:outline-none">
+            </div>
+          </div>
+        </div>
+
+        <!-- Teacher Fields -->
+        <div id="register-teacher-fields" class="hidden space-y-3">
+          <div class="grid sm:grid-cols-2 gap-2.5">
+            <div>
+              <label class="block text-[11px] font-bold text-slate-700 mb-1">Teacher Full Name *</label>
+              <input type="text" id="reg-teacher-name" placeholder="e.g. Qari Muhammad Abdullah" class="w-full p-2.5 rounded-xl border border-slate-300 text-xs focus:ring-2 focus:ring-emerald-700 focus:outline-none">
+            </div>
+            <div>
+              <label class="block text-[11px] font-bold text-slate-700 mb-1">Arabic Title</label>
+              <input type="text" id="reg-teacher-arabic" placeholder="القارئ محمد عبد الله" class="w-full p-2.5 rounded-xl border border-slate-300 text-xs font-arabic focus:ring-2 focus:ring-emerald-700 focus:outline-none">
+            </div>
+          </div>
+
+          <div class="grid sm:grid-cols-2 gap-2.5">
+            <div>
+              <label class="block text-[11px] font-bold text-slate-700 mb-1">Gender</label>
+              <select id="reg-teacher-gender" class="w-full p-2.5 rounded-xl border border-slate-300 text-xs bg-white focus:ring-2 focus:ring-emerald-700 focus:outline-none">
+                <option value="Male">Male Scholar</option>
+                <option value="Female">Female Scholar</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-[11px] font-bold text-slate-700 mb-1">Experience</label>
+              <input type="text" id="reg-teacher-exp" placeholder="e.g. 6+ Years Online" class="w-full p-2.5 rounded-xl border border-slate-300 text-xs focus:ring-2 focus:ring-emerald-700 focus:outline-none">
+            </div>
+          </div>
+
+          <div class="grid sm:grid-cols-2 gap-2.5">
+            <div>
+              <label class="block text-[11px] font-bold text-slate-700 mb-1">WhatsApp Number *</label>
+              <input type="text" id="reg-teacher-whatsapp" placeholder="+92 300 1234567" class="w-full p-2.5 rounded-xl border border-slate-300 text-xs focus:ring-2 focus:ring-emerald-700 focus:outline-none">
+            </div>
+            <div>
+              <label class="block text-[11px] font-bold text-slate-700 mb-1">Email Address</label>
+              <input type="email" id="reg-teacher-email" placeholder="teacher@halenoorquran.com" class="w-full p-2.5 rounded-xl border border-slate-300 text-xs focus:ring-2 focus:ring-emerald-700 focus:outline-none">
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-[11px] font-bold text-slate-700 mb-1">Degrees &amp; Certifications *</label>
+            <input type="text" id="reg-teacher-qual" placeholder="e.g. Sanad in Qira'at Hafs, Alimiyyah / Hafiz-ul-Quran" class="w-full p-2.5 rounded-xl border border-slate-300 text-xs focus:ring-2 focus:ring-emerald-700 focus:outline-none">
+          </div>
+
+          <div class="grid sm:grid-cols-2 gap-2.5">
+            <div>
+              <label class="block text-[11px] font-bold text-slate-700 mb-1">Languages Spoken</label>
+              <input type="text" id="reg-teacher-lang" placeholder="English, Urdu, Arabic" class="w-full p-2.5 rounded-xl border border-slate-300 text-xs focus:ring-2 focus:ring-emerald-700 focus:outline-none">
+            </div>
+            <div>
+              <label class="block text-[11px] font-bold text-slate-700 mb-1">Specializations</label>
+              <input type="text" id="reg-teacher-spec" placeholder="Tajweed, Noorani Qaida, Hifz" class="w-full p-2.5 rounded-xl border border-slate-300 text-xs focus:ring-2 focus:ring-emerald-700 focus:outline-none">
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-[11px] font-bold text-slate-700 mb-1">Short Bio</label>
+            <textarea id="reg-teacher-bio" rows="2" placeholder="Your Quran teaching background and methodology..." class="w-full p-2.5 rounded-xl border border-slate-300 text-xs focus:ring-2 focus:ring-emerald-700 focus:outline-none"></textarea>
+          </div>
+        </div>
+
+        <!-- Portal Login Credentials for New Profile -->
+        <div class="p-3 rounded-xl bg-slate-50 border border-slate-200 space-y-2.5">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-bold text-slate-800 flex items-center gap-1.5">
+              <i class="fa-solid fa-user-lock text-amber-500"></i> Set Login Username &amp; Password
+            </span>
+            <button type="button" onclick="suggestRegisterUsername()" class="text-[11px] text-emerald-700 font-bold hover:underline flex items-center gap-1">
+              <i class="fa-solid fa-wand-magic-sparkles text-amber-500"></i> Suggest Username
+            </button>
+          </div>
+          <div class="grid sm:grid-cols-2 gap-2.5">
+            <div>
+              <label class="block text-[11px] font-bold text-slate-700 mb-1">Portal Username *</label>
+              <input type="text" id="reg-username" required placeholder="e.g. fardan101" class="w-full p-2.5 rounded-xl border border-slate-300 text-xs font-mono font-bold focus:ring-2 focus:ring-emerald-700 focus:outline-none">
+            </div>
+            <div>
+              <label class="block text-[11px] font-bold text-slate-700 mb-1">Portal Password (min 6) *</label>
+              <div class="relative">
+                <input type="password" id="reg-password" required placeholder="••••••" class="w-full p-2.5 pr-9 rounded-xl border border-slate-300 text-xs font-mono focus:ring-2 focus:ring-emerald-700 focus:outline-none">
+                <button type="button" onclick="togglePasswordVisibility('reg-password', 'reg-pass-icon')" class="absolute inset-y-0 right-0 pr-3 flex items-center text-slate-400 hover:text-slate-600">
+                  <i id="reg-pass-icon" class="fa-solid fa-eye text-xs"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <button type="submit" id="portal-register-btn" class="w-full py-3.5 px-4 rounded-xl bg-emerald-800 hover:bg-emerald-900 text-white font-extrabold text-xs shadow-lg flex items-center justify-center gap-2 transition">
+          <i id="register-spinner" class="fa-solid fa-circle-notch animate-spin hidden text-amber-400"></i>
+          <span id="register-btn-text">Create Profile &amp; Sign In</span>
+        </button>
+      </form>
+
+      <!-- Help & Direct Contact -->
+      <div class="mt-5 pt-4 border-t border-slate-100 text-center space-y-2.5">
+        <p class="text-xs text-slate-500">
+          Need help from Academy Coordinator? WhatsApp us directly:
+        </p>
+        <a href="https://wa.me/923208040672?text=Assalam-o-Alaikum!%20Mujhe%20apne%20Hale%20Noor%20Portal%20ka%20Username%20aur%20Password%20chahiye." target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl bg-emerald-50 text-emerald-800 hover:bg-emerald-100 font-bold text-xs border border-emerald-200 transition">
           <i class="fa-brands fa-whatsapp text-emerald-600 text-sm"></i>
           <span>Ask Admin on WhatsApp</span>
         </a>
 
-        <div class="flex items-center justify-center gap-4 text-xs pt-2">
+        <div class="flex items-center justify-center gap-4 text-xs pt-1">
           <a href="index.html" class="text-slate-500 hover:text-slate-800 font-semibold transition flex items-center gap-1">
             <i class="fa-solid fa-arrow-left text-[11px]"></i> Public Website
           </a>
           <span class="text-slate-300">&bull;</span>
-          <a href="admin.html" class="text-slate-500 hover:text-emerald-800 font-semibold transition flex items-center gap-1">
+          <a href="/admin" class="text-slate-500 hover:text-emerald-800 font-semibold transition flex items-center gap-1">
             <i class="fa-solid fa-shield-halved text-[11px]"></i> Admin Dashboard
           </a>
         </div>
@@ -230,15 +495,56 @@
             </div>
           </div>
 
-          <div class="flex flex-wrap items-center gap-2.5">
-            <button onclick="openChangePasswordModal()" class="px-4 py-2.5 rounded-xl bg-white/10 hover:bg-white/20 text-white font-bold text-xs flex items-center gap-2 border border-white/20 transition">
+          <div class="flex flex-wrap items-center gap-2.5 no-print">
+            <button onclick="openEditStudentProfileModal()" class="px-4 py-2.5 rounded-xl bg-white/10 hover:bg-white/20 text-white font-bold text-xs flex items-center gap-2 border border-white/20 transition">
+              <i class="fa-solid fa-user-pen text-amber-300"></i>
+              <span>Edit Profile</span>
+            </button>
+            <button onclick="openCredentialsModal()" class="px-4 py-2.5 rounded-xl bg-white/10 hover:bg-white/20 text-white font-bold text-xs flex items-center gap-2 border border-white/20 transition">
               <i class="fa-solid fa-key text-amber-400"></i>
-              <span>Change Password</span>
+              <span>Username &amp; Password</span>
             </button>
             <button onclick="printStudentCard()" class="px-4 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-emerald-950 font-black text-xs flex items-center gap-2 shadow-md transition">
               <i class="fa-solid fa-print"></i>
               <span>Print Student Card</span>
             </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Student Personal Profile Details Row -->
+      <div class="bg-white rounded-3xl p-6 border border-slate-200 shadow-sm">
+        <div class="flex items-center justify-between pb-3 mb-4 border-b border-slate-100">
+          <div class="flex items-center gap-2.5">
+            <div class="w-9 h-9 rounded-xl bg-emerald-50 text-emerald-800 flex items-center justify-center text-sm">
+              <i class="fa-solid fa-id-badge"></i>
+            </div>
+            <div>
+              <h3 class="font-black text-slate-900 text-base">My Student Profile</h3>
+              <p class="text-xs text-slate-500">Registered contact &amp; academy portal account information</p>
+            </div>
+          </div>
+          <button onclick="openEditStudentProfileModal()" class="text-xs font-bold text-emerald-800 hover:underline flex items-center gap-1 no-print">
+            <i class="fa-solid fa-pen"></i> Update Info
+          </button>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 text-xs">
+          <div class="p-3.5 rounded-2xl bg-slate-50 border border-slate-200/80">
+            <span class="text-[10px] font-bold text-slate-400 uppercase block">Portal Username</span>
+            <span id="student-detail-username" class="font-mono font-bold text-emerald-900 text-sm">@username</span>
+          </div>
+          <div class="p-3.5 rounded-2xl bg-slate-50 border border-slate-200/80">
+            <span class="text-[10px] font-bold text-slate-400 uppercase block">WhatsApp Number</span>
+            <span id="student-detail-whatsapp" class="font-bold text-slate-800 text-sm">N/A</span>
+          </div>
+          <div class="p-3.5 rounded-2xl bg-slate-50 border border-slate-200/80">
+            <span class="text-[10px] font-bold text-slate-400 uppercase block">Email Address</span>
+            <span id="student-detail-email" class="font-bold text-slate-800 text-sm break-all">N/A</span>
+          </div>
+          <div class="p-3.5 rounded-2xl bg-slate-50 border border-slate-200/80">
+            <span class="text-[10px] font-bold text-slate-400 uppercase block">Country &amp; Timezone</span>
+            <span id="student-detail-location" class="font-bold text-slate-800 text-sm">International</span>
           </div>
         </div>
       </div>
@@ -297,7 +603,7 @@
                 <div class="text-xs text-emerald-200">Connect via WhatsApp / Zoom classroom link</div>
               </div>
             </div>
-            <a id="btn-join-class" href="#" target="_blank" class="px-5 py-2.5 rounded-xl bg-amber-400 hover:bg-amber-300 text-emerald-950 font-black text-xs flex items-center justify-center gap-2 shadow transition">
+            <a id="btn-join-class" href="#" target="_blank" rel="noopener noreferrer" class="px-5 py-2.5 rounded-xl bg-amber-400 hover:bg-amber-300 text-emerald-950 font-black text-xs flex items-center justify-center gap-2 shadow transition">
               <i class="fa-solid fa-play"></i>
               <span>Connect with Teacher</span>
             </a>
@@ -330,7 +636,7 @@
               </div>
             </div>
 
-            <a id="btn-tutor-whatsapp" href="#" target="_blank" class="w-full py-2.5 px-3 rounded-xl bg-emerald-50 hover:bg-emerald-100 text-emerald-800 font-bold text-xs flex items-center justify-center gap-2 border border-emerald-200 transition">
+            <a id="btn-tutor-whatsapp" href="#" target="_blank" rel="noopener noreferrer" class="w-full py-2.5 px-3 rounded-xl bg-emerald-50 hover:bg-emerald-100 text-emerald-800 font-bold text-xs flex items-center justify-center gap-2 border border-emerald-200 transition">
               <i class="fa-brands fa-whatsapp text-emerald-600 text-sm"></i>
               <span>Message Teacher on WhatsApp</span>
             </a>
@@ -448,14 +754,14 @@
             </div>
           </div>
 
-          <div class="flex flex-wrap items-center gap-2.5">
-            <button onclick="openChangePasswordModal()" class="px-4 py-2.5 rounded-xl bg-white/10 hover:bg-white/20 text-white font-bold text-xs flex items-center gap-2 border border-white/20 transition">
+          <div class="flex flex-wrap items-center gap-2.5 no-print">
+            <button onclick="openCredentialsModal()" class="px-4 py-2.5 rounded-xl bg-white/10 hover:bg-white/20 text-white font-bold text-xs flex items-center gap-2 border border-white/20 transition">
               <i class="fa-solid fa-key text-amber-400"></i>
-              <span>Change Password</span>
+              <span>Reset Username &amp; Password</span>
             </button>
-            <button onclick="openEditTeacherBioModal()" class="px-4 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-emerald-950 font-black text-xs flex items-center gap-2 shadow-md transition">
+            <button onclick="openEditTeacherProfileModal()" class="px-4 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-emerald-950 font-black text-xs flex items-center gap-2 shadow-md transition">
               <i class="fa-solid fa-pen-to-square"></i>
-              <span>Update Profile Bio</span>
+              <span>Edit Teacher Profile</span>
             </button>
           </div>
         </div>
@@ -479,6 +785,34 @@
           <span class="text-xs font-bold text-slate-400 uppercase tracking-wider block">Languages Spoken</span>
           <div id="teacher-profile-languages" class="text-sm font-black text-slate-900">
             English, Urdu, Arabic
+          </div>
+        </div>
+      </div>
+
+      <!-- Teacher Contact & Portal Info -->
+      <div class="bg-white rounded-3xl p-6 border border-slate-200 shadow-sm">
+        <div class="flex items-center justify-between pb-3 mb-4 border-b border-slate-100">
+          <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider">Teacher Contact &amp; Portal Account Details</h3>
+          <button onclick="openEditTeacherProfileModal()" class="text-xs font-bold text-emerald-800 hover:underline flex items-center gap-1 no-print">
+            <i class="fa-solid fa-pen"></i> Edit Profile
+          </button>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 text-xs">
+          <div class="p-3.5 rounded-2xl bg-slate-50 border border-slate-200/80">
+            <span class="text-[10px] font-bold text-slate-400 uppercase block">Portal Username</span>
+            <span id="teacher-detail-username" class="font-mono font-bold text-emerald-900 text-sm">@teacher</span>
+          </div>
+          <div class="p-3.5 rounded-2xl bg-slate-50 border border-slate-200/80">
+            <span class="text-[10px] font-bold text-slate-400 uppercase block">WhatsApp Number</span>
+            <span id="teacher-detail-whatsapp" class="font-bold text-slate-800 text-sm">N/A</span>
+          </div>
+          <div class="p-3.5 rounded-2xl bg-slate-50 border border-slate-200/80">
+            <span class="text-[10px] font-bold text-slate-400 uppercase block">Email Address</span>
+            <span id="teacher-detail-email" class="font-bold text-slate-800 text-sm break-all">N/A</span>
+          </div>
+          <div class="p-3.5 rounded-2xl bg-slate-50 border border-slate-200/80">
+            <span class="text-[10px] font-bold text-slate-400 uppercase block">Faculty Gender &amp; Status</span>
+            <span id="teacher-detail-status" class="font-bold text-emerald-800 text-sm">Available</span>
           </div>
         </div>
       </div>
@@ -533,60 +867,166 @@
 
   </div>
 
-  <!-- ================= CHANGE PASSWORD MODAL ================= -->
-  <div id="change-password-modal" class="fixed inset-0 z-50 bg-slate-950/60 backdrop-blur-sm flex items-center justify-center p-4 hidden">
+  <!-- ================= UPDATE USERNAME & PASSWORD MODAL (STUDENT & TEACHER) ================= -->
+  <div id="credentials-modal" class="fixed inset-0 z-50 bg-slate-950/60 backdrop-blur-sm flex items-center justify-center p-4 hidden">
     <div class="bg-white rounded-3xl max-w-md w-full p-6 sm:p-8 shadow-2xl border border-slate-200">
       <div class="flex items-center justify-between pb-3 mb-4 border-b border-slate-100">
-        <h3 class="text-lg font-black text-slate-900">Change Portal Password</h3>
-        <button onclick="closeModal('change-password-modal')" class="text-slate-400 hover:text-slate-600 text-lg">
+        <h3 class="text-lg font-black text-slate-900">Set / Reset Username &amp; Password</h3>
+        <button onclick="closeModal('credentials-modal')" class="text-slate-400 hover:text-slate-600 text-lg">
           <i class="fa-solid fa-xmark"></i>
         </button>
       </div>
 
-      <form id="change-password-form" class="space-y-4">
+      <form id="credentials-update-form" class="space-y-4">
         <div>
-          <label class="block text-xs font-bold text-slate-700 mb-1">New Password</label>
-          <input type="password" id="modal-new-password" required placeholder="••••••••••••" class="w-full p-3 rounded-xl border border-slate-300 text-xs focus:ring-2 focus:ring-emerald-700 focus:outline-none">
+          <label class="block text-xs font-bold text-slate-700 mb-1">Portal Username *</label>
+          <input type="text" id="modal-cred-username" required placeholder="e.g. fardan101" class="w-full p-3 rounded-xl border border-slate-300 text-xs font-mono font-bold focus:ring-2 focus:ring-emerald-700 focus:outline-none">
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">New Password <span class="text-[11px] font-normal text-slate-400">(leave blank to keep current password)</span></label>
+          <input type="password" id="modal-new-password" placeholder="••••••••••••" class="w-full p-3 rounded-xl border border-slate-300 text-xs focus:ring-2 focus:ring-emerald-700 focus:outline-none">
         </div>
         <div>
           <label class="block text-xs font-bold text-slate-700 mb-1">Confirm New Password</label>
-          <input type="password" id="modal-confirm-password" required placeholder="••••••••••••" class="w-full p-3 rounded-xl border border-slate-300 text-xs focus:ring-2 focus:ring-emerald-700 focus:outline-none">
+          <input type="password" id="modal-confirm-password" placeholder="••••••••••••" class="w-full p-3 rounded-xl border border-slate-300 text-xs focus:ring-2 focus:ring-emerald-700 focus:outline-none">
         </div>
 
         <div class="pt-3 border-t border-slate-100 flex items-center justify-end gap-2">
-          <button type="button" onclick="closeModal('change-password-modal')" class="px-4 py-2 rounded-xl text-slate-500 font-bold text-xs hover:bg-slate-100 transition">
+          <button type="button" onclick="closeModal('credentials-modal')" class="px-4 py-2 rounded-xl text-slate-500 font-bold text-xs hover:bg-slate-100 transition">
             Cancel
           </button>
           <button type="submit" class="px-5 py-2.5 rounded-xl bg-emerald-800 hover:bg-emerald-900 text-white font-black text-xs shadow transition">
-            Update Password
+            Save Credentials
           </button>
         </div>
       </form>
     </div>
   </div>
 
-  <!-- ================= TEACHER BIO EDIT MODAL ================= -->
-  <div id="teacher-bio-modal" class="fixed inset-0 z-50 bg-slate-950/60 backdrop-blur-sm flex items-center justify-center p-4 hidden">
-    <div class="bg-white rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl border border-slate-200">
+  <!-- ================= STUDENT PROFILE EDIT MODAL ================= -->
+  <div id="student-profile-edit-modal" class="fixed inset-0 z-50 bg-slate-950/60 backdrop-blur-sm flex items-center justify-center p-4 hidden">
+    <div class="bg-white rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl border border-slate-200 max-h-[90vh] overflow-y-auto">
       <div class="flex items-center justify-between pb-3 mb-4 border-b border-slate-100">
-        <h3 class="text-lg font-black text-slate-900">Update Profile Bio</h3>
-        <button onclick="closeModal('teacher-bio-modal')" class="text-slate-400 hover:text-slate-600 text-lg">
+        <h3 class="text-lg font-black text-slate-900">Edit Student Profile</h3>
+        <button onclick="closeModal('student-profile-edit-modal')" class="text-slate-400 hover:text-slate-600 text-lg">
           <i class="fa-solid fa-xmark"></i>
         </button>
       </div>
 
-      <form id="teacher-bio-form" class="space-y-4">
-        <div>
-          <label class="block text-xs font-bold text-slate-700 mb-1">Profile Bio &amp; Teaching Philosophy</label>
-          <textarea id="modal-teacher-bio-input" rows="4" class="w-full p-3 rounded-xl border border-slate-300 text-xs focus:ring-2 focus:ring-emerald-700 focus:outline-none"></textarea>
+      <form id="student-profile-edit-form" class="space-y-3.5">
+        <div class="grid sm:grid-cols-3 gap-3">
+          <div class="sm:col-span-2">
+            <label class="block text-xs font-bold text-slate-700 mb-1">Student Name *</label>
+            <input type="text" id="edit-student-name" required class="w-full p-2.5 rounded-xl border border-slate-300 text-xs focus:ring-2 focus:ring-emerald-700 focus:outline-none">
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">Age</label>
+            <input type="text" id="edit-student-age" class="w-full p-2.5 rounded-xl border border-slate-300 text-xs focus:ring-2 focus:ring-emerald-700 focus:outline-none">
+          </div>
+        </div>
+        <div class="grid sm:grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">Parent / Guardian Name</label>
+            <input type="text" id="edit-student-parent" class="w-full p-2.5 rounded-xl border border-slate-300 text-xs focus:ring-2 focus:ring-emerald-700 focus:outline-none">
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">WhatsApp Number</label>
+            <input type="text" id="edit-student-whatsapp" class="w-full p-2.5 rounded-xl border border-slate-300 text-xs focus:ring-2 focus:ring-emerald-700 focus:outline-none">
+          </div>
+        </div>
+        <div class="grid sm:grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">Email Address</label>
+            <input type="email" id="edit-student-email" class="w-full p-2.5 rounded-xl border border-slate-300 text-xs focus:ring-2 focus:ring-emerald-700 focus:outline-none">
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">Country</label>
+            <input type="text" id="edit-student-country" class="w-full p-2.5 rounded-xl border border-slate-300 text-xs focus:ring-2 focus:ring-emerald-700 focus:outline-none">
+          </div>
+        </div>
+        <div class="grid sm:grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">Timezone</label>
+            <input type="text" id="edit-student-timezone" class="w-full p-2.5 rounded-xl border border-slate-300 text-xs focus:ring-2 focus:ring-emerald-700 focus:outline-none">
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">Class Timing</label>
+            <input type="text" id="edit-student-timing" class="w-full p-2.5 rounded-xl border border-slate-300 text-xs focus:ring-2 focus:ring-emerald-700 focus:outline-none">
+          </div>
         </div>
 
         <div class="pt-3 border-t border-slate-100 flex items-center justify-end gap-2">
-          <button type="button" onclick="closeModal('teacher-bio-modal')" class="px-4 py-2 rounded-xl text-slate-500 font-bold text-xs hover:bg-slate-100 transition">
+          <button type="button" onclick="closeModal('student-profile-edit-modal')" class="px-4 py-2 rounded-xl text-slate-500 font-bold text-xs hover:bg-slate-100 transition">
             Cancel
           </button>
           <button type="submit" class="px-5 py-2.5 rounded-xl bg-emerald-800 hover:bg-emerald-900 text-white font-black text-xs shadow transition">
-            Save Bio
+            Save Student Profile
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ================= TEACHER PROFILE EDIT MODAL ================= -->
+  <div id="teacher-profile-edit-modal" class="fixed inset-0 z-50 bg-slate-950/60 backdrop-blur-sm flex items-center justify-center p-4 hidden">
+    <div class="bg-white rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl border border-slate-200 max-h-[90vh] overflow-y-auto">
+      <div class="flex items-center justify-between pb-3 mb-4 border-b border-slate-100">
+        <h3 class="text-lg font-black text-slate-900">Edit Teacher Profile</h3>
+        <button onclick="closeModal('teacher-profile-edit-modal')" class="text-slate-400 hover:text-slate-600 text-lg">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <form id="teacher-profile-edit-form" class="space-y-3.5">
+        <div class="grid sm:grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">Full Name *</label>
+            <input type="text" id="edit-teacher-name" required class="w-full p-2.5 rounded-xl border border-slate-300 text-xs focus:ring-2 focus:ring-emerald-700 focus:outline-none">
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">Arabic Title</label>
+            <input type="text" id="edit-teacher-arabic" class="w-full p-2.5 rounded-xl border border-slate-300 text-xs font-arabic focus:ring-2 focus:ring-emerald-700 focus:outline-none">
+          </div>
+        </div>
+        <div class="grid sm:grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">Experience</label>
+            <input type="text" id="edit-teacher-exp" class="w-full p-2.5 rounded-xl border border-slate-300 text-xs focus:ring-2 focus:ring-emerald-700 focus:outline-none">
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">Languages Spoken</label>
+            <input type="text" id="edit-teacher-languages" class="w-full p-2.5 rounded-xl border border-slate-300 text-xs focus:ring-2 focus:ring-emerald-700 focus:outline-none">
+          </div>
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">Degrees &amp; Certifications</label>
+          <input type="text" id="edit-teacher-qualification" class="w-full p-2.5 rounded-xl border border-slate-300 text-xs focus:ring-2 focus:ring-emerald-700 focus:outline-none">
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">Specializations</label>
+          <input type="text" id="edit-teacher-specialization" class="w-full p-2.5 rounded-xl border border-slate-300 text-xs focus:ring-2 focus:ring-emerald-700 focus:outline-none">
+        </div>
+        <div class="grid sm:grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">WhatsApp Number</label>
+            <input type="text" id="edit-teacher-whatsapp" class="w-full p-2.5 rounded-xl border border-slate-300 text-xs focus:ring-2 focus:ring-emerald-700 focus:outline-none">
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">Email Address</label>
+            <input type="email" id="edit-teacher-email" class="w-full p-2.5 rounded-xl border border-slate-300 text-xs focus:ring-2 focus:ring-emerald-700 focus:outline-none">
+          </div>
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">Profile Bio &amp; Teaching Philosophy</label>
+          <textarea id="edit-teacher-bio" rows="3" class="w-full p-2.5 rounded-xl border border-slate-300 text-xs focus:ring-2 focus:ring-emerald-700 focus:outline-none"></textarea>
+        </div>
+
+        <div class="pt-3 border-t border-slate-100 flex items-center justify-end gap-2">
+          <button type="button" onclick="closeModal('teacher-profile-edit-modal')" class="px-4 py-2 rounded-xl text-slate-500 font-bold text-xs hover:bg-slate-100 transition">
+            Cancel
+          </button>
+          <button type="submit" class="px-5 py-2.5 rounded-xl bg-emerald-800 hover:bg-emerald-900 text-white font-black text-xs shadow transition">
+            Save Teacher Profile
           </button>
         </div>
       </form>
@@ -615,22 +1055,48 @@
 
     try {
       if (typeof firebase !== 'undefined') {
-        portalApp = firebase.initializeApp(FIREBASE_CONFIG, 'PortalApp_' + Date.now());
+        portalApp = firebase.apps.length ? firebase.app() : firebase.initializeApp(FIREBASE_CONFIG);
         portalDb = portalApp.firestore();
         portalAuth = portalApp.auth();
       }
     } catch (e) {
       console.warn("Portal Firebase init fallback:", e);
-      if (typeof firebase !== 'undefined' && firebase.apps.length) {
-        portalDb = firebase.firestore();
-        portalAuth = firebase.auth();
+    }
+
+    // Attempt silent anonymous auth only if needed and allowed by Firebase project
+    async function ensurePortalAuth() {
+      if (!portalAuth) return;
+      if (!portalAuth.currentUser && typeof portalAuth.signInAnonymously === 'function') {
+        try {
+          await portalAuth.signInAnonymously();
+        } catch (err) {
+          // Ignore if Anonymous sign-in is disabled in Firebase Console
+        }
       }
     }
 
     // Portal State
-    let currentRole = 'student'; // 'student' or 'teacher'
+    let currentRole = 'student'; // 'student' | 'teacher'
+    let currentMode = 'login';   // 'login' | 'reset' | 'register'
     let currentStudent = null;
     let currentTeacher = null;
+    let matchedResetAccounts = [];
+    let selectedResetAccount = null;
+
+    function normalizeHandle(val) {
+      return (val || '').trim().toLowerCase().replace(/[^a-z0-9._-]/g, '');
+    }
+
+    function normalizeDigits(val) {
+      return (val || '').replace(/[^0-9]/g, '');
+    }
+
+    function formatFirestoreError(err, fallbackMsg) {
+      if (err && (err.code === 'permission-denied' || (err.message && err.message.toLowerCase().includes('insufficient permissions')))) {
+        return "Database permission blocked! Firebase Console mein updated firestore.rules publish karein (students/teachers read & portal update allow karein).";
+      }
+      return (err && err.message) ? err.message : fallbackMsg;
+    }
 
     // Toast Notifications Helper
     function showToast(msg, type = 'info') {
@@ -641,13 +1107,13 @@
         type === 'success' ? 'bg-emerald-900 text-white border border-emerald-700' :
         type === 'error' ? 'bg-red-900 text-white border border-red-700' : 'bg-slate-900 text-white'
       }`;
-      let icon = type === 'success' ? 'fa-circle-check text-amber-400' : type === 'error' ? 'fa-circle-exclamation text-red-300' : 'fa-circle-info text-blue-300';
+      const icon = type === 'success' ? 'fa-circle-check text-amber-400' : type === 'error' ? 'fa-circle-exclamation text-red-300' : 'fa-circle-info text-blue-300';
       t.innerHTML = `<i class="fa-solid ${icon}"></i> <span>${msg}</span>`;
       container.appendChild(t);
       setTimeout(() => {
         t.style.opacity = '0';
         setTimeout(() => t.remove(), 300);
-      }, 4000);
+      }, 4500);
     }
 
     function openModal(id) {
@@ -673,7 +1139,7 @@
       }
     }
 
-    // Switch Role Tabs in Login View
+    // Switch Role Tabs (Student vs Teacher)
     function switchLoginRole(role) {
       currentRole = role;
       const tabStudent = document.getElementById('tab-student');
@@ -681,6 +1147,11 @@
       const userLabel = document.getElementById('login-username-label');
       const userIcon = document.getElementById('login-user-icon');
       const btnText = document.getElementById('login-btn-text');
+      const resetHeading = document.getElementById('reset-panel-heading');
+      const regHeading = document.getElementById('register-panel-heading');
+      const regStudentFields = document.getElementById('register-student-fields');
+      const regTeacherFields = document.getElementById('register-teacher-fields');
+      const regBtnText = document.getElementById('register-btn-text');
 
       if (role === 'student') {
         tabStudent.className = 'py-2.5 rounded-xl bg-white text-emerald-900 shadow-sm flex items-center justify-center gap-2 transition';
@@ -688,13 +1159,47 @@
         userLabel.textContent = 'Student Username or Email';
         userIcon.className = 'fa-solid fa-user-graduate text-sm';
         btnText.textContent = 'Sign In to Student Portal';
+        if (resetHeading) resetHeading.textContent = 'Set / Reset Student Username & Password';
+        if (regHeading) regHeading.textContent = 'Create Student Profile & Set Login';
+        if (regStudentFields) regStudentFields.classList.remove('hidden');
+        if (regTeacherFields) regTeacherFields.classList.add('hidden');
+        if (regBtnText) regBtnText.textContent = 'Create Student Profile & Sign In';
       } else {
         tabTeacher.className = 'py-2.5 rounded-xl bg-white text-emerald-900 shadow-sm flex items-center justify-center gap-2 transition';
         tabStudent.className = 'py-2.5 rounded-xl text-slate-500 hover:text-slate-800 flex items-center justify-center gap-2 transition';
         userLabel.textContent = 'Teacher Username or Email';
         userIcon.className = 'fa-solid fa-chalkboard-user text-sm';
         btnText.textContent = 'Sign In to Teacher Portal';
+        if (resetHeading) resetHeading.textContent = 'Set / Reset Teacher Username & Password';
+        if (regHeading) regHeading.textContent = 'Create Teacher Profile & Set Login';
+        if (regStudentFields) regStudentFields.classList.add('hidden');
+        if (regTeacherFields) regTeacherFields.classList.remove('hidden');
+        if (regBtnText) regBtnText.textContent = 'Create Teacher Profile & Sign In';
       }
+
+      // Reset matched search box when switching roles
+      matchedResetAccounts = [];
+      selectedResetAccount = null;
+      document.getElementById('reset-match-box')?.classList.add('hidden');
+      document.getElementById('reset-verify-group')?.classList.add('hidden');
+    }
+
+    // Switch Action Mode (Sign In | Set/Reset Credentials | Create Profile)
+    function switchPortalMode(mode) {
+      currentMode = mode;
+      const modes = ['login', 'reset', 'register'];
+      modes.forEach(m => {
+        const tab = document.getElementById(`mode-tab-${m}`);
+        if (tab) {
+          tab.className = m === mode
+            ? 'py-2 px-2 rounded-xl bg-emerald-800 text-white shadow-sm flex items-center justify-center gap-1.5 transition'
+            : 'py-2 px-2 rounded-xl text-emerald-900 hover:bg-emerald-100 flex items-center justify-center gap-1.5 transition';
+        }
+      });
+
+      document.getElementById('portal-login-form')?.classList.toggle('hidden', mode !== 'login');
+      document.getElementById('portal-reset-form')?.classList.toggle('hidden', mode !== 'reset');
+      document.getElementById('portal-register-form')?.classList.toggle('hidden', mode !== 'register');
     }
 
     // Initialize Portal
@@ -702,8 +1207,12 @@
       const urlParams = new URLSearchParams(window.location.search);
       const studentParam = urlParams.get('student');
       const teacherParam = urlParams.get('teacher');
+      const roleParam = urlParams.get('role');
+      const modeParam = urlParams.get('mode');
 
-      // Check URL parameters for direct preview
+      if (roleParam === 'teacher') switchLoginRole('teacher');
+      if (modeParam === 'reset' || modeParam === 'register') switchPortalMode(modeParam);
+
       if (studentParam) {
         await loadStudentById(studentParam);
         return;
@@ -713,7 +1222,6 @@
         return;
       }
 
-      // Check Session Storage for active session
       const savedStudent = sessionStorage.getItem('halenoor_student_user');
       const savedTeacher = sessionStorage.getItem('halenoor_teacher_user');
 
@@ -733,7 +1241,6 @@
         } catch (e) {}
       }
 
-      // Otherwise show login view
       showView('portal-login-view');
     });
 
@@ -747,7 +1254,21 @@
       if (target) target.classList.remove('hidden');
     }
 
-    // Login Form Submit
+    // Check username availability in collection
+    async function isUsernameTaken(collectionName, username, excludeDocId = null) {
+      const norm = normalizeHandle(username);
+      if (!norm || !portalDb) return false;
+      const snap = await portalDb.collection(collectionName).get();
+      let taken = false;
+      snap.forEach(doc => {
+        if (excludeDocId && doc.id === excludeDocId) return;
+        const u = normalizeHandle(doc.data().username);
+        if (u && u === norm) taken = true;
+      });
+      return taken;
+    }
+
+    // ================= SIGN IN HANDLER =================
     document.getElementById('portal-login-form')?.addEventListener('submit', async (e) => {
       e.preventDefault();
       const userVal = document.getElementById('login-username').value.trim();
@@ -764,6 +1285,7 @@
         if (spinner) spinner.classList.remove('hidden');
         if (btn) btn.disabled = true;
 
+        await ensurePortalAuth();
         if (currentRole === 'student') {
           await authenticateStudent(userVal, passVal);
         } else {
@@ -771,7 +1293,7 @@
         }
       } catch (err) {
         console.error('Login error:', err);
-        showToast(err.message || 'Login failed. Please check your credentials.', 'error');
+        showToast(formatFirestoreError(err, 'Login failed. Please check your credentials.'), 'error');
       } finally {
         if (spinner) spinner.classList.add('hidden');
         if (btn) btn.disabled = false;
@@ -782,35 +1304,33 @@
     async function authenticateStudent(usernameOrEmail, password) {
       if (!portalDb) throw new Error("Database not connected. Please check your internet connection.");
 
-      // Normalize search
-      const term = usernameOrEmail.toLowerCase();
-
+      const term = usernameOrEmail.trim().toLowerCase();
       const snap = await portalDb.collection('students').get();
       let matched = null;
 
       snap.forEach(doc => {
         const d = { id: doc.id, ...doc.data() };
-        const u = (d.username || '').toLowerCase();
-        const em = (d.email || '').toLowerCase();
+        const u = (d.username || '').trim().toLowerCase();
+        const em = (d.email || '').trim().toLowerCase();
         const nm = (d.studentName || '').toLowerCase().replace(/[^a-z0-9]/g, '');
 
-        if (u === term || em === term || nm === term || d.id === term) {
-          // Check password
+        if ((u && u === term) || (em && em === term) || (nm && nm === term) || d.id === term) {
           if (d.password && d.password === password) {
             matched = d;
           } else if (!d.password && password === 'Quran@2026') {
-            // Default demo password if not explicitly set
             matched = d;
           }
         }
       });
 
       if (!matched) {
-        throw new Error("Invalid student username or password. Agar pehli baar hain, toh admin se password lein.");
+        throw new Error("Invalid student username or password. Agar username/password set nahi hua toh 'Set / Reset Login' tab use karein.");
       }
 
       currentStudent = matched;
+      currentTeacher = null;
       sessionStorage.setItem('halenoor_student_user', JSON.stringify(matched));
+      sessionStorage.removeItem('halenoor_teacher_user');
       renderStudentDashboard(matched);
       showToast(`Welcome back, ${matched.studentName}!`, 'success');
     }
@@ -819,17 +1339,17 @@
     async function authenticateTeacher(usernameOrEmail, password) {
       if (!portalDb) throw new Error("Database not connected.");
 
-      const term = usernameOrEmail.toLowerCase();
+      const term = usernameOrEmail.trim().toLowerCase();
       const snap = await portalDb.collection('teachers').get();
       let matched = null;
 
       snap.forEach(doc => {
         const d = { id: doc.id, ...doc.data() };
-        const u = (d.username || '').toLowerCase();
-        const em = (d.email || '').toLowerCase();
+        const u = (d.username || '').trim().toLowerCase();
+        const em = (d.email || '').trim().toLowerCase();
         const nm = (d.name || '').toLowerCase().replace(/[^a-z0-9]/g, '');
 
-        if (u === term || em === term || nm === term || ('t.' + nm) === term || d.id === term) {
+        if ((u && u === term) || (em && em === term) || (nm && (nm === term || ('t.' + nm) === term)) || d.id === term) {
           if (d.password && d.password === password) {
             matched = d;
           } else if (!d.password && password === 'Teacher@2026') {
@@ -839,14 +1359,369 @@
       });
 
       if (!matched) {
-        throw new Error("Invalid teacher credentials. Please verify your username and password.");
+        throw new Error("Invalid teacher credentials. Agar username/password reset karna ho toh 'Set / Reset Login' tab use karein.");
       }
 
       currentTeacher = matched;
+      currentStudent = null;
       sessionStorage.setItem('halenoor_teacher_user', JSON.stringify(matched));
+      sessionStorage.removeItem('halenoor_student_user');
       await renderTeacherDashboard(matched);
       showToast(`Welcome back, ${matched.name}!`, 'success');
     }
+
+    // ================= SET / RESET CREDENTIALS HANDLERS =================
+    async function findAccountForReset() {
+      const query = (document.getElementById('reset-search-input')?.value || '').trim();
+      if (!query) {
+        showToast("Please enter Name, Username, WhatsApp, or Email to find your account.", "error");
+        return null;
+      }
+      if (!portalDb) {
+        showToast("Database not connected.", "error");
+        return null;
+      }
+
+      try {
+        await ensurePortalAuth();
+        const colName = currentRole === 'student' ? 'students' : 'teachers';
+        const snap = await portalDb.collection(colName).get();
+        const qLower = query.toLowerCase();
+        const qDigits = normalizeDigits(query);
+
+        const matches = [];
+        snap.forEach(doc => {
+          const d = { id: doc.id, ...doc.data() };
+          const name = (d.studentName || d.name || '').toLowerCase();
+          const uname = (d.username || '').toLowerCase();
+          const email = (d.email || '').toLowerCase();
+          const waDigits = normalizeDigits(d.whatsappNumber || '');
+
+          const textMatch = name.includes(qLower) ||
+                            (uname && uname.includes(qLower)) ||
+                            (email && email === qLower) ||
+                            d.id === query;
+          const phoneMatch = qDigits.length >= 6 && waDigits.includes(qDigits);
+
+          if (textMatch || phoneMatch) {
+            matches.push(d);
+          }
+        });
+
+        matchedResetAccounts = matches;
+        const matchBox = document.getElementById('reset-match-box');
+        const multiWrap = document.getElementById('reset-multiple-wrap');
+        const selectEl = document.getElementById('reset-account-select');
+
+        if (!matches.length) {
+          matchBox?.classList.add('hidden');
+          document.getElementById('reset-verify-group')?.classList.add('hidden');
+          selectedResetAccount = null;
+          showToast(`No ${currentRole} account found for "${query}". You can create a new profile using the 'Create Profile' tab.`, "error");
+          return null;
+        }
+
+        if (matches.length > 1 && multiWrap && selectEl) {
+          multiWrap.classList.remove('hidden');
+          selectEl.innerHTML = matches.map((acc, idx) => {
+            const label = currentRole === 'student'
+              ? `${acc.studentName} (${acc.enrolledCourse || 'Course'})`
+              : `${acc.name} (${acc.qualification || 'Teacher'})`;
+            return `<option value="${idx}">${label}</option>`;
+          }).join('');
+        } else if (multiWrap) {
+          multiWrap.classList.add('hidden');
+        }
+
+        selectResetAccount(matches[0]);
+        matchBox?.classList.remove('hidden');
+        return matches[0];
+      } catch (err) {
+        console.error("Account lookup error:", err);
+        showToast(formatFirestoreError(err, "Failed to search account."), "error");
+        return null;
+      }
+    }
+
+    function onSelectResetAccount() {
+      const idx = Number(document.getElementById('reset-account-select')?.value || 0);
+      if (matchedResetAccounts[idx]) {
+        selectResetAccount(matchedResetAccounts[idx]);
+      }
+    }
+
+    function selectResetAccount(acc) {
+      selectedResetAccount = acc;
+      const nameEl = document.getElementById('reset-found-name');
+      const metaEl = document.getElementById('reset-found-meta');
+      const statusEl = document.getElementById('reset-found-status');
+      const verifyGroup = document.getElementById('reset-verify-group');
+      const newUserEl = document.getElementById('reset-new-username');
+
+      const displayName = acc.studentName || acc.name || 'Account';
+      const subText = currentRole === 'student'
+        ? `${acc.enrolledCourse || 'Quran Course'} • Current ID: ${acc.username ? '@' + acc.username : 'Not set'}`
+        : `${acc.qualification || 'Certified Scholar'} • Current ID: ${acc.username ? '@' + acc.username : 'Not set'}`;
+
+      if (nameEl) nameEl.textContent = displayName;
+      if (metaEl) metaEl.textContent = subText;
+      if (statusEl) statusEl.textContent = acc.password ? 'Password Set (Reset)' : 'First-Time Setup';
+
+      // Suggest existing or clean username
+      if (newUserEl) {
+        if (acc.username) {
+          newUserEl.value = acc.username;
+        } else {
+          const base = displayName.toLowerCase().replace(/[^a-z0-9]/g, '') || currentRole;
+          newUserEl.value = currentRole === 'teacher' ? ('t.' + base) : (base + Math.floor(10 + Math.random() * 90));
+        }
+      }
+
+      // Require verification if password is already set AND contact/password verification is possible
+      if (verifyGroup) {
+        if (acc.password) {
+          verifyGroup.classList.remove('hidden');
+        } else {
+          verifyGroup.classList.add('hidden');
+        }
+      }
+    }
+
+    function suggestResetUsername() {
+      const baseRaw = selectedResetAccount
+        ? (selectedResetAccount.studentName || selectedResetAccount.name)
+        : (document.getElementById('reset-search-input')?.value || currentRole);
+      const clean = (baseRaw || currentRole).toLowerCase().replace(/[^a-z0-9]/g, '') || currentRole;
+      const el = document.getElementById('reset-new-username');
+      if (el) {
+        el.value = currentRole === 'teacher'
+          ? ('t.' + clean + Math.floor(10 + Math.random() * 90))
+          : (clean + Math.floor(10 + Math.random() * 90));
+      }
+    }
+
+    document.getElementById('portal-reset-form')?.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const spinner = document.getElementById('reset-spinner');
+      const btn = document.getElementById('portal-reset-btn');
+
+      if (!selectedResetAccount) {
+        const found = await findAccountForReset();
+        if (!found) return;
+      }
+
+      const newUsername = normalizeHandle(document.getElementById('reset-new-username').value);
+      const p1 = document.getElementById('reset-new-password').value.trim();
+      const p2 = document.getElementById('reset-confirm-password').value.trim();
+      const verifyVal = (document.getElementById('reset-verify-input')?.value || '').trim();
+
+      if (!newUsername || newUsername.length < 3) {
+        showToast("Username must be at least 3 characters (letters, numbers, dot, underscore).", "error");
+        return;
+      }
+      if (p1.length < 6) {
+        showToast("Password must be at least 6 characters.", "error");
+        return;
+      }
+      if (p1 !== p2) {
+        showToast("Passwords do not match.", "error");
+        return;
+      }
+
+      // Verify ownership when resetting an existing password
+      if (selectedResetAccount.password) {
+        const vLower = verifyVal.toLowerCase();
+        const vDigits = normalizeDigits(verifyVal);
+        const waDigits = normalizeDigits(selectedResetAccount.whatsappNumber || '');
+        const emailLower = (selectedResetAccount.email || '').trim().toLowerCase();
+        const oldPassOk = verifyVal && verifyVal === selectedResetAccount.password;
+        const emailOk = emailLower && vLower === emailLower;
+        const waOk = waDigits.length >= 6 && vDigits.length >= 6 && (waDigits.endsWith(vDigits) || vDigits.endsWith(waDigits) || waDigits === vDigits);
+
+        if (!oldPassOk && !emailOk && !waOk) {
+          showToast("Verification failed. Enter your registered WhatsApp number, email, or current password.", "error");
+          return;
+        }
+      }
+
+      try {
+        if (spinner) spinner.classList.remove('hidden');
+        if (btn) btn.disabled = true;
+
+        await ensurePortalAuth();
+        const colName = currentRole === 'student' ? 'students' : 'teachers';
+        const taken = await isUsernameTaken(colName, newUsername, selectedResetAccount.id);
+        if (taken) {
+          showToast(`Username "${newUsername}" is already taken. Please choose another.`, "error");
+          return;
+        }
+
+        await portalDb.collection(colName).doc(selectedResetAccount.id).update({
+          username: newUsername,
+          password: p1,
+          credentialsUpdatedAt: firebase.firestore.FieldValue.serverTimestamp()
+        });
+
+        const updatedDoc = { ...selectedResetAccount, username: newUsername, password: p1 };
+        showToast(`${currentRole === 'student' ? 'Student' : 'Teacher'} username & password saved!`, "success");
+
+        if (currentRole === 'student') {
+          currentStudent = updatedDoc;
+          currentTeacher = null;
+          sessionStorage.setItem('halenoor_student_user', JSON.stringify(updatedDoc));
+          sessionStorage.removeItem('halenoor_teacher_user');
+          renderStudentDashboard(updatedDoc);
+        } else {
+          currentTeacher = updatedDoc;
+          currentStudent = null;
+          sessionStorage.setItem('halenoor_teacher_user', JSON.stringify(updatedDoc));
+          sessionStorage.removeItem('halenoor_student_user');
+          await renderTeacherDashboard(updatedDoc);
+        }
+      } catch (err) {
+        console.error("Reset credentials error:", err);
+        showToast(formatFirestoreError(err, "Failed to update username & password."), "error");
+      } finally {
+        if (spinner) spinner.classList.add('hidden');
+        if (btn) btn.disabled = false;
+      }
+    });
+
+    // ================= CREATE PROFILE HANDLERS =================
+    function suggestRegisterUsername() {
+      const nameInput = currentRole === 'student'
+        ? document.getElementById('reg-student-name')?.value
+        : document.getElementById('reg-teacher-name')?.value;
+      const clean = (nameInput || currentRole).toLowerCase().replace(/[^a-z0-9]/g, '') || currentRole;
+      const el = document.getElementById('reg-username');
+      if (el) {
+        el.value = currentRole === 'teacher'
+          ? ('t.' + clean)
+          : (clean + Math.floor(10 + Math.random() * 90));
+      }
+    }
+
+    document.getElementById('portal-register-form')?.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      if (!portalDb) {
+        showToast("Database not connected.", "error");
+        return;
+      }
+
+      const username = normalizeHandle(document.getElementById('reg-username').value);
+      const password = document.getElementById('reg-password').value.trim();
+      const spinner = document.getElementById('register-spinner');
+      const btn = document.getElementById('portal-register-btn');
+
+      if (!username || username.length < 3) {
+        showToast("Please choose a username of at least 3 characters.", "error");
+        return;
+      }
+      if (password.length < 6) {
+        showToast("Password must be at least 6 characters.", "error");
+        return;
+      }
+
+      try {
+        if (spinner) spinner.classList.remove('hidden');
+        if (btn) btn.disabled = true;
+
+        await ensurePortalAuth();
+
+        if (currentRole === 'student') {
+          const studentName = document.getElementById('reg-student-name').value.trim();
+          const whatsappNumber = document.getElementById('reg-student-whatsapp').value.trim();
+          if (!studentName || !whatsappNumber) {
+            showToast("Student Full Name and WhatsApp Number are required.", "error");
+            return;
+          }
+
+          const taken = await isUsernameTaken('students', username);
+          if (taken) {
+            showToast(`Username "${username}" is already in use. Please try another.`, "error");
+            return;
+          }
+
+          const studentData = {
+            studentName,
+            age: document.getElementById('reg-student-age').value.trim(),
+            parentName: document.getElementById('reg-student-parent').value.trim(),
+            whatsappNumber,
+            email: document.getElementById('reg-student-email').value.trim(),
+            country: document.getElementById('reg-student-country').value.trim() || 'International',
+            enrolledCourse: document.getElementById('reg-student-course').value,
+            classTiming: document.getElementById('reg-student-timing').value.trim() || 'Flexible Timings',
+            assignedTeacher: 'To be assigned',
+            monthlyFee: 45,
+            currency: 'USD',
+            status: 'Active',
+            username,
+            password,
+            notes: 'Self-registered via Student Portal.',
+            enrolledAt: firebase.firestore.FieldValue.serverTimestamp(),
+            createdAt: firebase.firestore.FieldValue.serverTimestamp()
+          };
+
+          const ref = await portalDb.collection('students').add(studentData);
+          const created = { id: ref.id, ...studentData };
+          currentStudent = created;
+          currentTeacher = null;
+          sessionStorage.setItem('halenoor_student_user', JSON.stringify(created));
+          sessionStorage.removeItem('halenoor_teacher_user');
+          renderStudentDashboard(created);
+          showToast(`Profile created! Welcome, ${studentName}!`, "success");
+        } else {
+          const name = document.getElementById('reg-teacher-name').value.trim();
+          const whatsappNumber = document.getElementById('reg-teacher-whatsapp').value.trim();
+          const qualification = document.getElementById('reg-teacher-qual').value.trim();
+          if (!name || !whatsappNumber || !qualification) {
+            showToast("Teacher Full Name, WhatsApp Number, and Qualification are required.", "error");
+            return;
+          }
+
+          const taken = await isUsernameTaken('teachers', username);
+          if (taken) {
+            showToast(`Username "${username}" is already in use. Please try another.`, "error");
+            return;
+          }
+
+          const teacherData = {
+            name,
+            arabicTitle: document.getElementById('reg-teacher-arabic').value.trim() || 'القارئ الشيخ',
+            gender: document.getElementById('reg-teacher-gender').value,
+            experience: document.getElementById('reg-teacher-exp').value.trim() || '5+ Years Online',
+            whatsappNumber,
+            email: document.getElementById('reg-teacher-email').value.trim(),
+            qualification,
+            languages: document.getElementById('reg-teacher-lang').value.trim() || 'English, Urdu, Arabic',
+            specialization: document.getElementById('reg-teacher-spec').value.trim() || 'Tajweed & Noorani Qaida',
+            bio: document.getElementById('reg-teacher-bio').value.trim() || 'Certified Quran scholar dedicated to Tajweed and Islamic education.',
+            rating: 5.0,
+            active: true,
+            imageUrl: 'assets/images/logo.png',
+            username,
+            password,
+            createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+            updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+          };
+
+          const ref = await portalDb.collection('teachers').add(teacherData);
+          const created = { id: ref.id, ...teacherData };
+          currentTeacher = created;
+          currentStudent = null;
+          sessionStorage.setItem('halenoor_teacher_user', JSON.stringify(created));
+          sessionStorage.removeItem('halenoor_student_user');
+          await renderTeacherDashboard(created);
+          showToast(`Teacher profile created! Welcome, ${name}!`, "success");
+        }
+      } catch (err) {
+        console.error("Create profile error:", err);
+        showToast(formatFirestoreError(err, "Failed to create profile."), "error");
+      } finally {
+        if (spinner) spinner.classList.add('hidden');
+        if (btn) btn.disabled = false;
+      }
+    });
 
     // Load Student by Document ID
     async function loadStudentById(id) {
@@ -864,6 +1739,7 @@
         }
       } catch (err) {
         console.error("Error loading student:", err);
+        showToast(formatFirestoreError(err, "Could not load student profile."), "error");
         showView('portal-login-view');
       }
     }
@@ -884,13 +1760,14 @@
         }
       } catch (err) {
         console.error("Error loading teacher:", err);
+        showToast(formatFirestoreError(err, "Could not load teacher profile."), "error");
         showView('portal-login-view');
       }
     }
 
     // Render Student View
     function renderStudentDashboard(s) {
-      const username = s.username || s.studentName.toLowerCase().replace(/[^a-z0-9]/g, '');
+      const username = s.username || (s.studentName || 'student').toLowerCase().replace(/[^a-z0-9]/g, '');
       const initials = (s.studentName || 'ST').substring(0, 2).toUpperCase();
 
       document.getElementById('student-header-name').textContent = s.studentName;
@@ -901,6 +1778,11 @@
       document.getElementById('student-profile-age').textContent = s.age ? `${s.age} Years` : 'N/A';
       document.getElementById('student-profile-username').textContent = '@' + username;
       document.getElementById('student-profile-status').textContent = s.status || 'Active Enrolled';
+
+      document.getElementById('student-detail-username').textContent = '@' + username;
+      document.getElementById('student-detail-whatsapp').textContent = s.whatsappNumber || 'N/A';
+      document.getElementById('student-detail-email').textContent = s.email || 'Not provided';
+      document.getElementById('student-detail-location').textContent = [s.country || 'International', s.timezone].filter(Boolean).join(' • ');
 
       document.getElementById('student-course-title').textContent = s.enrolledCourse || 'Noorani Qaida with Tajweed';
       document.getElementById('student-class-timing').textContent = s.classTiming || 'Flexible Timings';
@@ -915,8 +1797,6 @@
       document.getElementById('student-monthly-fee').textContent = `${s.currency || 'USD'} ${s.monthlyFee || 45} / mo`;
       document.getElementById('student-country-badge').textContent = s.country || 'International';
 
-      // WhatsApp & Live Class Links
-      const waClean = (s.whatsappNumber || '923208040672').replace(/[^0-9]/g, '');
       const tutorBtn = document.getElementById('btn-tutor-whatsapp');
       if (tutorBtn) {
         tutorBtn.href = `https://wa.me/923208040672?text=Assalam-o-Alaikum!%20I%20am%20${encodeURIComponent(s.studentName)},%20enrolled%20in%20${encodeURIComponent(s.enrolledCourse || 'Quran Course')}.`;
@@ -926,8 +1806,7 @@
         joinBtn.href = `https://wa.me/923208040672?text=Assalam-o-Alaikum!%20Ready%20for%20my%20live%20class%20(${encodeURIComponent(s.studentName)}).`;
       }
 
-      // Printable Card values
-      document.getElementById('card-student-id').textContent = 'HNQA-' + s.id.substring(0, 6).toUpperCase();
+      document.getElementById('card-student-id').textContent = 'HNQA-' + (s.id || '001').substring(0, 6).toUpperCase();
       document.getElementById('card-student-name').textContent = s.studentName;
       document.getElementById('card-student-course').textContent = s.enrolledCourse || 'Noorani Qaida with Tajweed';
       document.getElementById('card-student-parent').textContent = s.parentName || 'N/A';
@@ -939,7 +1818,7 @@
 
     // Render Teacher View
     async function renderTeacherDashboard(t) {
-      const username = t.username || ('t.' + t.name.toLowerCase().replace(/[^a-z0-9]/g, ''));
+      const username = t.username || ('t.' + (t.name || 'teacher').toLowerCase().replace(/[^a-z0-9]/g, ''));
 
       document.getElementById('teacher-header-name').textContent = t.name;
       document.getElementById('teacher-header-username').textContent = '@' + username;
@@ -953,13 +1832,16 @@
       document.getElementById('teacher-profile-languages').textContent = t.languages || 'English, Urdu, Arabic';
       document.getElementById('teacher-profile-bio').textContent = t.bio || 'Experienced Quran tutor dedicated to teaching with patience and proper Tajweed.';
 
+      document.getElementById('teacher-detail-username').textContent = '@' + username;
+      document.getElementById('teacher-detail-whatsapp').textContent = t.whatsappNumber || 'Not provided';
+      document.getElementById('teacher-detail-email').textContent = t.email || 'Not provided';
+      document.getElementById('teacher-detail-status').textContent = `${t.gender || 'Scholar'} • ${t.active === false ? 'Unavailable' : 'Available'}`;
+
       if (t.imageUrl) {
         document.getElementById('teacher-profile-img').src = t.imageUrl;
       }
 
-      // Fetch and list students assigned to this teacher
       await loadTeacherStudents(t);
-
       showView('teacher-dashboard-view');
     }
 
@@ -977,7 +1859,7 @@
         snap.forEach(doc => {
           const s = { id: doc.id, ...doc.data() };
           const tutorAssigned = (s.assignedTeacher || '').toLowerCase();
-          if (tutorAssigned.includes(teacherFirstName) || tutorAssigned.includes((t.name || '').toLowerCase())) {
+          if (tutorAssigned && ((teacherFirstName && tutorAssigned.includes(teacherFirstName)) || tutorAssigned.includes((t.name || '').toLowerCase()))) {
             students.push(s);
           }
         });
@@ -1010,12 +1892,12 @@
               <td class="py-3 px-3 font-mono text-slate-700">${s.classTiming || 'Flexible'}</td>
               <td class="py-3 px-3">${s.country || 'International'}</td>
               <td class="py-3 px-3">
-                <a href="${waLink}" target="_blank" class="text-emerald-700 hover:underline font-bold flex items-center gap-1">
+                <a href="${waLink}" target="_blank" rel="noopener noreferrer" class="text-emerald-700 hover:underline font-bold flex items-center gap-1">
                   <i class="fa-brands fa-whatsapp text-emerald-500"></i> ${s.whatsappNumber || 'N/A'}
                 </a>
               </td>
               <td class="py-3 px-3 text-right">
-                <a href="${waLink}" target="_blank" class="px-2.5 py-1 rounded-lg bg-emerald-800 text-white font-bold text-[11px] hover:bg-emerald-900 transition">
+                <a href="${waLink}" target="_blank" rel="noopener noreferrer" class="px-2.5 py-1 rounded-lg bg-emerald-800 text-white font-bold text-[11px] hover:bg-emerald-900 transition">
                   Contact
                 </a>
               </td>
@@ -1037,69 +1919,169 @@
       showView('portal-login-view');
     }
 
-    // Change Password Handlers
-    function openChangePasswordModal() {
-      document.getElementById('change-password-form')?.reset();
-      openModal('change-password-modal');
+    // ================= LOGGED-IN CREDENTIALS MODAL (USERNAME & PASSWORD) =================
+    function openCredentialsModal() {
+      document.getElementById('credentials-update-form')?.reset();
+      const userEl = document.getElementById('modal-cred-username');
+      if (userEl) {
+        if (currentStudent) {
+          userEl.value = currentStudent.username || (currentStudent.studentName || '').toLowerCase().replace(/[^a-z0-9]/g, '');
+        } else if (currentTeacher) {
+          userEl.value = currentTeacher.username || ('t.' + (currentTeacher.name || '').toLowerCase().replace(/[^a-z0-9]/g, ''));
+        }
+      }
+      openModal('credentials-modal');
     }
 
-    document.getElementById('change-password-form')?.addEventListener('submit', async (e) => {
+    document.getElementById('credentials-update-form')?.addEventListener('submit', async (e) => {
       e.preventDefault();
+      const newUsername = normalizeHandle(document.getElementById('modal-cred-username').value);
       const p1 = document.getElementById('modal-new-password').value.trim();
       const p2 = document.getElementById('modal-confirm-password').value.trim();
 
-      if (p1.length < 6) {
-        showToast("Password must be at least 6 characters.", "error");
+      if (!newUsername || newUsername.length < 3) {
+        showToast("Username must be at least 3 characters.", "error");
         return;
       }
-      if (p1 !== p2) {
-        showToast("Passwords do not match.", "error");
-        return;
+      if (p1 || p2) {
+        if (p1.length < 6) {
+          showToast("Password must be at least 6 characters.", "error");
+          return;
+        }
+        if (p1 !== p2) {
+          showToast("Passwords do not match.", "error");
+          return;
+        }
       }
 
       try {
+        await ensurePortalAuth();
         if (currentStudent) {
-          await portalDb.collection('students').doc(currentStudent.id).update({
-            password: p1
-          });
-          currentStudent.password = p1;
+          const taken = await isUsernameTaken('students', newUsername, currentStudent.id);
+          if (taken) {
+            showToast(`Username "${newUsername}" is already taken.`, "error");
+            return;
+          }
+          const updates = {
+            username: newUsername,
+            credentialsUpdatedAt: firebase.firestore.FieldValue.serverTimestamp()
+          };
+          if (p1) updates.password = p1;
+
+          await portalDb.collection('students').doc(currentStudent.id).update(updates);
+          currentStudent.username = newUsername;
+          if (p1) currentStudent.password = p1;
           sessionStorage.setItem('halenoor_student_user', JSON.stringify(currentStudent));
-          showToast("Student password updated successfully!", "success");
+          renderStudentDashboard(currentStudent);
+          showToast("Student username & password updated successfully!", "success");
         } else if (currentTeacher) {
-          await portalDb.collection('teachers').doc(currentTeacher.id).update({
-            password: p1
-          });
-          currentTeacher.password = p1;
+          const taken = await isUsernameTaken('teachers', newUsername, currentTeacher.id);
+          if (taken) {
+            showToast(`Username "${newUsername}" is already taken.`, "error");
+            return;
+          }
+          const updates = {
+            username: newUsername,
+            credentialsUpdatedAt: firebase.firestore.FieldValue.serverTimestamp()
+          };
+          if (p1) updates.password = p1;
+
+          await portalDb.collection('teachers').doc(currentTeacher.id).update(updates);
+          currentTeacher.username = newUsername;
+          if (p1) currentTeacher.password = p1;
           sessionStorage.setItem('halenoor_teacher_user', JSON.stringify(currentTeacher));
-          showToast("Teacher password updated successfully!", "success");
+          await renderTeacherDashboard(currentTeacher);
+          showToast("Teacher username & password updated successfully!", "success");
         }
-        closeModal('change-password-modal');
+        closeModal('credentials-modal');
       } catch (err) {
-        showToast(err.message || "Failed to update password.", "error");
+        showToast(formatFirestoreError(err, "Failed to update credentials."), "error");
       }
     });
 
-    // Edit Teacher Bio Handlers
-    function openEditTeacherBioModal() {
-      if (!currentTeacher) return;
-      document.getElementById('modal-teacher-bio-input').value = currentTeacher.bio || '';
-      openModal('teacher-bio-modal');
+    // ================= EDIT STUDENT PROFILE MODAL =================
+    function openEditStudentProfileModal() {
+      if (!currentStudent) return;
+      document.getElementById('edit-student-name').value = currentStudent.studentName || '';
+      document.getElementById('edit-student-age').value = currentStudent.age || '';
+      document.getElementById('edit-student-parent').value = currentStudent.parentName || '';
+      document.getElementById('edit-student-whatsapp').value = currentStudent.whatsappNumber || '';
+      document.getElementById('edit-student-email').value = currentStudent.email || '';
+      document.getElementById('edit-student-country').value = currentStudent.country || '';
+      document.getElementById('edit-student-timezone').value = currentStudent.timezone || '';
+      document.getElementById('edit-student-timing').value = currentStudent.classTiming || '';
+      openModal('student-profile-edit-modal');
     }
 
-    document.getElementById('teacher-bio-form')?.addEventListener('submit', async (e) => {
+    document.getElementById('student-profile-edit-form')?.addEventListener('submit', async (e) => {
       e.preventDefault();
-      const bio = document.getElementById('modal-teacher-bio-input').value.trim();
+      if (!currentStudent) return;
+      const updates = {
+        studentName: document.getElementById('edit-student-name').value.trim(),
+        age: document.getElementById('edit-student-age').value.trim(),
+        parentName: document.getElementById('edit-student-parent').value.trim(),
+        whatsappNumber: document.getElementById('edit-student-whatsapp').value.trim(),
+        email: document.getElementById('edit-student-email').value.trim(),
+        country: document.getElementById('edit-student-country').value.trim() || 'International',
+        timezone: document.getElementById('edit-student-timezone').value.trim(),
+        classTiming: document.getElementById('edit-student-timing').value.trim(),
+        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+      };
+
       try {
-        if (currentTeacher) {
-          await portalDb.collection('teachers').doc(currentTeacher.id).update({ bio });
-          currentTeacher.bio = bio;
-          document.getElementById('teacher-profile-bio').textContent = bio;
-          sessionStorage.setItem('halenoor_teacher_user', JSON.stringify(currentTeacher));
-          showToast("Profile bio updated!", "success");
-        }
-        closeModal('teacher-bio-modal');
+        await ensurePortalAuth();
+        await portalDb.collection('students').doc(currentStudent.id).update(updates);
+        currentStudent = { ...currentStudent, ...updates };
+        sessionStorage.setItem('halenoor_student_user', JSON.stringify(currentStudent));
+        renderStudentDashboard(currentStudent);
+        closeModal('student-profile-edit-modal');
+        showToast("Student profile updated successfully!", "success");
       } catch (err) {
-        showToast(err.message || "Failed to update bio.", "error");
+        showToast(formatFirestoreError(err, "Failed to update student profile."), "error");
+      }
+    });
+
+    // ================= EDIT TEACHER PROFILE MODAL =================
+    function openEditTeacherProfileModal() {
+      if (!currentTeacher) return;
+      document.getElementById('edit-teacher-name').value = currentTeacher.name || '';
+      document.getElementById('edit-teacher-arabic').value = currentTeacher.arabicTitle || '';
+      document.getElementById('edit-teacher-exp').value = currentTeacher.experience || '';
+      document.getElementById('edit-teacher-languages').value = currentTeacher.languages || '';
+      document.getElementById('edit-teacher-qualification').value = currentTeacher.qualification || '';
+      document.getElementById('edit-teacher-specialization').value = currentTeacher.specialization || '';
+      document.getElementById('edit-teacher-whatsapp').value = currentTeacher.whatsappNumber || '';
+      document.getElementById('edit-teacher-email').value = currentTeacher.email || '';
+      document.getElementById('edit-teacher-bio').value = currentTeacher.bio || '';
+      openModal('teacher-profile-edit-modal');
+    }
+
+    document.getElementById('teacher-profile-edit-form')?.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      if (!currentTeacher) return;
+      const updates = {
+        name: document.getElementById('edit-teacher-name').value.trim(),
+        arabicTitle: document.getElementById('edit-teacher-arabic').value.trim(),
+        experience: document.getElementById('edit-teacher-exp').value.trim(),
+        languages: document.getElementById('edit-teacher-languages').value.trim(),
+        qualification: document.getElementById('edit-teacher-qualification').value.trim(),
+        specialization: document.getElementById('edit-teacher-specialization').value.trim(),
+        whatsappNumber: document.getElementById('edit-teacher-whatsapp').value.trim(),
+        email: document.getElementById('edit-teacher-email').value.trim(),
+        bio: document.getElementById('edit-teacher-bio').value.trim(),
+        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+      };
+
+      try {
+        await ensurePortalAuth();
+        await portalDb.collection('teachers').doc(currentTeacher.id).update(updates);
+        currentTeacher = { ...currentTeacher, ...updates };
+        sessionStorage.setItem('halenoor_teacher_user', JSON.stringify(currentTeacher));
+        await renderTeacherDashboard(currentTeacher);
+        closeModal('teacher-profile-edit-modal');
+        showToast("Teacher profile updated successfully!", "success");
+      } catch (err) {
+        showToast(formatFirestoreError(err, "Failed to update teacher profile."), "error");
       }
     });
 
